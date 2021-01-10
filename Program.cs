@@ -8,8 +8,6 @@ namespace Idle_Heroes
         {
             Bot bot = new Bot();
             bot.RunAsync().GetAwaiter().GetResult();
-
-            Console.WriteLine("Bot connected!");
         }
     }
 }
