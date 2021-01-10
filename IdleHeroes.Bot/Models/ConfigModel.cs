@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace IdleHeroes.Models
 {
@@ -12,5 +10,9 @@ namespace IdleHeroes.Models
 
         [JsonProperty("prefix")]
         public string Prefix { get; private set; }
+        [JsonProperty("statusMessages")]
+        public bool StatusMessages { get; private set; }
+        [JsonProperty("owners")]
+        public List<ulong> BotOwners { get; private set; }
     }
 }

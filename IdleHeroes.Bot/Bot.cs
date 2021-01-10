@@ -3,13 +3,11 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
 using IdleHeroes.Commands;
 using IdleHeroes.Models;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using DSharpPlus.Entities;
 
 namespace IdleHeroes
 {
@@ -17,12 +15,13 @@ namespace IdleHeroes
     public class Bot
     {
         public DiscordClient Client { get; private set; }
+        private DiscordRestClient RestClient { get; set; }
         public CommandsNextExtension Commands { get; private set; }
 
         public Bot(IServiceProvider services)
         {
             //Load the config file
-            string configString = string.Empty;
+            string configString;
 
             using (var fs = File.OpenRead("config.json"))
             {
@@ -43,12 +42,13 @@ namespace IdleHeroes
             };
 
             Client = new DiscordClient(config);
+            RestClient = new DiscordRestClient(config);
 
             Client.Ready += OnClientReady;
 
             CommandsNextConfiguration commandsConfig = new CommandsNextConfiguration()
             {
-                StringPrefixes = new string[] { configJson.Prefix },
+                StringPrefixes = new [] { configJson.Prefix },
                 EnableMentionPrefix = true,
                 CaseSensitive = false,
                 DmHelp = false,
@@ -61,12 +61,24 @@ namespace IdleHeroes
 
             Client.ConnectAsync();
 
-            Client.Ready += OnReady;
+            if (configJson.StatusMessages)
+            {
+                Client.Ready += OnReady;
+                Client.SocketClosed += OnClosedSocket;
+            }
         }
 
         private async Task OnReady(DiscordClient sender, ReadyEventArgs e)
         {
-            await sender.SendMessageAsync(await sender.GetChannelAsync(797147841956544524), "I'm online!");
+            await RestClient.CreateMessageAsync(797147841956544524, "Rise and shine! I'm online!",
+                false, null, null);
+        }
+
+        private async Task OnClosedSocket(DiscordClient sender, SocketCloseEventArgs e)
+        {
+            Console.WriteLine("SocketClosed");
+            await RestClient.CreateMessageAsync(797147841956544524, "Nap time.", false,
+                null, null);
         }
 
         private Task OnClientReady(DiscordClient sender, ReadyEventArgs e)

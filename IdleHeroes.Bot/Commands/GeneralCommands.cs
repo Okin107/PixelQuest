@@ -4,10 +4,11 @@ using IdleHeroesDAL;
 using IdleHeroesDAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using IdleHeroes.Models;
+using Newtonsoft.Json;
 
 namespace IdleHeroes.Commands
 {
@@ -28,6 +29,31 @@ namespace IdleHeroes.Commands
 
             await ctx.Channel.SendMessageAsync($"`Pong! {latency}ms`")
                 .ConfigureAwait(false);
+        }
+
+        [Command("die")]
+        [Description("Kills the bot.")]
+        public async Task KillBot(CommandContext ctx)
+        {
+            string configString;
+
+            await using (var fs = File.OpenRead("config.json"))
+            {
+                using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
+                {
+                    configString = await sr.ReadToEndAsync();
+                }
+            }
+            
+            ConfigModel configJson = JsonConvert.DeserializeObject<ConfigModel>(configString);
+
+            foreach (ulong userId in configJson.BotOwners)
+            {
+                if (userId == ctx.Message.Author.Id)
+                {
+                    await ctx.Client.DisconnectAsync();
+                }
+            }
         }
 
         [Command("create")]
@@ -67,7 +93,7 @@ namespace IdleHeroes.Commands
         [Description("View your profile or the profile of another player.")]
         public async Task Profile(CommandContext ctx, [Description("The username you want to view the profile for. Leaving this empty will show your own profile.")] string username = null)
         {
-            Profile profile = new Profile();
+            Profile profile;
 
             //TODO: Turn this into multiple selection if there are many results. User interactivity methods
             if (!string.IsNullOrEmpty(username))
