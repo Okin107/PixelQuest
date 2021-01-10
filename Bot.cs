@@ -1,6 +1,7 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
+using Idle_Heroes.Commands;
 using Idle_Heroes.Models;
 using Newtonsoft.Json;
 using System.IO;
@@ -52,6 +53,7 @@ namespace Idle_Heroes
             };
 
             Commands = Client.UseCommandsNext(commandsConfig);
+            Commands.RegisterCommands<GeneralCommands>();
 
             await Client.ConnectAsync();
 
