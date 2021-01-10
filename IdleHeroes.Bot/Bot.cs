@@ -77,8 +77,9 @@ namespace IdleHeroes
         private async Task OnClosedSocket(DiscordClient sender, SocketCloseEventArgs e)
         {
             Console.WriteLine("SocketClosed");
-            await RestClient.CreateMessageAsync(797147841956544524, "Nap time.", false,
-                null, null);
+            await RestClient.CreateMessageAsync(797147841956544524,
+                "Nap time. I'm going offline now, nice playing with you all!",
+                false,  null, null);
         }
 
         private Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
