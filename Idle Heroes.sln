@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idle Heroes", "Idle Heroes.csproj", "{CCBF6043-05FF-4CCC-9C7C-46334A126FBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCBF6043-05FF-4CCC-9C7C-46334A126FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCBF6043-05FF-4CCC-9C7C-46334A126FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCBF6043-05FF-4CCC-9C7C-46334A126FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCBF6043-05FF-4CCC-9C7C-46334A126FBF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {17F8BCC0-22D5-4EED-B072-BD2B63566D67}
+	EndGlobalSection
+EndGlobal
