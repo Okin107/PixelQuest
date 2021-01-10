@@ -59,6 +59,8 @@ namespace IdleHeroes
             Commands.RegisterCommands<GeneralCommands>();
 
             Client.ConnectAsync();
+            
+            
         }
 
         

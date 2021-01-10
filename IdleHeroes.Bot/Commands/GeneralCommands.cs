@@ -24,7 +24,7 @@ namespace IdleHeroes.Commands
         [Description("Test the latency of the bot.")]
         public async Task Ping(CommandContext ctx)
         {
-            var latency =  DateTime.Now.Millisecond - ctx.Message.CreationTimestamp.Millisecond;
+            var latency = ctx.Client.Ping;
 
             await ctx.Channel.SendMessageAsync($"`Pong! {latency}ms`")
                 .ConfigureAwait(false);
