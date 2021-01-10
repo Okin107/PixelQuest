@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using DSharpPlus.Entities;
 
 namespace IdleHeroes
 {
@@ -59,11 +60,14 @@ namespace IdleHeroes
             Commands.RegisterCommands<GeneralCommands>();
 
             Client.ConnectAsync();
-            
-            
+
+            Client.Ready += OnReady;
         }
 
-        
+        private async Task OnReady(DiscordClient sender, ReadyEventArgs e)
+        {
+            await sender.SendMessageAsync(await sender.GetChannelAsync(797147841956544524), "I'm online!");
+        }
 
         private Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
         {
