@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Idle_Heroes.Models
+namespace IdleHeroes.Models
 {
     public struct ConfigModel
     {

@@ -1,0 +1,6 @@
+Create DB Migration:
+dotnet-ef migrations add InitialCreate -p ../IdleHeroes.DAL.Migrations/IdleHeroes.DAL.Migrations.csproj --context IdleHeroesDAL.DatabaseContext
+
+Update DB:
+dotnet-ef database Update -p ../IdleHeroes.DAL.Migrations/IdleHeroes.DAL.Migrations.csproj --context IdleHeroesDAL.DatabaseContext
+

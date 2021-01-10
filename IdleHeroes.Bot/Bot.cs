@@ -1,14 +1,16 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
-using Idle_Heroes.Commands;
-using Idle_Heroes.Models;
+using IdleHeroes.Commands;
+using IdleHeroes.Models;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Idle_Heroes
+namespace IdleHeroes
 {
 
     public class Bot
@@ -16,7 +18,7 @@ namespace Idle_Heroes
         public DiscordClient Client { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
 
-        public async Task RunAsync()
+        public Bot(IServiceProvider services)
         {
             //Load the config file
             string configString = string.Empty;
@@ -25,7 +27,7 @@ namespace Idle_Heroes
             {
                 using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                 {
-                    configString = await sr.ReadToEndAsync().ConfigureAwait(false);
+                    configString = sr.ReadToEnd();
                 }
             }
 
@@ -41,7 +43,7 @@ namespace Idle_Heroes
 
             Client = new DiscordClient(config);
 
-            Client.Ready += OnClientReady; 
+            Client.Ready += OnClientReady;
 
             CommandsNextConfiguration commandsConfig = new CommandsNextConfiguration()
             {
@@ -49,17 +51,17 @@ namespace Idle_Heroes
                 EnableMentionPrefix = true,
                 CaseSensitive = false,
                 DmHelp = false,
-                EnableDms = true
+                EnableDms = true,
+                Services = services
             };
 
             Commands = Client.UseCommandsNext(commandsConfig);
             Commands.RegisterCommands<GeneralCommands>();
 
-            await Client.ConnectAsync();
-
-            //Fix for random D/C (Discord API recommendation)
-            await Task.Delay(-1);
+            Client.ConnectAsync();
         }
+
+        
 
         private Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
         {

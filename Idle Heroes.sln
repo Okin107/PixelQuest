@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idle Heroes", "Idle Heroes.csproj", "{CCBF6043-05FF-4CCC-9C7C-46334A126FBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdleHeroes.Bot", "IdleHeroes.Bot\IdleHeroes.Bot.csproj", "{CCBF6043-05FF-4CCC-9C7C-46334A126FBF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdleHeroes.DAL", "IdleHeroes.DAL\IdleHeroes.DAL.csproj", "{F0522B6C-5835-4958-B3AA-A73334232434}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleHeroes.DAL.Migrations", "IdleHeroes.DAL.Migrations\IdleHeroes.DAL.Migrations.csproj", "{417A8E73-DEF2-4A32-A1AA-017AA8F8E29A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{CCBF6043-05FF-4CCC-9C7C-46334A126FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCBF6043-05FF-4CCC-9C7C-46334A126FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCBF6043-05FF-4CCC-9C7C-46334A126FBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0522B6C-5835-4958-B3AA-A73334232434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0522B6C-5835-4958-B3AA-A73334232434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0522B6C-5835-4958-B3AA-A73334232434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0522B6C-5835-4958-B3AA-A73334232434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{417A8E73-DEF2-4A32-A1AA-017AA8F8E29A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{417A8E73-DEF2-4A32-A1AA-017AA8F8E29A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{417A8E73-DEF2-4A32-A1AA-017AA8F8E29A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{417A8E73-DEF2-4A32-A1AA-017AA8F8E29A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
