@@ -20,22 +20,12 @@ namespace IdleHeroes
 
         public Bot(IServiceProvider services)
         {
-            //Load the config file
-            string configString;
-
-            using (var fs = File.OpenRead("config.json"))
-            {
-                using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
-                {
-                    configString = sr.ReadToEnd();
-                }
-            }
-
-            ConfigModel configJson = JsonConvert.DeserializeObject<ConfigModel>(configString);
+            //Load the config.json file
+            BotSettings.Initialize();
 
             DiscordConfiguration config = new DiscordConfiguration()
             {
-                Token = configJson.Token,
+                Token = BotSettings.Token,
                 TokenType = TokenType.Bot,
                 AutoReconnect = true,
                 MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug
@@ -48,7 +38,7 @@ namespace IdleHeroes
 
             CommandsNextConfiguration commandsConfig = new CommandsNextConfiguration()
             {
-                StringPrefixes = new [] { configJson.Prefix },
+                StringPrefixes = new [] { BotSettings.Prefix },
                 EnableMentionPrefix = true,
                 CaseSensitive = false,
                 DmHelp = false,
@@ -58,10 +48,11 @@ namespace IdleHeroes
 
             Commands = Client.UseCommandsNext(commandsConfig);
             Commands.RegisterCommands<GeneralCommands>();
+            Commands.RegisterCommands<ProfileCommands>();
 
             Client.ConnectAsync();
 
-            if (configJson.StatusMessages)
+            if (BotSettings.StatusMessages)
             {
                 Client.Ready += OnReady;
                 Client.SocketClosed += OnClosedSocket;
