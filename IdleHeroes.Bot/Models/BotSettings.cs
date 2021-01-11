@@ -31,6 +31,7 @@ namespace IdleHeroes.Models
             Token = configJson.Token;
             Prefix = configJson.Prefix;
             StatusMessages = configJson.StatusMessages;
+            IsDebugMode = configJson.IsDebugMode;
             BotOwners = configJson.BotOwners;
         }
     }
@@ -44,7 +45,7 @@ namespace IdleHeroes.Models
         [JsonProperty("statusMessages")]
         public bool StatusMessages { get; private set; }
         [JsonProperty("isdebugmode")]
-        public static bool IsDebugMode { get; private set; }
+        public bool IsDebugMode { get; private set; }
         [JsonProperty("owners")]
         public List<ulong> BotOwners { get; private set; }
     }
