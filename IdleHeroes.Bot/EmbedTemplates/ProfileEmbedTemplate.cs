@@ -29,7 +29,7 @@ namespace IdleHeroes.EmbedTemplates
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {
                     IconUrl = ctx.Message.Author.AvatarUrl,
-                    Text = profile.Username
+                    Text = ctx.Message.Author.Username
                 }
             };
 

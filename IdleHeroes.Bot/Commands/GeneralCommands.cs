@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using IdleHeroes.Support;
 using System;
 using IdleHeroes.Models;
+using IdleHeroes.EmbedTemplates;
 
 namespace IdleHeroes.Commands
 {
@@ -24,14 +25,14 @@ namespace IdleHeroes.Commands
             try
             {
                 var latency = ctx.Client.Ping;
-                await ctx.Channel.SendMessageAsync($"`Pong! {latency}ms`")
+                await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"Pong! `{latency}ms`").Build())
                     .ConfigureAwait(false);
             }
             catch(Exception ex)
             {
                 if(BotSettings.IsDebugMode)
                 {
-                    await ctx.Channel.SendMessageAsync($"COMMAND ERROR: {ex.Message}")
+                    await ctx.Channel.SendMessageAsync(embed: ErrorEmbedTemplate.Get(ctx, $"COMMAND ERROR: {ex.Message}").Build())
                     .ConfigureAwait(false);
                 }
                 Console.WriteLine($"COMMAND ERROR: {ex.Message}");
@@ -51,14 +52,14 @@ namespace IdleHeroes.Commands
                     return;
                 }
 
-                await ctx.Channel.SendMessageAsync($"`Only the owners of the bot can use this command.`")
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, "This command is restricted to the **Owners** of the bot only!").Build())
                 .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 if (BotSettings.IsDebugMode)
                 {
-                    await ctx.Channel.SendMessageAsync($"COMMAND ERROR: {ex.Message}")
+                    await ctx.Channel.SendMessageAsync(embed: ErrorEmbedTemplate.Get(ctx, $"COMMAND ERROR: {ex.Message}").Build())
                     .ConfigureAwait(false);
                 }
                 Console.WriteLine($"COMMAND ERROR: {ex.Message}");

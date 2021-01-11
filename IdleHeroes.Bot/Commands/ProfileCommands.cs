@@ -29,7 +29,7 @@ namespace IdleHeroes.Commands
                 //Check if username is empty
                 if (String.IsNullOrEmpty(username))
                 {
-                    await ctx.Channel.SendMessageAsync($"`Your username cannot be empty. Please select a proper name for your profile.`")
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Your username cannot be empty. Use `.help create` to find out more.").Build())
                     .ConfigureAwait(false);
                     return;
                 }
@@ -39,7 +39,7 @@ namespace IdleHeroes.Commands
 
                 if (profile != null)
                 {
-                    await ctx.Channel.SendMessageAsync($"`You already have a profile.`")
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You already have a Profile.").Build())
                     .ConfigureAwait(false);
                     return;
                 }
@@ -52,7 +52,7 @@ namespace IdleHeroes.Commands
                 }).ConfigureAwait(false);
 
                 await _context.SaveChangesAsync().ConfigureAwait(false);
-                await ctx.Channel.SendMessageAsync($"`Your new profile was created.`")
+                await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"Welcome **{username}**. Use `.profile` to check your stats and start playing.").Build())
                     .ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -77,7 +77,7 @@ namespace IdleHeroes.Commands
 
                 if (!isRegistered)
                 {
-                    await ctx.Channel.SendMessageAsync($"Use `.create` to first create a Profile in order to play the game.")
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Use `.create` to first create a Profile in order to play the game.").Build())
                         .ConfigureAwait(false);
                     return;
                 }
@@ -96,7 +96,7 @@ namespace IdleHeroes.Commands
 
                 if (profile == null)
                 {
-                    await ctx.Channel.SendMessageAsync($"`There is no profile with that username.`")
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, "There is no Profile with that username.").Build())
                         .ConfigureAwait(false);
                 }
                 else
