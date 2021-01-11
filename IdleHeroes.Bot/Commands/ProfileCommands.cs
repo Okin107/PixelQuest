@@ -1,6 +1,8 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using IdleHeroes.EmbedTemplates;
 using IdleHeroes.Models;
+using IdleHeroes.Support;
 using IdleHeroesDAL;
 using IdleHeroesDAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -70,6 +72,16 @@ namespace IdleHeroes.Commands
         {
             try
             {
+                //Check if user is registered to make this command work
+                bool isRegistered = await UtilityFunctions.IsUserRegistered(_context, ctx.Message.Author.Id);
+
+                if (!isRegistered)
+                {
+                    await ctx.Channel.SendMessageAsync($"Use `.create` to first create a Profile in order to play the game.")
+                        .ConfigureAwait(false);
+                    return;
+                }
+
                 Profile profile;
 
                 //TODO: Turn this into multiple selection if there are many results. User interactivity methods
@@ -79,7 +91,7 @@ namespace IdleHeroes.Commands
                 }
                 else
                 {
-                    profile = await _context.Profile.FirstOrDefaultAsync(x => x.DiscordID.Equals(ctx.Member.Id));
+                    profile = await _context.Profile.FirstOrDefaultAsync(x => x.DiscordID.Equals(ctx.Message.Author.Id));
                 }
 
                 if (profile == null)
@@ -89,7 +101,7 @@ namespace IdleHeroes.Commands
                 }
                 else
                 {
-                    await ctx.Channel.SendMessageAsync($"`This is the user profile of **{profile.Username}**`")
+                    await ctx.Channel.SendMessageAsync(embed: ProfileEmbedTemplate.Get(ctx, profile).Build())
                 .ConfigureAwait(false);
                 }
             }

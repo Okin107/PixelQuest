@@ -1,4 +1,8 @@
 ﻿using IdleHeroes.Models;
+using IdleHeroesDAL;
+using IdleHeroesDAL.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace IdleHeroes.Support
 {
@@ -12,6 +16,18 @@ namespace IdleHeroes.Support
             }
 
             return false;
+        }
+
+        public static async Task<bool> IsUserRegistered(DatabaseContext context, ulong userId)
+        {
+            Profile profile = await context.Profile.FirstOrDefaultAsync(x => x.DiscordID.Equals(userId));
+
+            if(profile == null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
