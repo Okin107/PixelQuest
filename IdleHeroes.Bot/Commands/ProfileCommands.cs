@@ -59,7 +59,7 @@ namespace IdleHeroes.Commands
             {
                 if (BotSettings.IsDebugMode)
                 {
-                    await ctx.Channel.SendMessageAsync($"COMMAND ERROR: {ex.Message}")
+                    await ctx.Channel.SendMessageAsync(embed: ErrorEmbedTemplate.Get(ctx, $"COMMAND ERROR: {ex.Message}").Build())
                     .ConfigureAwait(false);
                 }
                 Console.WriteLine($"COMMAND ERROR: {ex.Message}");
@@ -109,7 +109,7 @@ namespace IdleHeroes.Commands
             {
                 if (BotSettings.IsDebugMode)
                 {
-                    await ctx.Channel.SendMessageAsync($"COMMAND ERROR: {ex.Message}")
+                    await ctx.Channel.SendMessageAsync(embed: ErrorEmbedTemplate.Get(ctx, $"COMMAND ERROR: {ex.Message}").Build())
                     .ConfigureAwait(false);
                 }
                 Console.WriteLine($"COMMAND ERROR: {ex.Message}");
