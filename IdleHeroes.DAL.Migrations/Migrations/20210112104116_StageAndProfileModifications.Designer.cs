@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210112104116_StageAndProfileModifications")]
+    partial class StageAndProfileModifications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,9 +49,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.Property<decimal>("Gems")
                         .HasColumnType("decimal(20,0)");
 
-                    b.Property<DateTime>("LastPlayed")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("LastRewardsCollected")
                         .HasColumnType("datetime2");
 
@@ -58,9 +57,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 
                     b.Property<int>("MaximumIdleRewardHours")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("RegisteredOn")
-                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Relics")
                         .HasColumnType("decimal(20,0)");
@@ -74,39 +70,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Profile");
-                });
-
-            modelBuilder.Entity("IdleHeroesDAL.Models.Stage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("CoinsPerMinute")
-                        .HasColumnType("decimal(20,0)");
-
-                    b.Property<int>("Difficulty")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("FoodPerMinute")
-                        .HasColumnType("decimal(20,0)");
-
-                    b.Property<decimal>("GemsDropChancePerMinute")
-                        .HasColumnType("decimal(20,0)");
-
-                    b.Property<decimal>("Number")
-                        .HasColumnType("decimal(20,0)");
-
-                    b.Property<decimal>("RelicsDropChancePerMinute")
-                        .HasColumnType("decimal(20,0)");
-
-                    b.Property<decimal>("XPPerMinute")
-                        .HasColumnType("decimal(20,0)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Stage");
                 });
 #pragma warning restore 612, 618
         }

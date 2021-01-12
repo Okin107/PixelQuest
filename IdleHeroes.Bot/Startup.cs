@@ -1,4 +1,5 @@
-﻿using IdleHeroesDAL;
+﻿using IdleHeroes.Services;
+using IdleHeroesDAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,10 @@ namespace IdleHeroes
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            //Register services
+            services.AddScoped<IProfileService, ProfileService>();
+
+            //Add dbcontext
             services.AddDbContext<DatabaseContext>(options => 
             {
                 options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=IdleHeroes;Trusted_Connection=True;MultipleActiveResultSets=true",
@@ -18,9 +23,9 @@ namespace IdleHeroes
 
             ServiceProvider serviceProvider = services.BuildServiceProvider();
 
+            //Start bot
             Bot bot = new Bot(serviceProvider);
             services.AddSingleton(bot);
-            //bot.RunAsync().GetAwaiter().GetResult();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

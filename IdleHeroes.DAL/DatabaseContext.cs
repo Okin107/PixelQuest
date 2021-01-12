@@ -8,5 +8,6 @@ namespace IdleHeroesDAL
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
         public DbSet<Profile> Profile { get; set; }
+        public DbSet<Stage> Stage { get; set; }
     }
 }

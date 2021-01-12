@@ -2,6 +2,7 @@
 using DSharpPlus.Entities;
 using IdleHeroesDAL.Models;
 using System;
+using System.Linq;
 
 namespace IdleHeroes.EmbedTemplates
 {
@@ -17,9 +18,10 @@ namespace IdleHeroes.EmbedTemplates
                 Title = $"{profile.Username}'s profile",
                 //Author = new DiscordEmbedBuilder.EmbedAuthor()
                 //{
-                //    Name = profile.Username
+                //    Name = profile.Username,
+                //    IconUrl = ctx.Guild.Members.FirstOrDefault(x => x.Value.Id == profile.DiscordID).Value.AvatarUrl
                 //},
-                Description = "Below are the details of your profile:",
+                Description = $"**Discord Name**: {profile.DiscordName}",
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {
                     Url = ctx.Message.Author.AvatarUrl
@@ -33,11 +35,22 @@ namespace IdleHeroes.EmbedTemplates
                 }
             };
 
-            Embed.AddField("Discord Name", profile.DiscordName.ToString(), true);
-            Embed.AddField("Level", profile.Level.ToString(), true);
-            Embed.AddField("Coins", profile.Coins.ToString(), true);
-            Embed.AddField("Gems", profile.Gems.ToString(), true);
-            Embed.AddField("Relics", profile.Relics.ToString(), true);
+            Embed.AddField("Stage Info", $"Current: {profile.CurrentStageNumber}", true);
+
+            Embed.AddField("Resources", 
+                $"Coins: {profile.Coins}" +
+                $"\nFood: {profile.Food}" +
+                $"\nGems: {profile.Gems}" +
+                $"\nRelics: {profile.Relics}", true);
+
+            Embed.AddField("Level & DPS", 
+                $"Level: {profile.Level}" +
+                $"\nXP: {profile.XP}" +
+                $"\nHero DPS: {profile.BaseDPS}", true);
+
+            Embed.AddField("Registered", $"{profile.RegisteredOn}", true);
+            Embed.AddField("Max Idle Time", $"{profile.MaximumIdleRewardHours} hours", true);
+            Embed.AddField("Last Played", $"{profile.LastPlayed}", true);
 
             return Embed;
         }

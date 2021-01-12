@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext.Attributes;
 using IdleHeroes.EmbedTemplates;
 using IdleHeroes.Models;
+using IdleHeroes.Services;
 using IdleHeroes.Support;
 using IdleHeroesDAL;
 using IdleHeroesDAL.Models;
@@ -14,9 +15,11 @@ namespace IdleHeroes.Commands
     public class ProfileCommands : BaseCommandModule
     {
         private readonly DatabaseContext _context;
+        IProfileService _profileService = null;
 
-        public ProfileCommands(DatabaseContext context)
+        public ProfileCommands(IProfileService profileService, DatabaseContext context)
         {
+            _profileService = profileService;
             _context = context;
         }
 
@@ -34,24 +37,18 @@ namespace IdleHeroes.Commands
                     return;
                 }
 
-                //Check if profile exists
-                Profile profile = await _context.Profile.FirstOrDefaultAsync(x => x.DiscordID.Equals(ctx.Member.Id));
-
-                if (profile != null)
+                //Check if profile exits
+                if (await _profileService.ProfileExists(ctx))
                 {
                     await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You already have a Profile.").Build())
                     .ConfigureAwait(false);
                     return;
                 }
 
-                await _context.Profile.AddAsync(new Profile()
-                {
-                    Username = username,
-                    DiscordID = ctx.Message.Author.Id,
-                    DiscordName = $"{ctx.Message.Author.Username}#{ctx.Message.Author.Discriminator}"
-                }).ConfigureAwait(false);
+                //Create profile
+                await _profileService.Add(ctx, username);
 
-                await _context.SaveChangesAsync().ConfigureAwait(false);
+                //Send message to the channel
                 await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"Welcome **{username}**. Use `.profile` to check your stats and start playing.").Build())
                     .ConfigureAwait(false);
             }
@@ -73,7 +70,7 @@ namespace IdleHeroes.Commands
             try
             {
                 //Check if user is registered to make this command work
-                bool isRegistered = await UtilityFunctions.IsUserRegistered(_context, ctx.Message.Author.Id);
+                bool isRegistered = await _profileService.IsUserRegistered(ctx.Message.Author.Id);
 
                 if (!isRegistered)
                 {
@@ -87,11 +84,11 @@ namespace IdleHeroes.Commands
                 //TODO: Turn this into multiple selection if there are many results. User interactivity methods
                 if (!string.IsNullOrEmpty(username))
                 {
-                    profile = await _context.Profile.FirstOrDefaultAsync(x => x.Username.Equals(username));
+                    profile = await _profileService.FindByUsername(ctx, username);
                 }
                 else
                 {
-                    profile = await _context.Profile.FirstOrDefaultAsync(x => x.DiscordID.Equals(ctx.Message.Author.Id));
+                    profile = await _profileService.FindByDiscordID(ctx);
                 }
 
                 if (profile == null)
