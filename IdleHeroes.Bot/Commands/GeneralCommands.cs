@@ -11,13 +11,6 @@ namespace IdleHeroes.Commands
 {
     public class GeneralCommands : BaseCommandModule
     {
-        private readonly DatabaseContext _context;
-
-        public GeneralCommands(DatabaseContext context)
-        {
-            _context = context;
-        }
-
         [Command("ping")]
         [Description("Test the latency of the bot.")]
         public async Task Ping(CommandContext ctx)

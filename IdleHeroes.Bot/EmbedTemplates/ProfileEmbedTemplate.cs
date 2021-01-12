@@ -1,5 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
+using IdleHeroes.Support;
 using IdleHeroesDAL.Models;
 using System;
 using System.Linq;
@@ -15,12 +16,12 @@ namespace IdleHeroes.EmbedTemplates
             Embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Turquoise,
-                Title = $"{profile.Username}'s profile",
-                //Author = new DiscordEmbedBuilder.EmbedAuthor()
-                //{
-                //    Name = profile.Username,
-                //    IconUrl = ctx.Guild.Members.FirstOrDefault(x => x.Value.Id == profile.DiscordID).Value.AvatarUrl
-                //},
+                //Title = $"{profile.Username}'s profile",
+                Author = new DiscordEmbedBuilder.EmbedAuthor()
+                {
+                    Name = $"{profile.Username}'s profile",
+                    IconUrl = ctx.Message.Author.AvatarUrl
+                },
                 Description = $"**Discord Name**: {profile.DiscordName}",
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {
@@ -38,15 +39,15 @@ namespace IdleHeroes.EmbedTemplates
             Embed.AddField("Stage Info", $"Current: {profile.CurrentStageNumber}", true);
 
             Embed.AddField("Resources", 
-                $"Coins: {profile.Coins}" +
-                $"\nFood: {profile.Food}" +
-                $"\nGems: {profile.Gems}" +
-                $"\nRelics: {profile.Relics}", true);
+                $"Coins: {UtilityFunctions.FormatNumber(profile.Coins)}" +
+                $"\nFood: {UtilityFunctions.FormatNumber(profile.Food)}" +
+                $"\nGems: {UtilityFunctions.FormatNumber(profile.Gems)}" +
+                $"\nRelics: {UtilityFunctions.FormatNumber(profile.Relics)}", true);
 
             Embed.AddField("Level & DPS", 
                 $"Level: {profile.Level}" +
-                $"\nXP: {profile.XP}" +
-                $"\nHero DPS: {profile.BaseDPS}", true);
+                $"\nXP: {UtilityFunctions.FormatNumber(profile.XP)}" +
+                $"\nHero DPS: {UtilityFunctions.FormatNumber(profile.BaseDPS)}", true);
 
             Embed.AddField("Registered", $"{profile.RegisteredOn}", true);
             Embed.AddField("Max Idle Time", $"{profile.MaximumIdleRewardHours} hours", true);

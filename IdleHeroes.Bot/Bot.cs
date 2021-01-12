@@ -50,6 +50,7 @@ namespace IdleHeroes
             Commands = Client.UseCommandsNext(commandsConfig);
             Commands.RegisterCommands<GeneralCommands>();
             Commands.RegisterCommands<ProfileCommands>();
+            Commands.RegisterCommands<StageCommands>();
 
             Client.ConnectAsync();
 

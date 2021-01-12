@@ -14,13 +14,11 @@ namespace IdleHeroes.Commands
 {
     public class ProfileCommands : BaseCommandModule
     {
-        private readonly DatabaseContext _context;
         IProfileService _profileService = null;
 
-        public ProfileCommands(IProfileService profileService, DatabaseContext context)
+        public ProfileCommands(IProfileService profileService)
         {
             _profileService = profileService;
-            _context = context;
         }
 
         [Command("create")]

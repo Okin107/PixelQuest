@@ -2,6 +2,7 @@
 using IdleHeroesDAL;
 using IdleHeroesDAL.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading.Tasks;
 
 namespace IdleHeroes.Services
@@ -33,7 +34,14 @@ namespace IdleHeroes.Services
             {
                 Username = username,
                 DiscordID = ctx.Message.Author.Id,
-                DiscordName = $"{ctx.Message.Author.Username}#{ctx.Message.Author.Discriminator}"
+                DiscordName = $"{ctx.Message.Author.Username}#{ctx.Message.Author.Discriminator}",
+                Level = 1,
+                BaseDPS = 1,
+                LastRewardsCollected = DateTime.Now,
+                MaximumIdleRewardHours = 1,
+                CurrentStageNumber = 1,
+                RegisteredOn = DateTime.Now,
+                LastPlayed = DateTime.Now
             }).ConfigureAwait(false);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
