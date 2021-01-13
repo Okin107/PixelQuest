@@ -39,9 +39,15 @@ namespace IdleHeroes.Commands
                 CalculateIdleResources(ctx, profile, stage);
 
                 //Collect rewards instead
-                if (!string.IsNullOrEmpty(collect))
+                if (!string.IsNullOrEmpty(collect) && collect.Equals("collect"))
                 {
                     await CollectRewards(ctx, profile);
+                    return;
+                }
+                else if (!string.IsNullOrEmpty(collect))
+                {
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Make sure to use the correct parameters for the command. Please check `.help` for more information.").Build())
+                    .ConfigureAwait(false);
                     return;
                 }
 
@@ -111,6 +117,15 @@ namespace IdleHeroes.Commands
                 profile.Gems += profile.IdleGems;
                 profile.Relics += profile.IdleRelics;
 
+                //Set the rewards template here
+                string rewardsString = $"**You have successfully collected your rewards.**" +
+                    $"\n" +
+                    $"\n**XP**: {UtilityFunctions.FormatNumber(profile.XP)}(+{UtilityFunctions.FormatNumber(profile.IdleXP)})" +
+                    $"\n**Coins**: {UtilityFunctions.FormatNumber(profile.Coins)}(+{UtilityFunctions.FormatNumber(profile.IdleCoins)})" +
+                    $"\n**Food**: {UtilityFunctions.FormatNumber(profile.Food)}(+{UtilityFunctions.FormatNumber(profile.IdleFood)})" +
+                    $"\n**Gems**: {UtilityFunctions.FormatNumber(profile.Gems)}(+{UtilityFunctions.FormatNumber(profile.IdleGems)})" +
+                    $"\n**Relics**: {UtilityFunctions.FormatNumber(profile.Relics)}(+{UtilityFunctions.FormatNumber(profile.IdleRelics)})";
+
                 //Reset the idle rewards
                 profile.IdleXP = 0;
                 profile.IdleCoins = 0;
@@ -123,7 +138,7 @@ namespace IdleHeroes.Commands
                 //Save the profile
                 await _profileService.Update(ctx, profile);
 
-                await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, "You have successfully collected your rewards.").Build()).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, rewardsString).Build()).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
