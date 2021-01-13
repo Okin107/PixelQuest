@@ -29,52 +29,20 @@ namespace IdleHeroes.Commands
         {
             try
             {
-                int Min = 1;
-                int Max = 100;
+                
                 Profile profile = await _profileService.FindByDiscordID(ctx).ConfigureAwait(false);
                 Stage stage = await _stageService.GetStageFromProfile(profile).ConfigureAwait(false);
 
                 //Reset the last played time to now
                 profile.LastPlayed = DateTime.Now;
 
+                CalculateIdleResources(ctx, profile, stage);
+
                 //Collect rewards instead
                 if (!string.IsNullOrEmpty(collect))
                 {
                     await CollectRewards(ctx, profile);
                     return;
-                }
-
-                //Calculate idle resources gained
-                TimeSpan idleTime = UtilityFunctions.GetIdleTime(profile);
-
-
-                if (idleTime.TotalMinutes >= 1)
-                {
-                    profile.IdleXP += (ulong)idleTime.TotalMinutes * stage.XPPerMinute;
-                    profile.IdleCoins += (ulong)idleTime.TotalMinutes * stage.CoinsPerMinute;
-
-                    Random radnomFoodNum = new Random();
-                    List<int> foodChances = Enumerable
-                        .Repeat(0, Convert.ToInt32(idleTime.TotalMinutes))
-                        .Select(i => radnomFoodNum.Next(Min, Max))
-                        .ToList();
-                    profile.IdleFood += (ulong)foodChances.FindAll(x => (ulong)x <= stage.FoodPerMinute).Count();
-
-                    Random radnomGemsNum = new Random();
-                    List<int> gemsChances = Enumerable
-                        .Repeat(0, Convert.ToInt32(idleTime.TotalMinutes))
-                        .Select(i => radnomGemsNum.Next(Min, Max))
-                        .ToList();
-                    profile.IdleGems += (ulong)gemsChances.FindAll(x => (ulong)x <= stage.GemsDropChancePerMinute).Count();
-
-                    Random radnomRelicNum = new Random();
-                    List<int> relicChances = Enumerable
-                        .Repeat(0, Convert.ToInt32(idleTime.TotalMinutes))
-                        .Select(i => radnomRelicNum.Next(Min, Max))
-                        .ToList();
-                    profile.IdleRelics += (ulong)relicChances.FindAll(x => (ulong)x <= stage.RelicsDropChancePerMinute).Count();
-
-                    profile.RewardMinutesAlreadyCalculated += Convert.ToInt32(idleTime.TotalMinutes);
                 }
 
                 //Save the profile
@@ -92,6 +60,44 @@ namespace IdleHeroes.Commands
                 Console.WriteLine($"COMMAND ERROR: {ex.Message}");
             }
 
+        }
+
+        private void CalculateIdleResources(CommandContext ctx, Profile profile, Stage stage)
+        {
+            int Min = 1;
+            int Max = 100;
+
+            //Calculate idle resources gained
+            TimeSpan idleTime = UtilityFunctions.GetIdleTime(profile);
+
+            if (idleTime.TotalMinutes >= 1)
+            {
+                profile.IdleXP += (ulong)idleTime.TotalMinutes * stage.XPPerMinute;
+                profile.IdleCoins += (ulong)idleTime.TotalMinutes * stage.CoinsPerMinute;
+
+                Random radnomFoodNum = new Random();
+                List<int> foodChances = Enumerable
+                    .Repeat(0, Convert.ToInt32(idleTime.TotalMinutes))
+                    .Select(i => radnomFoodNum.Next(Min, Max))
+                    .ToList();
+                profile.IdleFood += (ulong)foodChances.FindAll(x => (ulong)x <= stage.FoodPerMinute).Count();
+
+                Random radnomGemsNum = new Random();
+                List<int> gemsChances = Enumerable
+                    .Repeat(0, Convert.ToInt32(idleTime.TotalMinutes))
+                    .Select(i => radnomGemsNum.Next(Min, Max))
+                    .ToList();
+                profile.IdleGems += (ulong)gemsChances.FindAll(x => (ulong)x <= stage.GemsDropChancePerMinute).Count();
+
+                Random radnomRelicNum = new Random();
+                List<int> relicChances = Enumerable
+                    .Repeat(0, Convert.ToInt32(idleTime.TotalMinutes))
+                    .Select(i => radnomRelicNum.Next(Min, Max))
+                    .ToList();
+                profile.IdleRelics += (ulong)relicChances.FindAll(x => (ulong)x <= stage.RelicsDropChancePerMinute).Count();
+
+                profile.RewardMinutesAlreadyCalculated += Convert.ToInt32(idleTime.TotalMinutes);
+            }
         }
 
         public async Task CollectRewards(CommandContext ctx, Profile profile)
