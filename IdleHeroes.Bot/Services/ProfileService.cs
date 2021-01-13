@@ -68,5 +68,12 @@ namespace IdleHeroes.Services
 
             return true;
         }
+
+        public async Task Update(CommandContext ctx, Profile profile)
+        {
+            _context.Profile.Update(profile);
+
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+        }
     }
 }

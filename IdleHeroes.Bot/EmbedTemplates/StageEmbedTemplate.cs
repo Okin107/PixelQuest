@@ -20,16 +20,16 @@ namespace IdleHeroes.EmbedTemplates
                 //Title = $"{profile.Username}'s Current Stage",
                 Author = new DiscordEmbedBuilder.EmbedAuthor()
                 {
-                    Name = $"{profile.Username}'s current stage",
+                    Name = $"{profile.Username}'s current stage - Stage {stage.Number}",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
                 Description = $"**Current stage info**" +
-                $"\n XP per min: {UtilityFunctions.FormatNumber(stage.XPPerMinute)}" +
-                $" | Coins per min: {UtilityFunctions.FormatNumber(stage.CoinsPerMinute)}" +
-                $" | Food chance per min: {stage.FoodPerMinute}%" +
-                $"\n Gem chance per min: {stage.GemsDropChancePerMinute}%" +
-                $" | Relic chance per min: {stage.RelicsDropChancePerMinute}%" +
-                $" | Difficulty: {stage.Difficulty}",
+                $"\nXP per min: {UtilityFunctions.FormatNumber(stage.XPPerMinute)}" +
+                $"\nCoins per min: {UtilityFunctions.FormatNumber(stage.CoinsPerMinute)}" +
+                $"\nFood chance per min: {stage.FoodPerMinute}%" +
+                $"\nGem chance per min: {stage.GemsDropChancePerMinute}%" +
+                $"\nRelic chance per min: {stage.RelicsDropChancePerMinute}%" +
+                $"\nDifficulty: {stage.Difficulty}",
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {
                     Url = ctx.Message.Author.AvatarUrl
@@ -42,8 +42,15 @@ namespace IdleHeroes.EmbedTemplates
                 }
             };
 
-            Embed.AddField("Idle Time", $"{DateTime.Now.Second - profile.LastRewardsCollected.Second} seconds", true);
-            Embed.AddField("Resources earned", $"-", true);
+            TimeSpan idleTime = UtilityFunctions.GetIdleDisplayTime(profile);
+
+            Embed.AddField("Idle Time", $"{idleTime.ToString("h'h, 'm'm, 's's'")}", true);
+            Embed.AddField("Resources found", 
+                $"\nXP: {UtilityFunctions.FormatNumber(profile.IdleXP)}" +
+                $"\nCoins: {UtilityFunctions.FormatNumber(profile.IdleCoins)}" +
+                $"\nFood: {UtilityFunctions.FormatNumber(profile.IdleFood)}" +
+                $"\nGems: {UtilityFunctions.FormatNumber(profile.IdleGems)}" +
+                $"\nRelics: {UtilityFunctions.FormatNumber(profile.IdleRelics)}", true);
 
             return Embed;
         }

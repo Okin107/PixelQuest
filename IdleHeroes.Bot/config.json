@@ -1,7 +1,7 @@
 {
   "token": "Nzk3Nzc5NjIxNDQ5Njk1Mjcy.X_rcKw.tAznmN4HwpBERsxqUqfM87zf7W8",
   "prefix": ".",
-  "statusMessages": false,
+  "statusMessages": true,
   "isdebugmode":  true,
   "owners": [270190067354435584, 202382975910936576]
 }

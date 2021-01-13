@@ -8,6 +8,7 @@ namespace IdleHeroes.Services
     {
         Task<bool> ProfileExists(CommandContext ctx);
         Task Add(CommandContext ctx, string username);
+        Task Update(CommandContext ctx, Profile profile);
         Task<Profile> FindByUsername(CommandContext ctx, string username);
         Task<Profile> FindByDiscordID(CommandContext ctx);
         Task<bool> IsUserRegistered(ulong userId);
