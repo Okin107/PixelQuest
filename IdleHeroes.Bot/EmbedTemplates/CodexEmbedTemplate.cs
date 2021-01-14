@@ -46,7 +46,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n**Attributes**" +
                 $"\nDPS: {UtilityFunctions.FormatNumber(companion.DPS * (ulong)Math.Pow(companion.DPSIncreasePerLevel, companion.MaxLevel))}" +
                 $"\nHP: {UtilityFunctions.FormatNumber(companion.HP * (ulong)Math.Pow(companion.HPIncreasePerLevel, companion.MaxLevel))}" +
-                $"\nAromor: {UtilityFunctions.FormatNumber(companion.Armor * (ulong)Math.Pow(companion.ArmorIncreasePerLevel, companion.MaxLevel))}" +
+                $"\nArmor: {UtilityFunctions.FormatNumber(companion.Armor * (ulong)Math.Pow(companion.ArmorIncreasePerLevel, companion.MaxLevel))}" +
                 $"\nAccuracy: {UtilityFunctions.FormatNumber(companion.Accuracy * (ulong)Math.Pow(companion.AccuracyIncreasePerLevel, companion.MaxLevel))}" +
                 $"\nAgility: {UtilityFunctions.FormatNumber(companion.Agility * (ulong)Math.Pow(companion.AgilityIncreasePerLevel, companion.MaxLevel))}", true);
             }
