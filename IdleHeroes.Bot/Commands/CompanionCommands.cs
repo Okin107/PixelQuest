@@ -21,8 +21,8 @@ namespace IdleHeroes.Commands
         }
 
         [Command("codex")]
-        [Description("Create a new profile for the game.")]
-        public async Task CompanionCodex(CommandContext ctx, [Description("The display name for your profile.")] string username = null)
+        [Description("Preview all the companions at their maximum level and stats.")]
+        public async Task CompanionCodex(CommandContext ctx)
         {
             try
             {
