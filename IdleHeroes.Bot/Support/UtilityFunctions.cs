@@ -50,12 +50,12 @@ namespace IdleHeroes.Support
         {
             TimeSpan idleTime = profile.LastPlayed - profile.LastRewardsCollected;
 
-            double totalMinutes = Math.Floor(idleTime.TotalSeconds / 60);
-
             if (idleTime.TotalHours >= profile.MaximumIdleRewardHours)
             {
                 idleTime = new TimeSpan(profile.MaximumIdleRewardHours, 0, 0);
             }
+
+            double totalMinutes = Math.Floor(idleTime.TotalSeconds / 60);
 
             //Remove the minutes already calculated
             double idleMinutesDifference = totalMinutes - profile.RewardMinutesAlreadyCalculated;
