@@ -14,6 +14,7 @@ namespace IdleHeroes
             //Register services
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IStageService, StageService>();
+            services.AddScoped<ICompanionService, CompanionService>();
 
             //Add dbcontext
             services.AddDbContext<DatabaseContext>(options => 

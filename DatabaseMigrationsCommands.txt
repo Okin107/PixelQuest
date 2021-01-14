@@ -1,5 +1,5 @@
 Create DB Migration:
-dotnet-ef migrations add AddedIdleRewardFieldsInProfile -p ../IdleHeroes.DAL.Migrations/IdleHeroes.DAL.Migrations.csproj --context IdleHeroesDAL.DatabaseContext
+dotnet-ef migrations add AddedCompanionsTables -p ../IdleHeroes.DAL.Migrations/IdleHeroes.DAL.Migrations.csproj --context IdleHeroesDAL.DatabaseContext
 
 Update DB:
 dotnet-ef database Update -p ../IdleHeroes.DAL.Migrations/IdleHeroes.DAL.Migrations.csproj --context IdleHeroesDAL.DatabaseContext

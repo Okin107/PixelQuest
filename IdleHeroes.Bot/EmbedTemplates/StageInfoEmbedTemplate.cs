@@ -16,7 +16,7 @@ namespace IdleHeroes.EmbedTemplates
         {
             Embed = new DiscordEmbedBuilder()
             {
-                Color = DiscordColor.Turquoise,
+                Color = DiscordColor.Aquamarine,
                 //Title = $"{profile.Username}'s Current Stage",
                 Author = new DiscordEmbedBuilder.EmbedAuthor()
                 {

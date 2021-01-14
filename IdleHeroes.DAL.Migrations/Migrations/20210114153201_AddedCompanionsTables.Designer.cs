@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210114153201_AddedCompanionsTables")]
+    partial class AddedCompanionsTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,17 +67,11 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.Property<double>("HPIncreasePerLevel")
                         .HasColumnType("float");
 
-                    b.Property<string>("IconName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Level")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Lore")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("MaxLevel")
-                        .HasColumnType("float");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

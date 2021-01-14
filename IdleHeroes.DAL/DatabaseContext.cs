@@ -9,5 +9,7 @@ namespace IdleHeroesDAL
 
         public DbSet<Profile> Profile { get; set; }
         public DbSet<Stage> Stage { get; set; }
+        public DbSet<Companion> Companion { get; set; }
+        public DbSet<OwnedCompanions> OwnedCompanions { get; set; }
     }
 }

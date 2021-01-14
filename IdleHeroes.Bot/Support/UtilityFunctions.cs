@@ -30,15 +30,15 @@ namespace IdleHeroes.Support
             }
             if (number >= 1000000000)
             {
-                return string.Concat(number / 1000000000, "B");
+                return string.Concat(Math.Round(number / (double)1000000000, 2), "B");
             }
             else if (number >= 1000000)
             {
-                return string.Concat(number / 1000000, "M");
+                return string.Concat(Math.Round(number / (double)1000000, 2), "M");
             }
             else if (number >= 1000)
             {
-                return string.Concat(number / 1000, "K");
+                return string.Concat(Math.Round(number / (double)1000, 2) , "K");
             }
             else
             {

@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace IdleHeroes.Services
 {
-    public class StageService : IStageService
+    public class CompanionService : ICompanionService
     {
         private readonly DatabaseContext _context;
 
-        public StageService(DatabaseContext context)
+        public CompanionService(DatabaseContext context)
         {
             _context = context;
         }
 
-        public async Task<Stage> GetStageFromProfile(Profile profile)
+        public async Task<List<Companion>> GetCompanions()
         {
-            return await _context.Stage.FirstOrDefaultAsync(x => x.Number == profile.CurrentStageNumber).ConfigureAwait(false);
+            return await _context.Companion.ToListAsync().ConfigureAwait(false);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace IdleHeroes
                 EnableMentionPrefix = true,
                 CaseSensitive = false,
                 DmHelp = false,
-                EnableDms = true,
+                EnableDms = false,
                 Services = services
             };
 
@@ -51,6 +51,7 @@ namespace IdleHeroes
             Commands.RegisterCommands<GeneralCommands>();
             Commands.RegisterCommands<ProfileCommands>();
             Commands.RegisterCommands<StageCommands>();
+            Commands.RegisterCommands<CompanionCommands>();
 
             Client.ConnectAsync();
 
