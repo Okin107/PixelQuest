@@ -44,6 +44,11 @@ namespace IdleHeroes.Commands
                     await CollectRewards(ctx, profile);
                     return;
                 }
+                else if (!string.IsNullOrEmpty(collect) && collect.Equals("info"))
+                {
+                    await ctx.Channel.SendMessageAsync(embed: StageInfoEmbedTemplate.Show(ctx, profile, stage).Build()).ConfigureAwait(false);
+                    return;
+                }
                 else if (!string.IsNullOrEmpty(collect))
                 {
                     await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Make sure to use the correct parameters for the command. Please check `.help` for more information.").Build())
@@ -120,11 +125,11 @@ namespace IdleHeroes.Commands
                 //Set the rewards template here
                 string rewardsString = $"**You have successfully collected your rewards.**" +
                     $"\n" +
-                    $"\n**XP**: {UtilityFunctions.FormatNumber(profile.XP)}(+{UtilityFunctions.FormatNumber(profile.IdleXP)})" +
-                    $"\n**Coins**: {UtilityFunctions.FormatNumber(profile.Coins)}(+{UtilityFunctions.FormatNumber(profile.IdleCoins)})" +
-                    $"\n**Food**: {UtilityFunctions.FormatNumber(profile.Food)}(+{UtilityFunctions.FormatNumber(profile.IdleFood)})" +
-                    $"\n**Gems**: {UtilityFunctions.FormatNumber(profile.Gems)}(+{UtilityFunctions.FormatNumber(profile.IdleGems)})" +
-                    $"\n**Relics**: {UtilityFunctions.FormatNumber(profile.Relics)}(+{UtilityFunctions.FormatNumber(profile.IdleRelics)})";
+                    $"\n{UtilityFunctions.GetEmoji(ctx, "bot_xp")} {UtilityFunctions.FormatNumber(profile.XP)} **(+{UtilityFunctions.FormatNumber(profile.IdleXP)})**" +
+                    $"\n{UtilityFunctions.GetEmoji(ctx, "bot_coin")} {UtilityFunctions.FormatNumber(profile.Coins)} **(+{UtilityFunctions.FormatNumber(profile.IdleCoins)})**" +
+                    $"\n{UtilityFunctions.GetEmoji(ctx, "bot_food")} {UtilityFunctions.FormatNumber(profile.Food)} **(+{UtilityFunctions.FormatNumber(profile.IdleFood)})**" +
+                    $"\n{UtilityFunctions.GetEmoji(ctx, "bot_gem")} {UtilityFunctions.FormatNumber(profile.Gems)} **(+{UtilityFunctions.FormatNumber(profile.IdleGems)})**" +
+                    $"\n{UtilityFunctions.GetEmoji(ctx, "bot_relic")} {UtilityFunctions.FormatNumber(profile.Relics)} **(+{UtilityFunctions.FormatNumber(profile.IdleRelics)})**";
 
                 //Reset the idle rewards
                 profile.IdleXP = 0;
@@ -132,8 +137,14 @@ namespace IdleHeroes.Commands
                 profile.IdleFood = 0;
                 profile.IdleGems = 0;
                 profile.IdleRelics = 0;
-                profile.RewardMinutesAlreadyCalculated = 0;
-                profile.LastRewardsCollected = DateTime.Now;
+
+                TimeSpan lastRewardCollectedTime = DateTime.Now - profile.LastRewardsCollected;
+
+                if(lastRewardCollectedTime.TotalSeconds / 60 >= 1)
+                {
+                    profile.RewardMinutesAlreadyCalculated = 0;
+                    profile.LastRewardsCollected = DateTime.Now;
+                }
 
                 //Save the profile
                 await _profileService.Update(ctx, profile);

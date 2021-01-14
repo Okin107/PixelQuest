@@ -20,16 +20,17 @@ namespace IdleHeroes.EmbedTemplates
                 //Title = $"{profile.Username}'s Current Stage",
                 Author = new DiscordEmbedBuilder.EmbedAuthor()
                 {
-                    Name = $"{profile.Username}'s current stage - Stage {stage.Number}",
+                    Name = $"{profile.Username} - Stage {stage.Number}",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
-                Description = $"**Current stage info**" +
-                $"\nXP per min: {UtilityFunctions.FormatNumber(stage.XPPerMinute)}" +
-                $"\nCoins per min: {UtilityFunctions.FormatNumber(stage.CoinsPerMinute)}" +
-                $"\nFood chance per min: {stage.FoodPerMinute}%" +
-                $"\nGem chance per min: {stage.GemsDropChancePerMinute}%" +
-                $"\nRelic chance per min: {stage.RelicsDropChancePerMinute}%" +
-                $"\nDifficulty: {stage.Difficulty}",
+                //Description = $"**Stage info**" +
+                //$"\nDifficulty: {stage.Difficulty}" +
+                //$"\n{UtilityFunctions.GetEmoji(ctx, "bot_xp")} {UtilityFunctions.FormatNumber(stage.XPPerMinute)} per min" +
+                //$"\n{UtilityFunctions.GetEmoji(ctx, "bot_coin")} {UtilityFunctions.FormatNumber(stage.CoinsPerMinute)} per min" +
+                //$"\n{UtilityFunctions.GetEmoji(ctx, "bot_food")} {stage.FoodPerMinute}% for 1 per min" +
+                //$"\n{UtilityFunctions.GetEmoji(ctx, "bot_gem")} {stage.GemsDropChancePerMinute}% for 1 per min" +
+                //$"\n{UtilityFunctions.GetEmoji(ctx, "bot_relic")} {stage.RelicsDropChancePerMinute}% for 1 per min"
+                //,
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {
                     Url = ctx.Message.Author.AvatarUrl
@@ -43,14 +44,15 @@ namespace IdleHeroes.EmbedTemplates
             };
 
             TimeSpan idleTime = UtilityFunctions.GetIdleDisplayTime(profile);
+            
+            Embed.AddField("Resources found", 
+                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_xp")} {UtilityFunctions.FormatNumber(profile.IdleXP)}" +
+                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_coin")} {UtilityFunctions.FormatNumber(profile.IdleCoins)}" +
+                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_food")} {UtilityFunctions.FormatNumber(profile.IdleFood)}" +
+                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_gem")} {UtilityFunctions.FormatNumber(profile.IdleGems)}" +
+                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_relic")} {UtilityFunctions.FormatNumber(profile.IdleRelics)}", true);
 
             Embed.AddField("Idle Time", $"{idleTime.ToString("h'h, 'm'm, 's's'")}", true);
-            Embed.AddField("Resources found", 
-                $"\nXP: {UtilityFunctions.FormatNumber(profile.IdleXP)}" +
-                $"\nCoins: {UtilityFunctions.FormatNumber(profile.IdleCoins)}" +
-                $"\nFood: {UtilityFunctions.FormatNumber(profile.IdleFood)}" +
-                $"\nGems: {UtilityFunctions.FormatNumber(profile.IdleGems)}" +
-                $"\nRelics: {UtilityFunctions.FormatNumber(profile.IdleRelics)}", true);
 
             return Embed;
         }
