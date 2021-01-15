@@ -54,18 +54,18 @@ namespace IdleHeroes
 
             if (BotSettings.StatusMessages)
             {
-                Client.Ready += OnReady;
-                Client.SocketClosed += OnClosedSocket;
+                Client.SocketOpened += AwakeMessage;
+                Client.SocketClosed += SleepMessage;
             }
         }
 
-        private async Task OnReady(DiscordClient sender, ReadyEventArgs e)
+        private async Task AwakeMessage(DiscordClient sender, SocketEventArgs e)
         {
             await RestClient.CreateMessageAsync(797147841956544524, "Rise and shine! I'm online!",
                 false, null, null);
         }
 
-        private async Task OnClosedSocket(DiscordClient sender, SocketCloseEventArgs e)
+        private async Task SleepMessage(DiscordClient sender, SocketCloseEventArgs e)
         {
             Console.WriteLine("SocketClosed");
             await RestClient.CreateMessageAsync(797147841956544524,
