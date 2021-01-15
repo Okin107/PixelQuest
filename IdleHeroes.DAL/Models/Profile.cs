@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace IdleHeroesDAL.Models
 {
@@ -14,7 +15,7 @@ namespace IdleHeroesDAL.Models
         public DateTime LastRewardsCollected { get; set; }
         public int RewardMinutesAlreadyCalculated { get; set; }
         public int MaximumIdleRewardHours { get; set; }
-        public ulong CurrentStageNumber { get; set; }
+        public Stage Stage { get; set; }
         public DateTime RegisteredOn { get; set; }
         public DateTime LastPlayed { get; set; }
 
@@ -31,5 +32,8 @@ namespace IdleHeroesDAL.Models
         public ulong IdleGems { get; set; }
         public ulong IdleRelics { get; set; }
         public ulong IdleXP { get; set; }
+
+        //Owned items
+        public List<OwnedCompanions> OwnedCompanions { get; set; }
     }
 }

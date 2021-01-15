@@ -29,7 +29,14 @@ namespace IdleHeroes.Commands
         {
             try
             {
-                
+                //Check if user is registered
+                if (!await _profileService.IsUserRegistered(ctx.Message.Author.Id))
+                {
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Use `.create` to first create a Profile in order to play the game.").Build())
+                        .ConfigureAwait(false);
+                    return;
+                }
+
                 Profile profile = await _profileService.FindByDiscordID(ctx).ConfigureAwait(false);
                 Stage stage = await _stageService.GetStageFromProfile(profile).ConfigureAwait(false);
 

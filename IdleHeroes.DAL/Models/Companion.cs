@@ -1,4 +1,5 @@
 ﻿using IdleHeroesDAL.Enums;
+using System.Collections.Generic;
 
 namespace IdleHeroesDAL.Models
 {
@@ -14,6 +15,8 @@ namespace IdleHeroesDAL.Models
         public double XPFirstLevel { get; set; }
         public double XPIncreasePerLevel { get; set; }
         public double MaxLevel { get; set; }
+        public double LevelToMultiplyIncreases { get; set; }
+        public double IncreaseMultiplier { get; set; }
 
         //Element and classes
         public ElementTypeEnum Element { get; set; }

@@ -6,5 +6,6 @@ namespace IdleHeroes.Services
     public interface IStageService
     {
         Task<Stage> GetStageFromProfile(Profile profile);
+        Task<Stage> GetStageFromNumber(ulong stageNumber);
     }
 }

@@ -35,7 +35,7 @@ namespace IdleHeroes.EmbedTemplates
             
             foreach(Companion companion in companions)
             {
-                Embed.AddField($"{UtilityFunctions.GetEmoji(ctx, companion.IconName)} {companion.Name} (Lv: {companion.MaxLevel})",
+                Embed.AddField($"**{companion.Id}**: {UtilityFunctions.GetEmoji(ctx, companion.IconName)} {companion.Name} (Lv: {companion.MaxLevel})",
                 $"\n{companion.Lore}" +
                 $"\n" +
                 $"\n**General**" +
@@ -44,11 +44,11 @@ namespace IdleHeroes.EmbedTemplates
                 $"\nDMG Type: {companion.DamageType} " +
                 $"\n" +
                 $"\n**Attributes**" +
-                $"\nDPS: {UtilityFunctions.FormatNumber(companion.DPS * (ulong)Math.Pow(companion.DPSIncreasePerLevel, companion.MaxLevel))}" +
-                $"\nHP: {UtilityFunctions.FormatNumber(companion.HP * (ulong)Math.Pow(companion.HPIncreasePerLevel, companion.MaxLevel))}" +
-                $"\nArmor: {UtilityFunctions.FormatNumber(companion.Armor * (ulong)Math.Pow(companion.ArmorIncreasePerLevel, companion.MaxLevel))}" +
-                $"\nAccuracy: {UtilityFunctions.FormatNumber(companion.Accuracy * (ulong)Math.Pow(companion.AccuracyIncreasePerLevel, companion.MaxLevel))}" +
-                $"\nAgility: {UtilityFunctions.FormatNumber(companion.Agility * (ulong)Math.Pow(companion.AgilityIncreasePerLevel, companion.MaxLevel))}", true);
+                $"\nDPS: {UtilityFunctions.FormatNumber(companion.DPS * (ulong)Math.Pow(companion.DPSIncreasePerLevel, companion.MaxLevel) * (ulong)(companion.MaxLevel /companion.LevelToMultiplyIncreases) * 2)}" +
+                $"\nHP: {UtilityFunctions.FormatNumber(companion.HP * (ulong)Math.Pow(companion.HPIncreasePerLevel, companion.MaxLevel) * (ulong)(companion.MaxLevel / companion.LevelToMultiplyIncreases) * 2)}" +
+                $"\nArmor: {UtilityFunctions.FormatNumber(companion.Armor * (ulong)Math.Pow(companion.ArmorIncreasePerLevel, companion.MaxLevel) * (ulong)(companion.MaxLevel / companion.LevelToMultiplyIncreases) * 2)}" +
+                $"\nAccuracy: {UtilityFunctions.FormatNumber(companion.Accuracy * (ulong)Math.Pow(companion.AccuracyIncreasePerLevel, companion.MaxLevel) * (ulong)(companion.MaxLevel / companion.LevelToMultiplyIncreases) * 2)}" +
+                $"\nAgility: {UtilityFunctions.FormatNumber(companion.Agility * (ulong)Math.Pow(companion.AgilityIncreasePerLevel, companion.MaxLevel) * (ulong)(companion.MaxLevel / companion.LevelToMultiplyIncreases) * 2)}", true);
             }
 
             return Embed;

@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210115094539_EditedProfileOwnedCompanions")]
+    partial class EditedProfileOwnedCompanions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +112,7 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.Property<int>("CompanionCopies")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CompanionId")
+                    b.Property<int>("CompanionID")
                         .HasColumnType("int");
 
                     b.Property<int>("CompanionLevel")
@@ -120,8 +122,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanionId");
 
                     b.HasIndex("ProfileId");
 
@@ -139,6 +139,9 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("decimal(20,0)");
 
                     b.Property<decimal>("Coins")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<decimal>("CurrentStageNumber")
                         .HasColumnType("decimal(20,0)");
 
                     b.Property<decimal>("DiscordID")
@@ -189,9 +192,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.Property<int>("RewardMinutesAlreadyCalculated")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StageId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
@@ -199,8 +199,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("decimal(20,0)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StageId");
 
                     b.ToTable("Profile");
                 });
@@ -263,51 +261,22 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CompanionId")
+                    b.Property<int>("CompanionID")
                         .HasColumnType("int");
 
                     b.Property<decimal>("FoodCost")
                         .HasColumnType("decimal(20,0)");
 
-                    b.Property<int?>("TavernId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanionId");
-
-                    b.HasIndex("TavernId");
 
                     b.ToTable("TavernCompanion");
                 });
 
             modelBuilder.Entity("IdleHeroesDAL.Models.OwnedCompanions", b =>
                 {
-                    b.HasOne("IdleHeroesDAL.Models.Companion", "Companion")
-                        .WithMany()
-                        .HasForeignKey("CompanionId");
-
                     b.HasOne("IdleHeroesDAL.Models.Profile", null)
                         .WithMany("OwnedCompanions")
                         .HasForeignKey("ProfileId");
-                });
-
-            modelBuilder.Entity("IdleHeroesDAL.Models.Profile", b =>
-                {
-                    b.HasOne("IdleHeroesDAL.Models.Stage", "Stage")
-                        .WithMany()
-                        .HasForeignKey("StageId");
-                });
-
-            modelBuilder.Entity("IdleHeroesDAL.Models.TavernCompanion", b =>
-                {
-                    b.HasOne("IdleHeroesDAL.Models.Companion", "Companion")
-                        .WithMany()
-                        .HasForeignKey("CompanionId");
-
-                    b.HasOne("IdleHeroesDAL.Models.Tavern", null)
-                        .WithMany("Companions")
-                        .HasForeignKey("TavernId");
                 });
 #pragma warning restore 612, 618
         }

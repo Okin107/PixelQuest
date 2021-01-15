@@ -19,7 +19,12 @@ namespace IdleHeroes.Services
 
         public async Task<Stage> GetStageFromProfile(Profile profile)
         {
-            return await _context.Stage.FirstOrDefaultAsync(x => x.Number == profile.CurrentStageNumber).ConfigureAwait(false);
+            return await _context.Stage.FirstOrDefaultAsync(x => x.Number == profile.Stage.Number).ConfigureAwait(false);
+        }
+
+        public async Task<Stage> GetStageFromNumber(ulong stageNumber)
+        {
+            return await _context.Stage.FirstOrDefaultAsync(x => x.Number == stageNumber).ConfigureAwait(false);
         }
     }
 }

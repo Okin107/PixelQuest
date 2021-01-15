@@ -67,10 +67,8 @@ namespace IdleHeroes.Commands
         {
             try
             {
-                //Check if user is registered to make this command work
-                bool isRegistered = await _profileService.IsUserRegistered(ctx.Message.Author.Id);
-
-                if (!isRegistered)
+                //Check if user is registered
+                if (!await _profileService.IsUserRegistered(ctx.Message.Author.Id))
                 {
                     await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Use `.create` to first create a Profile in order to play the game.").Build())
                         .ConfigureAwait(false);

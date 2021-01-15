@@ -50,7 +50,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{UtilityFunctions.GetEmoji(ctx, "bot_xp")} {UtilityFunctions.FormatNumber(profile.XP)}" +
                 $"\nHero DPS: {UtilityFunctions.FormatNumber(profile.BaseDPS)}", true);
 
-            Embed.AddField("Stage Info", $"Number: {profile.CurrentStageNumber}", true);
+            Embed.AddField("Stage Info", $"Number: {profile.Stage.Number}", true);
 
             Embed.AddField("Registered", $"{profile.RegisteredOn.ToString(BotSettings.DefaultDateFormat)}", true);
             Embed.AddField("Max Idle Time", $"{profile.MaximumIdleRewardHours} hours", true);

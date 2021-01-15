@@ -3,6 +3,7 @@ using IdleHeroesDAL;
 using IdleHeroesDAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace IdleHeroes.Services
@@ -10,10 +11,12 @@ namespace IdleHeroes.Services
     public class ProfileService : IProfileService
     {
         private readonly DatabaseContext _context;
+        private readonly IStageService _stageService;
 
-        public ProfileService(DatabaseContext context)
+        public ProfileService(DatabaseContext context, IStageService stageService)
         {
             _context = context;
+            _stageService = stageService;
         }
 
         public async Task<bool> ProfileExists(CommandContext ctx)
@@ -39,7 +42,7 @@ namespace IdleHeroes.Services
                 BaseDPS = 1,
                 LastRewardsCollected = DateTime.Now,
                 MaximumIdleRewardHours = 1,
-                CurrentStageNumber = 1,
+                Stage = await _stageService.GetStageFromNumber(1),
                 RegisteredOn = DateTime.Now,
                 LastPlayed = DateTime.Now
             }).ConfigureAwait(false);
@@ -47,14 +50,22 @@ namespace IdleHeroes.Services
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task<Profile> FindByUsername(CommandContext ctx, string username) 
+        public async Task<Profile> FindByUsername(CommandContext ctx, string username)
         {
-            return await _context.Profile.FirstOrDefaultAsync(x => x.Username.Equals(username));
+            return await _context.Profile
+                .Include(x => x.Stage)
+                .Include(x => x.OwnedCompanions)
+                .ThenInclude(x => x.Companion)
+                .FirstOrDefaultAsync(x => x.Username.Equals(username));
         }
 
         public async Task<Profile> FindByDiscordID(CommandContext ctx)
         {
-            return await _context.Profile.FirstOrDefaultAsync(x => x.DiscordID.Equals(ctx.Message.Author.Id));
+            return await _context.Profile
+                .Include(x => x.Stage)
+                .Include(x => x.OwnedCompanions)
+                .ThenInclude(x => x.Companion)
+                .FirstOrDefaultAsync(x => x.DiscordID.Equals(ctx.Message.Author.Id));
         }
 
         public async Task<bool> IsUserRegistered(ulong userId)
