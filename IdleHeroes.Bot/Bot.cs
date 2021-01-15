@@ -29,6 +29,11 @@ namespace IdleHeroes
                 MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug
             };
 
+            if (BotSettings.DevMode)
+            {
+                config.Token = BotSettings.DevToken;
+            }
+
             Client = new DiscordClient(config);
             RestClient = new DiscordRestClient(config);
 

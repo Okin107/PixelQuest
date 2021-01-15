@@ -8,6 +8,8 @@ namespace IdleHeroes.Models
     public static class BotSettings
     {
         public static string Token { get; private set; }
+        public static string DevToken { get; private set; }
+        public static bool DevMode { get; private set; }
         public static string Prefix { get; private set; }
         public static bool StatusMessages { get; private set; }
         public static bool IsDebugMode { get; private set; }
@@ -31,6 +33,8 @@ namespace IdleHeroes.Models
 
             //Map the attributes
             Token = configJson.Token;
+            DevToken = configJson.DevToken;
+            DevMode = configJson.DevMode;
             Prefix = configJson.Prefix;
             StatusMessages = configJson.StatusMessages;
             IsDebugMode = configJson.IsDebugMode;
@@ -44,6 +48,10 @@ namespace IdleHeroes.Models
     {
         [JsonProperty("token")]
         public string Token { get; private set; }
+        [JsonProperty("devtoken")]
+        public string DevToken { get; private set; }
+        [JsonProperty("devmode")]
+        public bool DevMode { get; private set; }
         [JsonProperty("prefix")]
         public string Prefix { get; private set; }
         [JsonProperty("statusMessages")]
