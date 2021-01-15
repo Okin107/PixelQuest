@@ -3,7 +3,6 @@ using IdleHeroesDAL;
 using IdleHeroesDAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace IdleHeroes.Services
@@ -21,7 +20,7 @@ namespace IdleHeroes.Services
 
         public async Task<bool> ProfileExists(CommandContext ctx)
         {
-            Profile profile = await _context.Profile.FirstOrDefaultAsync(x => x.DiscordID.Equals(ctx.Member.Id));
+            Profile profile = await _context.Profile.FirstOrDefaultAsync(x => x.DiscordId.Equals(ctx.Member.Id));
 
             if (profile != null)
             {
@@ -36,7 +35,7 @@ namespace IdleHeroes.Services
             await _context.Profile.AddAsync(new Profile()
             {
                 Username = username,
-                DiscordID = ctx.Message.Author.Id,
+                DiscordId = ctx.Message.Author.Id,
                 DiscordName = $"{ctx.Message.Author.Username}#{ctx.Message.Author.Discriminator}",
                 Level = 1,
                 BaseDPS = 1,
@@ -59,18 +58,18 @@ namespace IdleHeroes.Services
                 .FirstOrDefaultAsync(x => x.Username.Equals(username));
         }
 
-        public async Task<Profile> FindByDiscordID(CommandContext ctx)
+        public async Task<Profile> FindByDiscordId(CommandContext ctx)
         {
             return await _context.Profile
                 .Include(x => x.Stage)
                 .Include(x => x.OwnedCompanions)
                 .ThenInclude(x => x.Companion)
-                .FirstOrDefaultAsync(x => x.DiscordID.Equals(ctx.Message.Author.Id));
+                .FirstOrDefaultAsync(x => x.DiscordId.Equals(ctx.Message.Author.Id));
         }
 
         public async Task<bool> IsUserRegistered(ulong userId)
         {
-            Profile profile = await _context.Profile.FirstOrDefaultAsync(x => x.DiscordID.Equals(userId));
+            Profile profile = await _context.Profile.FirstOrDefaultAsync(x => x.DiscordId.Equals(userId));
 
             if (profile == null)
             {

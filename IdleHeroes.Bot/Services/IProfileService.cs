@@ -10,7 +10,7 @@ namespace IdleHeroes.Services
         Task Add(CommandContext ctx, string username);
         Task Update(CommandContext ctx, Profile profile);
         Task<Profile> FindByUsername(CommandContext ctx, string username);
-        Task<Profile> FindByDiscordID(CommandContext ctx);
+        Task<Profile> FindByDiscordId(CommandContext ctx);
         Task<bool> IsUserRegistered(ulong userId);
     }
 }

@@ -3,10 +3,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using IdleHeroes.EmbedTemplates;
 using IdleHeroes.Models;
 using IdleHeroes.Services;
-using IdleHeroes.Support;
-using IdleHeroesDAL;
 using IdleHeroesDAL.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -84,7 +81,7 @@ namespace IdleHeroes.Commands
                 }
                 else
                 {
-                    profile = await _profileService.FindByDiscordID(ctx);
+                    profile = await _profileService.FindByDiscordId(ctx);
                 }
 
                 if (profile == null)

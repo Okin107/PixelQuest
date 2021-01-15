@@ -1,17 +1,16 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
-using IdleHeroesDAL.Models;
 using System;
 
 namespace IdleHeroes.EmbedTemplates
 {
     public static class ErrorEmbedTemplate
     {
-        private static DiscordEmbedBuilder Embed = null;
+        private static DiscordEmbedBuilder _embed;
 
         public static DiscordEmbedBuilder Get(CommandContext ctx, string message)
         {
-            Embed = new DiscordEmbedBuilder()
+            _embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Red,
                 Description = "⛔ **Error**"
@@ -25,7 +24,7 @@ namespace IdleHeroes.EmbedTemplates
                 }
             };
 
-            return Embed;
+            return _embed;
         }
     }
 }

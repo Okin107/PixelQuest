@@ -1,21 +1,19 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
-using IdleHeroes.Services;
 using IdleHeroes.Support;
 using IdleHeroesDAL.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace IdleHeroes.EmbedTemplates
 {
     public static class CodexEmbedTemplate
     {
-        private static DiscordEmbedBuilder Embed = null;
+        private static DiscordEmbedBuilder _embed;
 
         public static DiscordEmbedBuilder Show(CommandContext ctx, List<Companion> companions)
         {
-            Embed = new DiscordEmbedBuilder()
+            _embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Brown,
                 //Title = $"{profile.Username}'s Current Stage",
@@ -35,7 +33,7 @@ namespace IdleHeroes.EmbedTemplates
             
             foreach(Companion companion in companions)
             {
-                Embed.AddField($"**{companion.Id}**: {UtilityFunctions.GetEmoji(ctx, companion.IconName)} {companion.Name} (Lv: {companion.MaxLevel})",
+                _embed.AddField($"**{companion.Id}**: {UtilityFunctions.GetEmoji(ctx, companion.IconName)} {companion.Name} (Lv: {companion.MaxLevel})",
                 $"\n{companion.Lore}" +
                 $"\n" +
                 $"\n**General**" +
@@ -51,7 +49,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\nAgility: {UtilityFunctions.FormatNumber(companion.Agility * (ulong)Math.Pow(companion.AgilityIncreasePerLevel, companion.MaxLevel) * (ulong)(companion.MaxLevel / companion.LevelToMultiplyIncreases) * 2)}", true);
             }
 
-            return Embed;
+            return _embed;
         }
     }
 }

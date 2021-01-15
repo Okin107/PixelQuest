@@ -2,7 +2,7 @@
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
-    public partial class AddedDiscordIDToProfile : Migration
+    public partial class AddedDiscordIdToProfile : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

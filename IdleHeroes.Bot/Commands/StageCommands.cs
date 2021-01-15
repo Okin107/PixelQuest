@@ -14,8 +14,8 @@ namespace IdleHeroes.Commands
 {
     public class StageCommands : BaseCommandModule
     {
-        IProfileService _profileService = null;
-        IStageService _stageService = null;
+        IProfileService _profileService;
+        IStageService _stageService;
 
         public StageCommands(IProfileService profileService, IStageService stageService)
         {
@@ -37,7 +37,7 @@ namespace IdleHeroes.Commands
                     return;
                 }
 
-                Profile profile = await _profileService.FindByDiscordID(ctx).ConfigureAwait(false);
+                Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
                 Stage stage = await _stageService.GetStageFromProfile(profile).ConfigureAwait(false);
 
                 //Reset the last played time to now
@@ -51,15 +51,17 @@ namespace IdleHeroes.Commands
                     await CollectRewards(ctx, profile);
                     return;
                 }
-                else if (!string.IsNullOrEmpty(collect) && collect.Equals("info"))
+
+                if (!string.IsNullOrEmpty(collect) && collect.Equals("info"))
                 {
                     await ctx.Channel.SendMessageAsync(embed: StageInfoEmbedTemplate.Show(ctx, profile, stage).Build()).ConfigureAwait(false);
                     return;
                 }
-                else if (!string.IsNullOrEmpty(collect))
+                
+                if (!string.IsNullOrEmpty(collect))
                 {
                     await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Make sure to use the correct parameters for the command. Please check `.help` for more information.").Build())
-                    .ConfigureAwait(false);
+                        .ConfigureAwait(false);
                     return;
                 }
 

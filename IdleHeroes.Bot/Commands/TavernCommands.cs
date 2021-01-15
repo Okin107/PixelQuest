@@ -8,7 +8,6 @@ using IdleHeroesDAL;
 using IdleHeroesDAL.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace IdleHeroes.Commands
@@ -84,7 +83,7 @@ namespace IdleHeroes.Commands
         private async Task PurchaseCompanion(CommandContext ctx, int compId)
         {
             Tavern tavern = await _tavernService.Get(ctx);
-            Profile profile = await _profileService.FindByDiscordID(ctx).ConfigureAwait(false);
+            Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
             List<Companion> companions = await _companionService.GetCompanions();
 
             TavernCompanion selectedCompanion = tavern.Companions.Find(x => x.Id == compId);

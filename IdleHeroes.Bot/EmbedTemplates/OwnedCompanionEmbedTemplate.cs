@@ -3,19 +3,16 @@ using DSharpPlus.Entities;
 using IdleHeroes.Support;
 using IdleHeroesDAL.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IdleHeroes.EmbedTemplates
 {
     public class OwnedCompanionsEmbedTemplate
     {
-        private static DiscordEmbedBuilder Embed = null;
+        private static DiscordEmbedBuilder _embed;
 
         public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile)
         {
-            Embed = new DiscordEmbedBuilder()
+            _embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Brown,
                 //Title = $"{profile.Username}'s Current Stage",
@@ -42,7 +39,7 @@ namespace IdleHeroes.EmbedTemplates
                     levelMultiplierBoost = Math.Floor((ownedCompanion.CompanionLevel / ownedCompanion.Companion.LevelToMultiplyIncreases) * 2);
                 }
 
-                Embed.AddField($"**{ownedCompanion.Companion.Id}**: {UtilityFunctions.GetEmoji(ctx, ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
+                _embed.AddField($"**{ownedCompanion.Companion.Id}**: {UtilityFunctions.GetEmoji(ctx, ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
                     $" (Lv: {ownedCompanion.CompanionLevel})",
                 $"\n{ownedCompanion.Companion.Lore}" +
                 $"\n" +
@@ -59,7 +56,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\nAgility: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Agility * (ulong)Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, ownedCompanion.CompanionLevel) * (ulong)levelMultiplierBoost)}", true);
             }
 
-            return Embed;
+            return _embed;
         }
     }
 }

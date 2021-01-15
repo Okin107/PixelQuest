@@ -1,6 +1,5 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using IdleHeroesDAL;
 using System.Threading.Tasks;
 using IdleHeroes.Support;
 using System;
@@ -39,7 +38,7 @@ namespace IdleHeroes.Commands
         {
             try
             {
-                if (UtilityFunctions.IsBotOnwer(ctx.Message.Author.Id))
+                if (UtilityFunctions.IsBotOwner(ctx.Message.Author.Id))
                 {
                     await ctx.Client.DisconnectAsync();
                     return;

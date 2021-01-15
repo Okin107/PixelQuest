@@ -3,19 +3,16 @@ using DSharpPlus.Entities;
 using IdleHeroes.Support;
 using IdleHeroesDAL.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IdleHeroes.EmbedTemplates
 {
     public class TavernEmbedTemplate
     {
-        private static DiscordEmbedBuilder Embed = null;
+        private static DiscordEmbedBuilder _embed;
 
         public static DiscordEmbedBuilder Show(CommandContext ctx, Tavern tavern)
         {
-            Embed = new DiscordEmbedBuilder()
+            _embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Brown,
                 //Title = $"{profile.Username}'s Current Stage",
@@ -35,7 +32,7 @@ namespace IdleHeroes.EmbedTemplates
 
             foreach (TavernCompanion tavernCompanion in tavern.Companions)
             {
-                Embed.AddField($"**{tavernCompanion.Companion.Id}**: {UtilityFunctions.GetEmoji(ctx, tavernCompanion.Companion.IconName)} {tavernCompanion.Companion.Name}" +
+                _embed.AddField($"**{tavernCompanion.Companion.Id}**: {UtilityFunctions.GetEmoji(ctx, tavernCompanion.Companion.IconName)} {tavernCompanion.Companion.Name}" +
                     $" (Cost: {UtilityFunctions.FormatNumber(tavernCompanion.FoodCost)} {UtilityFunctions.GetEmoji(ctx, "bot_food")})",
                 $"\n{tavernCompanion.Companion.Lore}" +
                 $"\n" +
@@ -52,7 +49,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\nAgility: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.Agility)}", true);
             }
 
-            return Embed;
+            return _embed;
         }
     }
 }

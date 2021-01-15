@@ -1,20 +1,18 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
-using IdleHeroes.Services;
 using IdleHeroes.Support;
 using IdleHeroesDAL.Models;
 using System;
-using System.Linq;
 
 namespace IdleHeroes.EmbedTemplates
 {
     public static class StageInfoEmbedTemplate
     {
-        private static DiscordEmbedBuilder Embed = null;
+        private static DiscordEmbedBuilder _embed;
 
         public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile, Stage stage)
         {
-            Embed = new DiscordEmbedBuilder()
+            _embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Aquamarine,
                 //Title = $"{profile.Username}'s Current Stage",
@@ -43,7 +41,7 @@ namespace IdleHeroes.EmbedTemplates
                 }
             };
 
-            return Embed;
+            return _embed;
         }
     }
 }

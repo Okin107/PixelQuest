@@ -5,7 +5,7 @@ namespace IdleHeroesDAL.Models
 {
     public class Profile : Entity
     {
-        public ulong DiscordID { get; set; }
+        public ulong DiscordId { get; set; }
         public string DiscordName { get; set; }
         public string Username { get; set; }
         public ulong Level { get; set; }

@@ -10,7 +10,7 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     [Migration("20210110172138_AddedDiscordIDToProfile")]
-    partial class AddedDiscordIDToProfile
+    partial class AddedDiscordIdToProfile
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -3,11 +3,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
 using IdleHeroes.Commands;
 using IdleHeroes.Models;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using System;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace IdleHeroes

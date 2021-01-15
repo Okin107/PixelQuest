@@ -6,15 +6,14 @@ using IdleHeroes.Services;
 using IdleHeroesDAL.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace IdleHeroes.Commands
 {
     public class CompanionCommands : BaseCommandModule
     {
-        ICompanionService _companionService = null;
-        IProfileService _profileService = null;
+        ICompanionService _companionService;
+        IProfileService _profileService;
 
         public CompanionCommands(ICompanionService companionService, IProfileService profileService)
         {
@@ -60,7 +59,7 @@ namespace IdleHeroes.Commands
 
                 List<Companion> companionList = await _companionService.GetCompanions();
 
-                await ctx.Channel.SendMessageAsync(embed: OwnedCompanionsEmbedTemplate.Show(ctx, await _profileService.FindByDiscordID(ctx)).Build())
+                await ctx.Channel.SendMessageAsync(embed: OwnedCompanionsEmbedTemplate.Show(ctx, await _profileService.FindByDiscordId(ctx)).Build())
                    .ConfigureAwait(false);
             }
             catch (Exception ex)

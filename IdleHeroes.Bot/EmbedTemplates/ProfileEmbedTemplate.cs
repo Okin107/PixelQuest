@@ -4,17 +4,16 @@ using IdleHeroes.Models;
 using IdleHeroes.Support;
 using IdleHeroesDAL.Models;
 using System;
-using System.Linq;
 
 namespace IdleHeroes.EmbedTemplates
 {
     public static class ProfileEmbedTemplate
     {
-        private static DiscordEmbedBuilder Embed = null;
+        private static DiscordEmbedBuilder _embed = null;
 
         public static DiscordEmbedBuilder Get(CommandContext ctx, Profile profile)
         {
-            Embed = new DiscordEmbedBuilder()
+            _embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Turquoise,
                 //Title = $"{profile.Username}'s profile",
@@ -39,24 +38,24 @@ namespace IdleHeroes.EmbedTemplates
 
             
 
-            Embed.AddField("Resources", 
+            _embed.AddField("Resources", 
                 $"{UtilityFunctions.GetEmoji(ctx, "bot_coin")} {UtilityFunctions.FormatNumber(profile.Coins)}" +
                 $"\n{UtilityFunctions.GetEmoji(ctx, "bot_food")} {UtilityFunctions.FormatNumber(profile.Food)}" +
                 $"\n{UtilityFunctions.GetEmoji(ctx, "bot_gem")} {UtilityFunctions.FormatNumber(profile.Gems)}" +
                 $"\n{UtilityFunctions.GetEmoji(ctx, "bot_relic")} {UtilityFunctions.FormatNumber(profile.Relics)}", true);
 
-            Embed.AddField("Level & DPS", 
+            _embed.AddField("Level & DPS", 
                 $"Level: {profile.Level}" +
                 $"\n{UtilityFunctions.GetEmoji(ctx, "bot_xp")} {UtilityFunctions.FormatNumber(profile.XP)}" +
                 $"\nHero DPS: {UtilityFunctions.FormatNumber(profile.BaseDPS)}", true);
 
-            Embed.AddField("Stage Info", $"Number: {profile.Stage.Number}", true);
+            _embed.AddField("Stage Info", $"Number: {profile.Stage.Number}", true);
 
-            Embed.AddField("Registered", $"{profile.RegisteredOn.ToString(BotSettings.DefaultDateFormat)}", true);
-            Embed.AddField("Max Idle Time", $"{profile.MaximumIdleRewardHours} hours", true);
-            Embed.AddField("Last Played", $"{UtilityFunctions.GetRelativeTime(profile.LastPlayed)}", true);
+            _embed.AddField("Registered", $"{profile.RegisteredOn.ToString(BotSettings.DefaultDateFormat)}", true);
+            _embed.AddField("Max Idle Time", $"{profile.MaximumIdleRewardHours} hours", true);
+            _embed.AddField("Last Played", $"{UtilityFunctions.GetRelativeTime(profile.LastPlayed)}", true);
 
-            return Embed;
+            return _embed;
         }
     }
 }

@@ -1,20 +1,18 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
-using IdleHeroes.Services;
 using IdleHeroes.Support;
 using IdleHeroesDAL.Models;
 using System;
-using System.Linq;
 
 namespace IdleHeroes.EmbedTemplates
 {
     public static class StageEmbedTemplate
     {
-        private static DiscordEmbedBuilder Embed = null;
+        private static DiscordEmbedBuilder _embed;
 
         public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile, Stage stage)
         {
-            Embed = new DiscordEmbedBuilder()
+            _embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Aquamarine,
                 //Title = $"{profile.Username}'s Current Stage",
@@ -45,16 +43,16 @@ namespace IdleHeroes.EmbedTemplates
 
             TimeSpan idleTime = UtilityFunctions.GetIdleDisplayTime(profile);
             
-            Embed.AddField("Resources found", 
+            _embed.AddField("Resources found", 
                 $"\n{UtilityFunctions.GetEmoji(ctx, "bot_xp")} {UtilityFunctions.FormatNumber(profile.IdleXP)}" +
                 $"\n{UtilityFunctions.GetEmoji(ctx, "bot_coin")} {UtilityFunctions.FormatNumber(profile.IdleCoins)}" +
                 $"\n{UtilityFunctions.GetEmoji(ctx, "bot_food")} {UtilityFunctions.FormatNumber(profile.IdleFood)}" +
                 $"\n{UtilityFunctions.GetEmoji(ctx, "bot_gem")} {UtilityFunctions.FormatNumber(profile.IdleGems)}" +
                 $"\n{UtilityFunctions.GetEmoji(ctx, "bot_relic")} {UtilityFunctions.FormatNumber(profile.IdleRelics)}", true);
 
-            Embed.AddField("Idle Time", $"{idleTime.ToString("h'h, 'm'm, 's's'")}", true);
+            _embed.AddField("Idle Time", $"{idleTime.ToString("h'h, 'm'm, 's's'")}", true);
 
-            return Embed;
+            return _embed;
         }
     }
 }

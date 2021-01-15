@@ -1,5 +1,4 @@
 ﻿using IdleHeroesDAL.Enums;
-using System.Collections.Generic;
 
 namespace IdleHeroesDAL.Models
 {
