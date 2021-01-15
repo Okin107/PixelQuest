@@ -1,9 +1,6 @@
-﻿using DSharpPlus.CommandsNext;
-using DSharpPlus.Entities;
-using IdleHeroes.Models;
+﻿using IdleHeroes.Models;
 using IdleHeroesDAL.Models;
 using System;
-using System.Linq;
 
 namespace IdleHeroes.Support
 {
@@ -75,18 +72,6 @@ namespace IdleHeroes.Support
             }
 
             return idleTime;
-        }
-
-        public static DiscordEmoji GetEmoji(CommandContext ctx, string emojiName)
-        {
-            DiscordEmoji emoji = ctx.Guild.Emojis.Values.FirstOrDefault(x => x.Name.Equals(emojiName));
-
-            if(emoji == null)
-            {
-                emoji = default;
-            }
-
-            return emoji;
         }
 
         public static string GetRelativeTime(DateTime date)

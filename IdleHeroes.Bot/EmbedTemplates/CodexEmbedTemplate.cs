@@ -33,7 +33,7 @@ namespace IdleHeroes.EmbedTemplates
             
             foreach(Companion companion in companions)
             {
-                _embed.AddField($"**{companion.Id}**: {UtilityFunctions.GetEmoji(ctx, companion.IconName)} {companion.Name} (Lv: {companion.MaxLevel})",
+                _embed.AddField($"**{companion.Id}**: {EmojiHandler.GetEmoji(companion.IconName)} {companion.Name} (Lv: {companion.MaxLevel})",
                 $"\n{companion.Lore}" +
                 $"\n" +
                 $"\n**General**" +

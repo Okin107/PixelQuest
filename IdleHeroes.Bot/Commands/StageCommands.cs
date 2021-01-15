@@ -134,11 +134,11 @@ namespace IdleHeroes.Commands
                 //Set the rewards template here
                 string rewardsString = $"**You have successfully collected your rewards.**" +
                     $"\n" +
-                    $"\n{UtilityFunctions.GetEmoji(ctx, "bot_xp")} {UtilityFunctions.FormatNumber(profile.XP)} **(+{UtilityFunctions.FormatNumber(profile.IdleXP)})**" +
-                    $"\n{UtilityFunctions.GetEmoji(ctx, "bot_coin")} {UtilityFunctions.FormatNumber(profile.Coins)} **(+{UtilityFunctions.FormatNumber(profile.IdleCoins)})**" +
-                    $"\n{UtilityFunctions.GetEmoji(ctx, "bot_food")} {UtilityFunctions.FormatNumber(profile.Food)} **(+{UtilityFunctions.FormatNumber(profile.IdleFood)})**" +
-                    $"\n{UtilityFunctions.GetEmoji(ctx, "bot_gem")} {UtilityFunctions.FormatNumber(profile.Gems)} **(+{UtilityFunctions.FormatNumber(profile.IdleGems)})**" +
-                    $"\n{UtilityFunctions.GetEmoji(ctx, "bot_relic")} {UtilityFunctions.FormatNumber(profile.Relics)} **(+{UtilityFunctions.FormatNumber(profile.IdleRelics)})**";
+                    $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.XP)} **(+{UtilityFunctions.FormatNumber(profile.IdleXP)})**" +
+                    $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Coins)} **(+{UtilityFunctions.FormatNumber(profile.IdleCoins)})**" +
+                    $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Food)} **(+{UtilityFunctions.FormatNumber(profile.IdleFood)})**" +
+                    $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Gems)} **(+{UtilityFunctions.FormatNumber(profile.IdleGems)})**" +
+                    $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Relics)} **(+{UtilityFunctions.FormatNumber(profile.IdleRelics)})**";
 
                 //Reset the idle rewards
                 profile.IdleXP = 0;

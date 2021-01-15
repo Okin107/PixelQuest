@@ -39,14 +39,14 @@ namespace IdleHeroes.EmbedTemplates
             
 
             _embed.AddField("Resources", 
-                $"{UtilityFunctions.GetEmoji(ctx, "bot_coin")} {UtilityFunctions.FormatNumber(profile.Coins)}" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_food")} {UtilityFunctions.FormatNumber(profile.Food)}" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_gem")} {UtilityFunctions.FormatNumber(profile.Gems)}" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_relic")} {UtilityFunctions.FormatNumber(profile.Relics)}", true);
+                $"{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Coins)}" +
+                $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Food)}" +
+                $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Gems)}" +
+                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Relics)}", true);
 
             _embed.AddField("Level & DPS", 
                 $"Level: {profile.Level}" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_xp")} {UtilityFunctions.FormatNumber(profile.XP)}" +
+                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.XP)}" +
                 $"\nHero DPS: {UtilityFunctions.FormatNumber(profile.BaseDPS)}", true);
 
             _embed.AddField("Stage Info", $"Number: {profile.Stage.Number}", true);

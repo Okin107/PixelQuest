@@ -97,8 +97,8 @@ namespace IdleHeroes.Commands
             //Check and remove the resources from profile
             if(selectedCompanion.FoodCost > profile.Food)
             {
-                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have {profile.Food} {UtilityFunctions.GetEmoji(ctx, "bot_food")}," +
-                    $" but you need {selectedCompanion.FoodCost} {UtilityFunctions.GetEmoji(ctx, "bot_food")} to hire this Companion.").Build())
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have {profile.Food} {EmojiHandler.GetEmoji("food")}," +
+                    $" but you need {selectedCompanion.FoodCost} {EmojiHandler.GetEmoji("food")} to hire this Companion.").Build())
                 .ConfigureAwait(false);
                 return;
             }
@@ -128,8 +128,8 @@ namespace IdleHeroes.Commands
             await _profileService.Update(ctx, profile);
 
             await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"Successfully purchased " +
-                $"**{UtilityFunctions.GetEmoji(ctx, purchasedCompanion.Companion.IconName)}" +
-                $" {purchasedCompanion.Companion.Name}**.").Build())
+                $"**{EmojiHandler.GetEmoji(purchasedCompanion.Companion.IconName)}" +
+                                           $" {purchasedCompanion.Companion.Name}**.").Build())
                    .ConfigureAwait(false);
         }
     }

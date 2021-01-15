@@ -32,8 +32,8 @@ namespace IdleHeroes.EmbedTemplates
 
             foreach (TavernCompanion tavernCompanion in tavern.Companions)
             {
-                _embed.AddField($"**{tavernCompanion.Companion.Id}**: {UtilityFunctions.GetEmoji(ctx, tavernCompanion.Companion.IconName)} {tavernCompanion.Companion.Name}" +
-                    $" (Cost: {UtilityFunctions.FormatNumber(tavernCompanion.FoodCost)} {UtilityFunctions.GetEmoji(ctx, "bot_food")})",
+                _embed.AddField($"**{tavernCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(tavernCompanion.Companion.IconName)} {tavernCompanion.Companion.Name}" +
+                    $" (Cost: {UtilityFunctions.FormatNumber(tavernCompanion.FoodCost)} {EmojiHandler.GetEmoji("food")})",
                 $"\n{tavernCompanion.Companion.Lore}" +
                 $"\n" +
                 $"\n**General**" +

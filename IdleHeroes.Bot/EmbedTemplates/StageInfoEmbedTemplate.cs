@@ -23,11 +23,11 @@ namespace IdleHeroes.EmbedTemplates
                 },
                 Description = $"**Stage info**" +
                 $"\nDifficulty: {stage.Difficulty}" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_xp")} {UtilityFunctions.FormatNumber(stage.XPPerMinute)} per min" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_coin")} {UtilityFunctions.FormatNumber(stage.CoinsPerMinute)} per min" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_food")} {stage.FoodPerMinute}% for 1 per min" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_gem")} {stage.GemsDropChancePerMinute}% for 1 per min" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_relic")} {stage.RelicsDropChancePerMinute}% for 1 per min"
+                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(stage.XPPerMinute)} per min" +
+                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(stage.CoinsPerMinute)} per min" +
+                $"\n{EmojiHandler.GetEmoji("food")} {stage.FoodPerMinute}% for 1 per min" +
+                $"\n{EmojiHandler.GetEmoji("gem")} {stage.GemsDropChancePerMinute}% for 1 per min" +
+                $"\n{EmojiHandler.GetEmoji("relic")} {stage.RelicsDropChancePerMinute}% for 1 per min"
                 ,
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {

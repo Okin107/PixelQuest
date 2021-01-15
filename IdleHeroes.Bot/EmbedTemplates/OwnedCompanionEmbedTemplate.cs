@@ -39,7 +39,7 @@ namespace IdleHeroes.EmbedTemplates
                     levelMultiplierBoost = Math.Floor((ownedCompanion.CompanionLevel / ownedCompanion.Companion.LevelToMultiplyIncreases) * 2);
                 }
 
-                _embed.AddField($"**{ownedCompanion.Companion.Id}**: {UtilityFunctions.GetEmoji(ctx, ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
+                _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
                     $" (Lv: {ownedCompanion.CompanionLevel})",
                 $"\n{ownedCompanion.Companion.Lore}" +
                 $"\n" +

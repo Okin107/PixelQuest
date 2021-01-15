@@ -23,11 +23,11 @@ namespace IdleHeroes.EmbedTemplates
                 },
                 //Description = $"**Stage info**" +
                 //$"\nDifficulty: {stage.Difficulty}" +
-                //$"\n{UtilityFunctions.GetEmoji(ctx, "bot_xp")} {UtilityFunctions.FormatNumber(stage.XPPerMinute)} per min" +
-                //$"\n{UtilityFunctions.GetEmoji(ctx, "bot_coin")} {UtilityFunctions.FormatNumber(stage.CoinsPerMinute)} per min" +
-                //$"\n{UtilityFunctions.GetEmoji(ctx, "bot_food")} {stage.FoodPerMinute}% for 1 per min" +
-                //$"\n{UtilityFunctions.GetEmoji(ctx, "bot_gem")} {stage.GemsDropChancePerMinute}% for 1 per min" +
-                //$"\n{UtilityFunctions.GetEmoji(ctx, "bot_relic")} {stage.RelicsDropChancePerMinute}% for 1 per min"
+                //$"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(stage.XPPerMinute)} per min" +
+                //$"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(stage.CoinsPerMinute)} per min" +
+                //$"\n{EmojiHandler.GetEmoji("food")} {stage.FoodPerMinute}% for 1 per min" +
+                //$"\n{EmojiHandler.GetEmoji("gem")} {stage.GemsDropChancePerMinute}% for 1 per min" +
+                //$"\n{EmojiHandler.GetEmoji("relic")} {stage.RelicsDropChancePerMinute}% for 1 per min"
                 //,
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {
@@ -44,11 +44,11 @@ namespace IdleHeroes.EmbedTemplates
             TimeSpan idleTime = UtilityFunctions.GetIdleDisplayTime(profile);
             
             _embed.AddField("Resources found", 
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_xp")} {UtilityFunctions.FormatNumber(profile.IdleXP)}" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_coin")} {UtilityFunctions.FormatNumber(profile.IdleCoins)}" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_food")} {UtilityFunctions.FormatNumber(profile.IdleFood)}" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_gem")} {UtilityFunctions.FormatNumber(profile.IdleGems)}" +
-                $"\n{UtilityFunctions.GetEmoji(ctx, "bot_relic")} {UtilityFunctions.FormatNumber(profile.IdleRelics)}", true);
+                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.IdleXP)}" +
+                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.IdleCoins)}" +
+                $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.IdleFood)}" +
+                $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.IdleGems)}" +
+                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.IdleRelics)}", true);
 
             _embed.AddField("Idle Time", $"{idleTime.ToString("h'h, 'm'm, 's's'")}", true);
 

@@ -5,6 +5,7 @@ using IdleHeroes.Commands;
 using IdleHeroes.Models;
 using System;
 using System.Threading.Tasks;
+using IdleHeroes.Support;
 
 namespace IdleHeroes
 {
@@ -75,6 +76,7 @@ namespace IdleHeroes
 
         private Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
         {
+            EmojiHandler.SetupEmojis(sender);
             return Task.CompletedTask;
         }
     }
