@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210116185333_CompanionLevelCostAdded")]
+    partial class CompanionLevelCostAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,9 +45,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 
                     b.Property<double>("ArmorIncreasePerLevel")
                         .HasColumnType("float");
-
-                    b.Property<decimal>("BaseLevelCost")
-                        .HasColumnType("decimal(20,0)");
 
                     b.Property<int>("Class")
                         .HasColumnType("int");
@@ -91,6 +90,9 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("NextLevelCost")
+                        .HasColumnType("float");
 
                     b.Property<decimal>("XP")
                         .HasColumnType("decimal(20,0)");

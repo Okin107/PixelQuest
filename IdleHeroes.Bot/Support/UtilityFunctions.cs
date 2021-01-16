@@ -35,7 +35,29 @@ namespace IdleHeroes.Support
                 return string.Concat(Math.Round(number / (double)1000, 2) , "K");
             }
 
-            return number.ToString();
+            return Math.Round((double)number, 2).ToString();
+        }
+
+        public static string FormatNumber(double number)
+        {
+            if (number >= 1000000000000)
+            {
+                return $"{number:0.##E+00}";
+            }
+            if (number >= 1000000000)
+            {
+                return string.Concat(Math.Round(number / 1000000000, 2), "B");
+            }
+            if (number >= 1000000)
+            {
+                return string.Concat(Math.Round(number / 1000000, 2), "M");
+            }
+            if (number >= 1000)
+            {
+                return string.Concat(Math.Round(number / 1000, 2), "K");
+            }
+
+            return Math.Round(number, 2).ToString();
         }
 
         public static TimeSpan GetIdleTime(Profile profile)

@@ -47,13 +47,14 @@ namespace IdleHeroes.EmbedTemplates
                 $"\nElement: {ownedCompanion.Companion.Element} " +
                 $"\nClass: {ownedCompanion.Companion.Class} " +
                 $"\nDMG Type: {ownedCompanion.Companion.DamageType} " +
+                $"\nCopies: {ownedCompanion.CompanionCopies}" +
                 $"\n" +
                 $"\n**Attributes**" +
-                $"\nDPS: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * (ulong)Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel) * (ulong)levelMultiplierBoost)}" +
-                $"\nHP: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * (ulong)Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel) * (ulong)levelMultiplierBoost)}" +
-                $"\nArmor: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Armor * (ulong)Math.Pow(ownedCompanion.Companion.ArmorIncreasePerLevel, ownedCompanion.CompanionLevel) * (ulong)levelMultiplierBoost)}" +
-                $"\nAccuracy: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Accuracy * (ulong)Math.Pow(ownedCompanion.Companion.AccuracyIncreasePerLevel, ownedCompanion.CompanionLevel) * (ulong)levelMultiplierBoost)}" +
-                $"\nAgility: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Agility * (ulong)Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, ownedCompanion.CompanionLevel) * (ulong)levelMultiplierBoost)}", true);
+                $"\nDPS: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel-1) * levelMultiplierBoost)}" +
+                $"\nHP: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                $"\nArmor: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Armor * Math.Pow(ownedCompanion.Companion.ArmorIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                $"\nAccuracy: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Accuracy * Math.Pow(ownedCompanion.Companion.AccuracyIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                $"\nAgility: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Agility * Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}", true);
             }
 
             return _embed;

@@ -16,6 +16,8 @@ namespace IdleHeroesDAL.Models
         public double MaxLevel { get; set; }
         public double LevelToMultiplyIncreases { get; set; }
         public double IncreaseMultiplier { get; set; }
+        public ulong BaseLevelCost { get; set; }
+        public double LevelCostIncrease { get; set; }
 
         //Element and classes
         public ElementTypeEnum Element { get; set; }
