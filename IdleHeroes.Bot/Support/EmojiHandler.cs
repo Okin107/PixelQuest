@@ -3,28 +3,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
+using IdleHeroes.Models;
 
 namespace IdleHeroes.Support
 {
     public static class EmojiHandler
     {
-        private static readonly Dictionary<string, DiscordEmoji> Emojis = new Dictionary<string, DiscordEmoji>();
+        private static readonly List<DiscordEmoji> Emojis = new List<DiscordEmoji>();
 
         public static string GetEmoji(string name)
         {
-            return Emojis[name].ToString();
+            return Emojis.Find(x => x.Name.Equals(name));
         }
 
-        public static async Task SetupEmojis(DiscordClient client)
+        public static void SetupEmojis(DiscordClient client)
         {
-            DiscordGuild supportServer = await client.GetGuildAsync(797145881887375427);
-            
-            var emojiList = supportServer.Emojis.Select(d => d.Value).ToList();
-            
-            foreach (DiscordEmoji emoji in emojiList)
+            List<DiscordEmoji> emojiList = new List<DiscordEmoji>();
+
+            foreach (ulong serverId in BotSettings.SupportServersId)
             {
-                Emojis[emoji.Name] = emoji;
+                DiscordGuild supportServer = client.Guilds.FirstOrDefault(x => x.Key == serverId).Value;
+
+                emojiList.AddRange(supportServer.Emojis.Select(d => d.Value).ToList());
             }
+
+            Emojis.AddRange(emojiList);
         }
     }
 }

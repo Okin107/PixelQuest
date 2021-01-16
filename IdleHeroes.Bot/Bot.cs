@@ -45,7 +45,7 @@ namespace IdleHeroes
                 EnableMentionPrefix = true,
                 CaseSensitive = false,
                 DmHelp = false,
-                EnableDms = false,
+                EnableDms = true,
                 Services = services
             };
 
@@ -79,10 +79,9 @@ namespace IdleHeroes
                 false,  null, null);
         }
 
-        private Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
+        private async Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
         {
             EmojiHandler.SetupEmojis(sender);
-            return Task.CompletedTask;
         }
     }
 }

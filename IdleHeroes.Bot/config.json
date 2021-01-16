@@ -7,5 +7,6 @@
   "isdebugmode": true,
   "defaultdateformat": "dd MMMM yyyy",
   "defaultdatetimeformat": "dd MMMM yyyy - HH:mm",
+  "supportservers": [ 797145881887375427 ],
   "owners": [ 270190067354435584, 202382975910936576 ]
 }

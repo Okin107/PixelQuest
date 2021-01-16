@@ -15,6 +15,7 @@ namespace IdleHeroes.Models
         public static bool IsDebugMode { get; private set; }
         public static string DefaultDateFormat { get; private set; }
         public static string DefaultDateTimeFormat { get; private set; }
+        public static List<ulong> SupportServersId { get; private set; }
         public static List<ulong> BotOwners { get; private set; }
 
         public static void Initialize()
@@ -40,6 +41,7 @@ namespace IdleHeroes.Models
             IsDebugMode = configJson.IsDebugMode;
             DefaultDateFormat = configJson.DefaultDateFormat;
             DefaultDateTimeFormat = configJson.DefaultDateTimeFormat;
+            SupportServersId = configJson.SupportServersId;
             BotOwners = configJson.BotOwners;
         }
     }
@@ -62,6 +64,8 @@ namespace IdleHeroes.Models
         public string DefaultDateFormat { get; private set; }
         [JsonProperty("defaultdatetimeformat")]
         public string DefaultDateTimeFormat { get; private set; }
+        [JsonProperty("supportservers")]
+        public List<ulong> SupportServersId { get; private set; }
         [JsonProperty("owners")]
         public List<ulong> BotOwners { get; private set; }
     }
