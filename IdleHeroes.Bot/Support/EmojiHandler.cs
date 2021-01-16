@@ -13,7 +13,7 @@ namespace IdleHeroes.Support
 
         public static string GetEmoji(string name)
         {
-            return Emojis.Find(x => x.Name.Equals(name));
+            return Emojis.Find(x => x.Name.Substring(4).Equals(name));
         }
 
         public static void SetupEmojis(DiscordClient client)
@@ -24,7 +24,7 @@ namespace IdleHeroes.Support
             {
                 DiscordGuild supportServer = client.Guilds.FirstOrDefault(x => x.Key == serverId).Value;
 
-                emojiList.AddRange(supportServer.Emojis.Select(d => d.Value).ToList());
+                emojiList.AddRange(supportServer.Emojis.Where(x => x.Value.Name.StartsWith("bot_") || x.Value.Name.EndsWith("_old")).Select(x => x.Value));
             }
 
             Emojis.AddRange(emojiList);

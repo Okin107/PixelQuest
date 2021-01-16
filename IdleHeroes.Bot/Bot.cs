@@ -38,6 +38,7 @@ namespace IdleHeroes
             RestClient = new DiscordRestClient(config);
 
             Client.Ready += OnClientReady;
+            Client.GuildAvailable += OnGuildAvailable;
 
             CommandsNextConfiguration commandsConfig = new CommandsNextConfiguration()
             {
@@ -65,6 +66,11 @@ namespace IdleHeroes
             }
         }
 
+        private async Task OnGuildAvailable(DiscordClient sender, GuildCreateEventArgs e)
+        {
+            EmojiHandler.SetupEmojis(Client);
+        }
+
         private async Task AwakeMessage(DiscordClient sender, SocketEventArgs e)
         {
             await RestClient.CreateMessageAsync(797147841956544524, "Rise and shine! I'm online!",
@@ -81,7 +87,7 @@ namespace IdleHeroes
 
         private async Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
         {
-            EmojiHandler.SetupEmojis(sender);
+            
         }
     }
 }
