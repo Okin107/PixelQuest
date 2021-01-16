@@ -7,5 +7,6 @@ namespace IdleHeroes.Services
     public interface ITavernService
     {
         Task<Tavern> Get(CommandContext ctx);
+        Task Refresh(CommandContext ctx, Profile profile);
     }
 }

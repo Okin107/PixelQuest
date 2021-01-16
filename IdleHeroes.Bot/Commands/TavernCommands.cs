@@ -41,8 +41,13 @@ namespace IdleHeroes.Commands
                     return;
                 }
 
-                //Check if tavern has to refresh
+                //Check and refresh tavern
+                Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
 
+                if (DateTime.Now.Day > profile.Tavern.LastRefresh.Day || profile.Tavern.LastRefresh.Day == default)
+                {
+                    await _tavernService.Refresh(ctx, profile);
+                }
 
                 //Buy companion
                 if (!string.IsNullOrEmpty(companionId))
@@ -51,7 +56,7 @@ namespace IdleHeroes.Commands
                     {
                         int compId = Convert.ToInt32(companionId);
 
-                        await PurchaseCompanion(ctx, compId);
+                        await PurchaseCompanion(ctx, compId, profile);
                         return;
                     }
                     catch (Exception ex)
@@ -60,13 +65,9 @@ namespace IdleHeroes.Commands
                 .ConfigureAwait(false);
                         return;
                     }
-
-
                 }
 
-                Tavern tavern = await _tavernService.Get(ctx);
-
-                await ctx.Channel.SendMessageAsync(embed: TavernEmbedTemplate.Show(ctx, tavern).Build())
+                await ctx.Channel.SendMessageAsync(embed: TavernEmbedTemplate.Show(ctx, profile.Tavern).Build())
                    .ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -80,13 +81,10 @@ namespace IdleHeroes.Commands
             }
         }
 
-        private async Task PurchaseCompanion(CommandContext ctx, int compId)
+        private async Task PurchaseCompanion(CommandContext ctx, int compId, Profile profile)
         {
-            Tavern tavern = await _tavernService.Get(ctx);
-            Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
             List<Companion> companions = await _companionService.GetCompanions();
-
-            TavernCompanion selectedCompanion = tavern.Companions.Find(x => x.Id == compId);
+            TavernCompanion selectedCompanion = profile.Tavern.Companions.Find(x => x.Id == compId);
 
             if(selectedCompanion == null)
             {

@@ -43,7 +43,10 @@ namespace IdleHeroes.Services
                 MaximumIdleRewardHours = 1,
                 Stage = await _stageService.GetStageFromNumber(1),
                 RegisteredOn = DateTime.Now,
-                LastPlayed = DateTime.Now
+                LastPlayed = DateTime.Now,
+                Tavern = new Tavern(),
+                //Only for debug
+                Food = 10
             }).ConfigureAwait(false);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -55,6 +58,9 @@ namespace IdleHeroes.Services
                 .Include(x => x.Stage)
                 .Include(x => x.OwnedCompanions)
                 .ThenInclude(x => x.Companion)
+                .Include(x => x.Tavern)
+                .ThenInclude(x => x.Companions)
+                .ThenInclude(x => x.Companion)
                 .FirstOrDefaultAsync(x => x.Username.Equals(username));
         }
 
@@ -63,6 +69,9 @@ namespace IdleHeroes.Services
             return await _context.Profile
                 .Include(x => x.Stage)
                 .Include(x => x.OwnedCompanions)
+                .ThenInclude(x => x.Companion)
+                .Include(x => x.Tavern)
+                .ThenInclude(x => x.Companions)
                 .ThenInclude(x => x.Companion)
                 .FirstOrDefaultAsync(x => x.DiscordId.Equals(ctx.Message.Author.Id));
         }
