@@ -24,7 +24,7 @@ namespace IdleHeroes.Support
             {
                 DiscordGuild supportServer = client.Guilds.FirstOrDefault(x => x.Key == serverId).Value;
 
-                emojiList.AddRange(supportServer.Emojis.Where(x => x.Value.Name.StartsWith("bot_") || x.Value.Name.EndsWith("_old")).Select(x => x.Value));
+                emojiList.AddRange(supportServer.Emojis.Where(x => x.Value.Name.StartsWith("bot_") && !x.Value.Name.EndsWith("_old")).Select(x => x.Value));
             }
 
             Emojis.AddRange(emojiList);
