@@ -61,6 +61,9 @@ namespace IdleHeroes.Services
                 .Include(x => x.Tavern)
                 .ThenInclude(x => x.Companions)
                 .ThenInclude(x => x.Companion)
+                .Include(x => x.Tavern)
+                .ThenInclude(x => x.Purchases)
+                .ThenInclude(x => x.TavernCompanion)
                 .FirstOrDefaultAsync(x => x.Username.Equals(username));
         }
 
@@ -73,6 +76,9 @@ namespace IdleHeroes.Services
                 .Include(x => x.Tavern)
                 .ThenInclude(x => x.Companions)
                 .ThenInclude(x => x.Companion)
+                .Include(x => x.Tavern)
+                .ThenInclude(x => x.Purchases)
+                .ThenInclude(x => x.TavernCompanion)
                 .FirstOrDefaultAsync(x => x.DiscordId.Equals(ctx.Message.Author.Id));
         }
 

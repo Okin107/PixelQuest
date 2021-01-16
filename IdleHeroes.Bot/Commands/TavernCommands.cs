@@ -84,19 +84,30 @@ namespace IdleHeroes.Commands
         private async Task PurchaseCompanion(CommandContext ctx, int compId, Profile profile)
         {
             List<Companion> companions = await _companionService.GetCompanions();
-            TavernCompanion selectedCompanion = profile.Tavern.Companions.Find(x => x.Id == compId);
+            TavernCompanion selectedCompanion = profile.Tavern.Companions.Find(x => x.Companion.Id == compId);
 
             if(selectedCompanion == null)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"The companion ID is wrong. Use `.help tavern` to find out more.").Build())
                 .ConfigureAwait(false);
+                return;
             }
 
             //Check and remove the resources from profile
             if(selectedCompanion.FoodCost > profile.Food)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have {profile.Food} {EmojiHandler.GetEmoji("food")}," +
-                    $" but you need {selectedCompanion.FoodCost} {EmojiHandler.GetEmoji("food")} to hire this Companion.").Build())
+                    $" but you need {selectedCompanion.FoodCost} {EmojiHandler.GetEmoji("food")} to hire {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} {selectedCompanion.Companion.Name}.").Build())
+                .ConfigureAwait(false);
+                return;
+            }
+
+            //Check if already purcahsed today and stop the purchase
+            TavernPurchase alreadyPurchasedCompanion = profile.Tavern.Purchases.Find(x => x.TavernCompanion.Id == selectedCompanion.Id && x.PurchaseDate.Month == DateTime.Now.Month && x.PurchaseDate.Day == DateTime.Now.Day);
+
+            if(alreadyPurchasedCompanion != null)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have already hired {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} {selectedCompanion.Companion.Name} for today.").Build())
                 .ConfigureAwait(false);
                 return;
             }
@@ -121,13 +132,21 @@ namespace IdleHeroes.Commands
                 ownedCompanionSearch.CompanionCopies += 1;
             }
 
+            //Add purchase to tavern history
+            TavernPurchase purchase = new TavernPurchase()
+            {
+                PurchaseDate = DateTime.Now,
+                TavernCompanion = selectedCompanion
+            };
+
+            profile.Tavern.Purchases.Add(purchase);
             profile.Food -= selectedCompanion.FoodCost;
 
             await _profileService.Update(ctx, profile);
 
             await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"Successfully purchased " +
-                $"**{EmojiHandler.GetEmoji(purchasedCompanion.Companion.IconName)}" +
-                                           $" {purchasedCompanion.Companion.Name}**.").Build())
+                $"**{EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)}" +
+                                           $" {selectedCompanion.Companion.Name}**.").Build())
                    .ConfigureAwait(false);
         }
     }
