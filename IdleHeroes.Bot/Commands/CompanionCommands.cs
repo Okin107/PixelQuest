@@ -78,7 +78,12 @@ namespace IdleHeroes.Commands
 
                     if (action == "level")
                     {
-                        await LevelUpCompanion(ctx, profile, compId);
+                        await LevelCompanion(ctx, profile, compId);
+                        return;
+                    }
+                    else if (action == "ascend")
+                    {
+                        await AscendCompanion(ctx, profile, compId);
                         return;
                     }
                     else
@@ -103,7 +108,57 @@ namespace IdleHeroes.Commands
             }
         }
 
-        private async Task LevelUpCompanion(CommandContext ctx, Profile profile, int compId)
+        private async Task AscendCompanion(CommandContext ctx, Profile profile, int compId)
+        {
+            OwnedCompanions selectedCompanion = profile.OwnedCompanions.Find(x => x.Companion.Id == compId);
+
+            if (selectedCompanion == null)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You do not own any Companion with ID **{compId}**. Please make sure you selected the correct **Companion ID**.").Build())
+    .ConfigureAwait(false);
+                return;
+            }
+
+            //Max ascend reached
+            if (selectedCompanion.CompanionAscendTier == IdleHeroesDAL.Enums.AscendTierEnum.Mythic)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"{EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** has reached the maximum **Ascend Tier**.").Build())
+    .ConfigureAwait(false);
+                return;
+            }
+
+            //Check if companion is at max level
+            double maxLevel = (selectedCompanion.Companion.MaxLevel / 5) * (double)selectedCompanion.CompanionAscendTier;
+
+            if (selectedCompanion.CompanionLevel < maxLevel)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"{EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** has to be at the maximum level of his current **Ascend Tier** in order to be ascended further.").Build())
+    .ConfigureAwait(false);
+                return;
+            }
+
+            //Check if it can be ascended
+            double ascendCopiesNeeded = selectedCompanion.Companion.BaseAscendCopiesNeeded * Math.Pow(selectedCompanion.Companion.AscendCopiesTierIncrease, (double)selectedCompanion.CompanionAscendTier - 1);
+
+            if (selectedCompanion.CompanionCopies < ascendCopiesNeeded)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have **{selectedCompanion.CompanionCopies}** copies," +
+                    $" but you need **{ascendCopiesNeeded}** copies to ascend {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** to the next **Ascend Tier**.").Build())
+    .ConfigureAwait(false);
+                return;
+            }
+
+            selectedCompanion.CompanionCopies -= Convert.ToInt32(ascendCopiesNeeded);
+            selectedCompanion.CompanionAscendTier += 1;
+
+            await _profileService.Update(ctx, profile);
+
+            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully ascended {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** to **{selectedCompanion.CompanionAscendTier} {EmojiHandler.GetEmoji(selectedCompanion.CompanionAscendTier.ToString().ToLower())}** by using **{ascendCopiesNeeded}** of his copies.").Build())
+    .ConfigureAwait(false);
+            return;
+        }
+
+        private async Task LevelCompanion(CommandContext ctx, Profile profile, int compId)
         {
             OwnedCompanions selectedCompanion = profile.OwnedCompanions.Find(x => x.Companion.Id == compId);
 
