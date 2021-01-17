@@ -1,6 +1,7 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using IdleHeroes.Support;
+using IdleHeroesDAL.Enums;
 using IdleHeroesDAL.Models;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,24 @@ namespace IdleHeroes.EmbedTemplates
                     Name = $"Companions codex",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
-                Description = $"Here you can preview all the companions at their maximum level.",
+                Description = $"**Icons description:**" +
+                $"\nAscend Tiers: {EmojiHandler.GetEmoji(AscendTierEnum.Common.ToString().ToLower())} Common, " +
+                $"{EmojiHandler.GetEmoji(AscendTierEnum.Rare.ToString().ToLower())} Rare, " +
+                $"{EmojiHandler.GetEmoji(AscendTierEnum.Epic.ToString().ToLower())} Epic, " +
+                $"{EmojiHandler.GetEmoji(AscendTierEnum.Legendary.ToString().ToLower())} Legendary, " +
+                $"{EmojiHandler.GetEmoji(AscendTierEnum.Mythic.ToString().ToLower())} Mythic." +
+                $"\nElements: {EmojiHandler.GetEmoji(ElementTypeEnum.Nature.ToString().ToLower())} Nature, " +
+                $"{EmojiHandler.GetEmoji(ElementTypeEnum.Water.ToString().ToLower())} Water, " +
+                $"{EmojiHandler.GetEmoji(ElementTypeEnum.Fire.ToString().ToLower())} Fire. " +
+                $"\nClasses: {EmojiHandler.GetEmoji(CompanionClassesEnum.Warrior.ToString().ToLower())} Warrior, " +
+                $"{EmojiHandler.GetEmoji(CompanionClassesEnum.Ranger.ToString().ToLower())} Ranger, " +
+                $"{EmojiHandler.GetEmoji(CompanionClassesEnum.Tank.ToString().ToLower())} Tank, " +
+                $"{EmojiHandler.GetEmoji(CompanionClassesEnum.Support.ToString().ToLower())} Support." +
+                $"\nDMG Types: {EmojiHandler.GetEmoji(DamageTypeEnum.Melee.ToString().ToLower())} Melee, " +
+                $"{EmojiHandler.GetEmoji(DamageTypeEnum.Ranged.ToString().ToLower())} Ranged. " +
+                $"\n" +
+                $"\n" +
+                $"Here you can preview all the companions at their maximum level.",
                 Timestamp = DateTime.UtcNow,
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {
@@ -33,13 +51,13 @@ namespace IdleHeroes.EmbedTemplates
 
             foreach (Companion companion in companions)
             {
-                _embed.AddField($"**{companion.Id}**: {EmojiHandler.GetEmoji(companion.IconName)} {companion.Name} (Lv: {companion.MaxLevel})",
+                _embed.AddField($"**{companion.Id}**: {EmojiHandler.GetEmoji(companion.IconName)} {companion.Name} " +
+                $"{EmojiHandler.GetEmoji(AscendTierEnum.Mythic.ToString().ToLower())}",
+                $"\n{EmojiHandler.GetEmoji(companion.Element.ToString().ToLower())} " +
+                $"{EmojiHandler.GetEmoji(companion.Class.ToString().ToLower())} " +
+                $"{EmojiHandler.GetEmoji(companion.DamageType.ToString().ToLower())} " +
+                $"\nLv: {companion.MaxLevel}" +
                 $"\n{companion.Lore}" +
-                $"\n" +
-                $"\n**General**" +
-                $"\nElement: {companion.Element} " +
-                $"\nClass: {companion.Class} " +
-                $"\nDMG Type: {companion.DamageType} " +
                 $"\n" +
                 $"\n**Attributes**" +
                 $"\nDPS: {UtilityFunctions.FormatNumber(companion.DPS * Math.Pow(companion.DPSIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +
