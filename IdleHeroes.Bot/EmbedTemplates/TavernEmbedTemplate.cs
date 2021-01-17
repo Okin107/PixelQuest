@@ -23,7 +23,9 @@ namespace IdleHeroes.EmbedTemplates
                 },
                 Description = $"{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Food)}" +
                 $" • {EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Gems)}" +
-                $"\n\nWelcome to the Tavern. Here you can meet and hire Companions to help you in your journey.",
+                $"\n\nWelcome to the Tavern. Here you can meet and hire Companions to help you in your journey." +
+                $"\n" +
+                $"\nYou can refresh the tavern for **1** {EmojiHandler.GetEmoji("gem")} each time by using `.tavern refresh`.",
                 Timestamp = DateTime.UtcNow,
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {

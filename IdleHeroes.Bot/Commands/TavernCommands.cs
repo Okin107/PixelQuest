@@ -61,6 +61,26 @@ namespace IdleHeroes.Commands
                     }
                     catch (Exception ex)
                     {
+                        //Manual refresh
+                        if (companionId == "refresh")
+                        {
+                            if (profile.Gems < 1)
+                            {
+                                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{profile.Gems}** {EmojiHandler.GetEmoji("gem")}," +
+                    $" but you need **1** {EmojiHandler.GetEmoji("gem")} to refresh the **Tavern**.").Build())
+                .ConfigureAwait(false);
+                                return;
+                            }
+
+                            profile.Gems -= 1;
+
+                            await _tavernService.Refresh(ctx, profile);
+
+                            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully refreshed the **Tavern** by spending **1** {EmojiHandler.GetEmoji("gem")}.").Build())
+                .ConfigureAwait(false);
+                            return;
+                        }
+
                         await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"The **companion ID** is wrong. Use `.help tavern` to find out more.").Build())
                 .ConfigureAwait(false);
                         return;
@@ -86,7 +106,7 @@ namespace IdleHeroes.Commands
             List<Companion> companions = await _companionService.GetCompanions();
             TavernCompanion selectedCompanion = profile.Tavern.Companions.Find(x => x.Companion.Id == compId);
 
-            if(selectedCompanion == null)
+            if (selectedCompanion == null)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"The **companion ID** is wrong. Use `.help tavern` to find out more.").Build())
                 .ConfigureAwait(false);
@@ -94,7 +114,7 @@ namespace IdleHeroes.Commands
             }
 
             //Check and remove the resources from profile
-            if(selectedCompanion.FoodCost > profile.Food)
+            if (selectedCompanion.FoodCost > profile.Food)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have **{profile.Food}** {EmojiHandler.GetEmoji("food")}," +
                     $" but you need **{selectedCompanion.FoodCost}** {EmojiHandler.GetEmoji("food")} to hire {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}**.").Build())
@@ -105,7 +125,7 @@ namespace IdleHeroes.Commands
             //Check if already purcahsed today and stop the purchase
             TavernPurchase alreadyPurchasedCompanion = profile.Tavern.Purchases.Find(x => x.TavernCompanion.Id == selectedCompanion.Id && x.PurchaseDate.Month == DateTime.Now.Month && x.PurchaseDate.Day == DateTime.Now.Day);
 
-            if(alreadyPurchasedCompanion != null)
+            if (alreadyPurchasedCompanion != null)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have already hired {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** for today.").Build())
                 .ConfigureAwait(false);
@@ -116,7 +136,7 @@ namespace IdleHeroes.Commands
             OwnedCompanions ownedCompanionSearch = profile.OwnedCompanions.Find(x => x.Companion.Id == selectedCompanion.Companion.Id);
 
             OwnedCompanions purchasedCompanion = null;
-            if(ownedCompanionSearch == null)
+            if (ownedCompanionSearch == null)
             {
                 purchasedCompanion = new OwnedCompanions()
                 {
