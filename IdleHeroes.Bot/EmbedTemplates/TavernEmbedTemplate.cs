@@ -39,14 +39,12 @@ namespace IdleHeroes.EmbedTemplates
                 //Purchased or not
                 string costString = $"{UtilityFunctions.FormatNumber(tavernCompanion.FoodCost)} {EmojiHandler.GetEmoji("food")}";
                 string nameString = tavernCompanion.Companion.Name;
-                string copiesOwnedString = "0";
-                OwnedCompanions alreadyOwnedCompanion = profile.OwnedCompanions.Find(x => x.Companion.Id == tavernCompanion.Companion.Id);
+                TavernPurchase alreadyPurchasedCompanion = profile.Tavern.Purchases.Find(x => x.TavernCompanion.Id == tavernCompanion.Id && x.PurchaseDate.Month == DateTime.Now.Month && x.PurchaseDate.Day == DateTime.Now.Day);
 
-                if(alreadyOwnedCompanion != null)
+                if (alreadyPurchasedCompanion != null)
                 {
                     costString = "Purchased";
-                    nameString = $"~~{tavernCompanion.Companion.Name}~~";
-                    copiesOwnedString = $"{alreadyOwnedCompanion.CompanionCopies}";
+                    nameString = $"~~{tavernCompanion.Companion.Name}~~";;
                 }
 
                 _embed.AddField($"**{tavernCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(tavernCompanion.Companion.IconName)} {nameString} " +
@@ -64,8 +62,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\nAccuracy: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.Accuracy)}" +
                 $"\nAgility: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.Agility)}" +
                  $"\n" +
-                 $"\nCost: {costString}" +
-                 $"\nCopies owned: {copiesOwnedString}", true);
+                 $"\nCost: {costString}", true);
             }
 
             return _embed;

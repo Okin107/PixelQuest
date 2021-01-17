@@ -54,7 +54,7 @@ namespace IdleHeroes.Services
 
                 if (selectedCompanion.AscendTier != IdleHeroesDAL.Enums.AscendTierEnum.Common)
                 {
-                    foodCost = foodCost * ((ulong)selectedCompanion.AscendTier - 1) * 3;
+                    foodCost = foodCost * (ulong)Math.Pow(3, ((double)selectedCompanion.AscendTier - 1)) ;
                 }
 
                 TavernCompanion tavernCompanion = new TavernCompanion()
