@@ -90,7 +90,7 @@ namespace IdleHeroes.Commands
 
                 if (!string.IsNullOrEmpty(collect))
                 {
-                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Make sure to use the correct parameters for the command. Please check `.help` for more information.").Build())
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Please make sure you have used the correct command syntax. Please check `.help` for more information.").Build())
                         .ConfigureAwait(false);
                     return;
                 }

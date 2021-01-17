@@ -61,7 +61,7 @@ namespace IdleHeroes.Commands
                     }
                     catch (Exception ex)
                     {
-                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"The companion ID is wrong. Use `.help tavern` to find out more.").Build())
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"The **companion ID** is wrong. Use `.help tavern` to find out more.").Build())
                 .ConfigureAwait(false);
                         return;
                     }
@@ -88,7 +88,7 @@ namespace IdleHeroes.Commands
 
             if(selectedCompanion == null)
             {
-                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"The companion ID is wrong. Use `.help tavern` to find out more.").Build())
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"The **companion ID** is wrong. Use `.help tavern` to find out more.").Build())
                 .ConfigureAwait(false);
                 return;
             }
@@ -96,8 +96,8 @@ namespace IdleHeroes.Commands
             //Check and remove the resources from profile
             if(selectedCompanion.FoodCost > profile.Food)
             {
-                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have {profile.Food} {EmojiHandler.GetEmoji("food")}," +
-                    $" but you need {selectedCompanion.FoodCost} {EmojiHandler.GetEmoji("food")} to hire {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} {selectedCompanion.Companion.Name}.").Build())
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have **{profile.Food}** {EmojiHandler.GetEmoji("food")}," +
+                    $" but you need **{selectedCompanion.FoodCost}** {EmojiHandler.GetEmoji("food")} to hire {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}**.").Build())
                 .ConfigureAwait(false);
                 return;
             }
@@ -107,7 +107,7 @@ namespace IdleHeroes.Commands
 
             if(alreadyPurchasedCompanion != null)
             {
-                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have already hired {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} {selectedCompanion.Companion.Name} for today.").Build())
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have already hired {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** for today.").Build())
                 .ConfigureAwait(false);
                 return;
             }
@@ -144,9 +144,9 @@ namespace IdleHeroes.Commands
 
             await _profileService.Update(ctx, profile);
 
-            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"Successfully purchased " +
-                $"**{EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)}" +
-                                           $" {selectedCompanion.Companion.Name}**.").Build())
+            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"Successfully hired " +
+                $"{EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)}" +
+                                           $" **{selectedCompanion.Companion.Name}** for **{selectedCompanion.FoodCost}** {EmojiHandler.GetEmoji("food")}.").Build())
                    .ConfigureAwait(false);
         }
     }

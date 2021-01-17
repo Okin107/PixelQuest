@@ -42,11 +42,11 @@ namespace IdleHeroes.EmbedTemplates
                 $"\nDMG Type: {companion.DamageType} " +
                 $"\n" +
                 $"\n**Attributes**" +
-                $"\nDPS: {UtilityFunctions.FormatNumber(companion.DPS * Math.Pow(companion.DPSIncreasePerLevel, companion.MaxLevel) * (companion.MaxLevel / companion.LevelToMultiplyIncreases) * 2)}" +
-                $"\nHP: {UtilityFunctions.FormatNumber(companion.HP * Math.Pow(companion.HPIncreasePerLevel, companion.MaxLevel) * (companion.MaxLevel / companion.LevelToMultiplyIncreases) * 2)}" +
-                $"\nArmor: {UtilityFunctions.FormatNumber(companion.Armor * Math.Pow(companion.ArmorIncreasePerLevel, companion.MaxLevel) * (companion.MaxLevel / companion.LevelToMultiplyIncreases) * 2)}" +
-                $"\nAccuracy: {UtilityFunctions.FormatNumber(companion.Accuracy * Math.Pow(companion.AccuracyIncreasePerLevel, companion.MaxLevel) * (companion.MaxLevel / companion.LevelToMultiplyIncreases) * 2)}" +
-                $"\nAgility: {UtilityFunctions.FormatNumber(companion.Agility * Math.Pow(companion.AgilityIncreasePerLevel, companion.MaxLevel) * (companion.MaxLevel / companion.LevelToMultiplyIncreases) * 2)}", true);
+                $"\nDPS: {UtilityFunctions.FormatNumber(companion.DPS * Math.Pow(companion.DPSIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +
+                $"\nHP: {UtilityFunctions.FormatNumber(companion.HP * Math.Pow(companion.HPIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +
+                $"\nArmor: {UtilityFunctions.FormatNumber(companion.Armor * Math.Pow(companion.ArmorIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +
+                $"\nAccuracy: {UtilityFunctions.FormatNumber(companion.Accuracy * Math.Pow(companion.AccuracyIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +
+                $"\nAgility: {UtilityFunctions.FormatNumber(companion.Agility * Math.Pow(companion.AgilityIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}", true);
             }
 
             return _embed;

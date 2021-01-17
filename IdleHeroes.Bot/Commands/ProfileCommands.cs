@@ -27,7 +27,7 @@ namespace IdleHeroes.Commands
                 //Check if username is empty
                 if (String.IsNullOrEmpty(username))
                 {
-                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Your username cannot be empty. Use `.help create` to find out more.").Build())
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Your **username** cannot be empty. Use `.help create` to find out more.").Build())
                     .ConfigureAwait(false);
                     return;
                 }
@@ -86,7 +86,7 @@ namespace IdleHeroes.Commands
 
                 if (profile == null)
                 {
-                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, "There is no Profile with that username.").Build())
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, "There is no **Profile** with that **username**.").Build())
                         .ConfigureAwait(false);
                 }
                 else

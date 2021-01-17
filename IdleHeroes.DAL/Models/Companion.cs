@@ -19,6 +19,11 @@ namespace IdleHeroesDAL.Models
         public ulong BaseLevelCost { get; set; }
         public double LevelCostIncrease { get; set; }
 
+        //Ascending
+        public AscendTierEnum AscendTier { get; set; }
+        public int BaseAscendCopiesNeeded { get; set; }
+        public int AscendCopiesTierIncrease { get; set; }
+
         //Element and classes
         public ElementTypeEnum Element { get; set; }
         public DamageTypeEnum DamageType { get; set; }

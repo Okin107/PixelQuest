@@ -46,7 +46,7 @@ namespace IdleHeroes.Commands
 
         [Command("comp")]
         [Description("Preview and manage all your Companions.")]
-        public async Task OwnedCompanions(CommandContext ctx, [Description("The Companion ID which you wish to select")] string companionId = null, [Description("The action you want to take on the selected Copmanion (<level>, <ascend>)")] string action = null)
+        public async Task OwnedCompanions(CommandContext ctx, [Description("The Companion ID which you wish to select.")] string companionId = null, [Description("The action you want to take on the selected Copmanion (<level>, <ascend>)")] string action = null)
         {
             try
             {
@@ -109,7 +109,17 @@ namespace IdleHeroes.Commands
 
             if (selectedCompanion == null)
             {
-                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You do not own any Companion with ID {compId}. Please make sure you selected the correct Companion ID.").Build())
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You do not own any Companion with ID **{compId}**. Please make sure you selected the correct **Companion ID**.").Build())
+    .ConfigureAwait(false);
+                return;
+            }
+
+            //Max level reached
+            double maxLevel = (selectedCompanion.Companion.MaxLevel / 5) * (double)selectedCompanion.CompanionAscendTier;
+
+            if(selectedCompanion.CompanionLevel == maxLevel)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"{EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** has reached the maximum level for this **Ascend Tier**.").Build())
     .ConfigureAwait(false);
                 return;
             }
@@ -123,22 +133,24 @@ namespace IdleHeroes.Commands
                 levelCost = selectedCompanion.Companion.BaseLevelCost * levelCostMultiplier;
             }
 
+            
+
             if ((ulong)levelCost > profile.Coins)
             {
-                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have {UtilityFunctions.FormatNumber(profile.Coins)} {EmojiHandler.GetEmoji("coin")}," +
-                    $" but you need {UtilityFunctions.FormatNumber((ulong)levelCost)} {EmojiHandler.GetEmoji("coin")} to level up {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} {selectedCompanion.Companion.Name} to the next level.").Build())
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have **{UtilityFunctions.FormatNumber(profile.Coins)}** {EmojiHandler.GetEmoji("coin")}," +
+                    $" but you need **{UtilityFunctions.FormatNumber((ulong)levelCost)}** {EmojiHandler.GetEmoji("coin")} to level up {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** to the next level.").Build())
     .ConfigureAwait(false);
                 return;
             }
 
-            //TODO: Implement max level logic
+            
 
             profile.Coins -= (ulong)levelCost;
             selectedCompanion.CompanionLevel += 1;
 
             await _profileService.Update(ctx, profile);
 
-            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully leveled {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} {selectedCompanion.Companion.Name} to level {selectedCompanion.CompanionLevel} for {UtilityFunctions.FormatNumber((ulong)levelCost)} {EmojiHandler.GetEmoji("coin")}.").Build())
+            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully leveled {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** to level **{selectedCompanion.CompanionLevel}** for **{UtilityFunctions.FormatNumber((ulong)levelCost)}** {EmojiHandler.GetEmoji("coin")}.").Build())
     .ConfigureAwait(false);
             return;
         }
