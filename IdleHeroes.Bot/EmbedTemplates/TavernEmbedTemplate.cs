@@ -36,7 +36,8 @@ namespace IdleHeroes.EmbedTemplates
 
             foreach (TavernCompanion tavernCompanion in profile.Tavern.Companions)
             {
-                _embed.AddField($"**{tavernCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(tavernCompanion.Companion.IconName)} {tavernCompanion.Companion.Name}",
+                _embed.AddField($"**{tavernCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(tavernCompanion.Companion.IconName)} {tavernCompanion.Companion.Name} " +
+                $"{EmojiHandler.GetEmoji(tavernCompanion.Companion.AscendTier.ToString().ToLower())}",
                 $"\n" +
                 $"\n{EmojiHandler.GetEmoji(tavernCompanion.Companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(tavernCompanion.Companion.Class.ToString().ToLower())} " +
