@@ -143,7 +143,7 @@ namespace IdleHeroes.Commands
                     Companion = selectedCompanion.Companion,
                     CompanionCopies = 1,
                     CompanionLevel = 1,
-                    CompanionAscendTier = 1
+                    CompanionAscendTier = selectedCompanion.Companion.AscendTier
                 };
 
                 profile.OwnedCompanions.Add(purchasedCompanion);
