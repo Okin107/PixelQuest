@@ -24,7 +24,7 @@ namespace IdleHeroes.EmbedTemplates
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
                 Description = $"**Icons description:**" +
-                $"\nAscend Tiers: {EmojiHandler.GetEmoji(AscendTierEnum.Common.ToString().ToLower())} Common, " +
+                $"\nRarity: {EmojiHandler.GetEmoji(AscendTierEnum.Common.ToString().ToLower())} Common, " +
                 $"{EmojiHandler.GetEmoji(AscendTierEnum.Rare.ToString().ToLower())} Rare, " +
                 $"{EmojiHandler.GetEmoji(AscendTierEnum.Epic.ToString().ToLower())} Epic, " +
                 $"{EmojiHandler.GetEmoji(AscendTierEnum.Legendary.ToString().ToLower())} Legendary, " +
@@ -38,6 +38,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"{EmojiHandler.GetEmoji(CompanionClassesEnum.Support.ToString().ToLower())} Support." +
                 $"\nDMG Types: {EmojiHandler.GetEmoji(DamageTypeEnum.Melee.ToString().ToLower())} Melee, " +
                 $"{EmojiHandler.GetEmoji(DamageTypeEnum.Ranged.ToString().ToLower())} Ranged. " +
+                $"\nAscend Tiers: {UtilityFunctions.GetTierStars(5)}" +
                 $"\n" +
                 $"\n" +
                 $"Here you can preview all the companions at their maximum level.",
@@ -52,7 +53,7 @@ namespace IdleHeroes.EmbedTemplates
             foreach (Companion companion in companions)
             {
                 _embed.AddField($"**{companion.Id}**: {EmojiHandler.GetEmoji(companion.IconName)} {companion.Name} " +
-                $"{EmojiHandler.GetEmoji(AscendTierEnum.Mythic.ToString().ToLower())}",
+                $"{EmojiHandler.GetEmoji(companion.AscendTier.ToString().ToLower())}",
                 $"\n{EmojiHandler.GetEmoji(companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.DamageType.ToString().ToLower())} " +
@@ -60,6 +61,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{companion.Lore}" +
                 $"\n" +
                 $"\n**Attributes**" +
+                $"\nTier: {UtilityFunctions.GetTierStars(5)}" +
                 $"\nDPS: {UtilityFunctions.FormatNumber(companion.DPS * Math.Pow(companion.DPSIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +
                 $"\nHP: {UtilityFunctions.FormatNumber(companion.HP * Math.Pow(companion.HPIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +
                 $"\nArmor: {UtilityFunctions.FormatNumber(companion.Armor * Math.Pow(companion.ArmorIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +

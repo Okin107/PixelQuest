@@ -47,6 +47,8 @@ namespace IdleHeroes.EmbedTemplates
                     levelMultiplierBoost = Math.Pow(2, Math.Floor((double)ownedCompanion.CompanionAscendTier - 1));
                 }
 
+                string tierStarString = UtilityFunctions.GetTierStars((int)ownedCompanion.CompanionAscendTier);
+
                 //Find max level
                 double maxLevel = (ownedCompanion.Companion.MaxLevel / 5) * (double)ownedCompanion.CompanionAscendTier;
                 double ascendCopiesNeeded = ownedCompanion.Companion.BaseAscendCopiesNeeded * Math.Pow(ownedCompanion.Companion.AscendCopiesTierIncrease, (double)ownedCompanion.CompanionAscendTier - 1);
@@ -54,13 +56,14 @@ namespace IdleHeroes.EmbedTemplates
                 if (ownedCompanion.CompanionLevel < maxLevel && ownedCompanion.CompanionAscendTier != AscendTierEnum.Mythic)
                 {
                     _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.CompanionAscendTier.ToString().ToLower())}",
+                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.AscendTier.ToString().ToLower())}",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
                     $"\nLv: {ownedCompanion.CompanionLevel}/{maxLevel}" +
                     $"\n" +
                     $"\n**Attributes -> Next Lv.**" +
+                    $"\nTier: {tierStarString}" +
                     $"\nDPS: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
                     $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
                     $"\nHP: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
@@ -74,18 +77,19 @@ namespace IdleHeroes.EmbedTemplates
                     $"\n" +
                      $"\n**Upgrade**" +
                     $"\nLevel: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.BaseLevelCost * Math.Pow(ownedCompanion.Companion.LevelCostIncrease, ownedCompanion.CompanionLevel - 1))} {EmojiHandler.GetEmoji("coin")}" +
-                    $"\nAscend: { ownedCompanion.CompanionCopies}/{ ascendCopiesNeeded}", true);
+                    $"\nAscend: { ownedCompanion.CompanionCopies}/{ ascendCopiesNeeded} Copies", true);
                 }
                 else if (ownedCompanion.CompanionLevel < maxLevel && ownedCompanion.CompanionAscendTier == AscendTierEnum.Mythic)
                 {
                     _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.CompanionAscendTier.ToString().ToLower())}",
+                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.AscendTier.ToString().ToLower())}",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
                     $"\nLv: {ownedCompanion.CompanionLevel}/{maxLevel}" +
                     $"\n" +
                     $"\n**Attributes -> Next Lv.**" +
+                    $"\nTier: {tierStarString}" +
                     $"\nDPS: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
                     $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
                     $"\nHP: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
@@ -104,13 +108,14 @@ namespace IdleHeroes.EmbedTemplates
                 else if (ownedCompanion.CompanionLevel == maxLevel && ownedCompanion.CompanionAscendTier != AscendTierEnum.Mythic)
                 {
                     _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.CompanionAscendTier.ToString().ToLower())}",
+                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.AscendTier.ToString().ToLower())}",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
                     $"\nLv: {ownedCompanion.CompanionLevel}/{maxLevel}" +
                     $"\n" +
                     $"\n**Attributes -> Next Lv.**" +
+                    $"\nTier: {tierStarString}" +
                     $"\nDPS: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
                     $" -> MAX" +
                     $"\nHP: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
@@ -123,18 +128,19 @@ namespace IdleHeroes.EmbedTemplates
                     $" -> MAX" +
                     $"\n" +
                     $"\n**Upgrade**" +
-                    $"\nAscend: {ownedCompanion.CompanionCopies}/{ascendCopiesNeeded}", true);
+                    $"\nAscend: {ownedCompanion.CompanionCopies}/{ascendCopiesNeeded} Copies", true);
                 }
                 else
                 {
                     _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.CompanionAscendTier.ToString().ToLower())}",
+                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.AscendTier.ToString().ToLower())}",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
                     $"\nLv: {ownedCompanion.CompanionLevel}/{maxLevel}" +
                     $"\n" +
                     $"\n**Attributes -> Next Lv.**" +
+                    $"\nTier: {tierStarString}" +
                     $"\nDPS: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
                     $" -> MAX" +
                     $"\nHP: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +

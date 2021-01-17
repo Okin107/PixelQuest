@@ -36,7 +36,20 @@ namespace IdleHeroes.EmbedTemplates
 
             foreach (TavernCompanion tavernCompanion in profile.Tavern.Companions)
             {
-                _embed.AddField($"**{tavernCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(tavernCompanion.Companion.IconName)} {tavernCompanion.Companion.Name} " +
+                //Purchased or not
+                string costString = $"{UtilityFunctions.FormatNumber(tavernCompanion.FoodCost)} {EmojiHandler.GetEmoji("food")}";
+                string nameString = tavernCompanion.Companion.Name;
+                string copiesOwnedString = "0";
+                OwnedCompanions alreadyOwnedCompanion = profile.OwnedCompanions.Find(x => x.Companion.Id == tavernCompanion.Companion.Id);
+
+                if(alreadyOwnedCompanion != null)
+                {
+                    costString = "Purchased";
+                    nameString = $"~~{tavernCompanion.Companion.Name}~~";
+                    copiesOwnedString = $"{alreadyOwnedCompanion.CompanionCopies}";
+                }
+
+                _embed.AddField($"**{tavernCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(tavernCompanion.Companion.IconName)} {nameString} " +
                 $"{EmojiHandler.GetEmoji(tavernCompanion.Companion.AscendTier.ToString().ToLower())}",
                 $"\n" +
                 $"\n{EmojiHandler.GetEmoji(tavernCompanion.Companion.Element.ToString().ToLower())} " +
@@ -44,13 +57,15 @@ namespace IdleHeroes.EmbedTemplates
                 $"{EmojiHandler.GetEmoji(tavernCompanion.Companion.DamageType.ToString().ToLower())} " +
                 $"\n" +
                 $"\n**Attributes**" +
+                $"\nTier: {UtilityFunctions.GetTierStars(1)}" +
                 $"\nDPS: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.DPS)}" +
                 $"\nHP: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.HP)}" +
                 $"\nArmor: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.Armor)}" +
                 $"\nAccuracy: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.Accuracy)}" +
                 $"\nAgility: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.Agility)}" +
                  $"\n" +
-                 $"\nCost: {UtilityFunctions.FormatNumber(tavernCompanion.FoodCost)} {EmojiHandler.GetEmoji("food")}", true);
+                 $"\nCost: {costString}" +
+                 $"\nCopies owned: {copiesOwnedString}", true);
             }
 
             return _embed;

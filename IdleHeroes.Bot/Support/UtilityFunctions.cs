@@ -1,4 +1,5 @@
-﻿using IdleHeroes.Models;
+﻿using DSharpPlus.CommandsNext;
+using IdleHeroes.Models;
 using IdleHeroesDAL.Models;
 using System;
 
@@ -18,7 +19,7 @@ namespace IdleHeroes.Support
 
         public static string FormatNumber(ulong number)
         {
-            if(number >= 1000000000000)
+            if (number >= 1000000000000)
             {
                 return $"{number:0.##E+00}";
             }
@@ -32,7 +33,7 @@ namespace IdleHeroes.Support
             }
             if (number >= 1000)
             {
-                return string.Concat(Math.Round(number / (double)1000, 2) , "K");
+                return string.Concat(Math.Round(number / (double)1000, 2), "K");
             }
 
             return Math.Round((double)number, 2).ToString();
@@ -74,7 +75,7 @@ namespace IdleHeroes.Support
             //Remove the minutes already calculated
             double idleMinutesDifference = totalMinutes - profile.RewardMinutesAlreadyCalculated;
 
-            if(idleMinutesDifference < 0)
+            if (idleMinutesDifference < 0)
             {
                 idleMinutesDifference = 0;
             }
@@ -82,6 +83,19 @@ namespace IdleHeroes.Support
             idleTime = new TimeSpan(0, Convert.ToInt32(idleMinutesDifference), 0);
 
             return idleTime;
+        }
+
+        internal static string GetTierStars(int ascendTier)
+        {
+            int stars = ascendTier - 1;
+            string starString = $"{EmojiHandler.GetEmoji("star")}";
+
+            for (int i = 0; i < stars; i++)
+            {
+                starString += $"{EmojiHandler.GetEmoji("star")}";
+            }
+
+            return starString;
         }
 
         public static TimeSpan GetIdleDisplayTime(Profile profile)

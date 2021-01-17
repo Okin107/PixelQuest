@@ -42,17 +42,25 @@ namespace IdleHeroes.Services
 
             var rand = new System.Random();
 
-            for(int i = 1; i<= 3; i++)
+            for (int i = 1; i <= 3; i++)
             {
                 var range = Enumerable.Range(1, companionsList.Count).Where(i => !currentCompanionsIds.Contains(i));
                 int index = rand.Next(0, companionsList.Count - currentCompanionsIds.Count);
                 int companionId = range.ElementAt(index);
                 currentCompanionsIds.Add(companionId);
+                Companion selectedCompanion = companionsList.Find(x => x.Id == companionId);
+
+                ulong foodCost = 10;
+
+                if (selectedCompanion.AscendTier != IdleHeroesDAL.Enums.AscendTierEnum.Common)
+                {
+                    foodCost = foodCost * ((ulong)selectedCompanion.AscendTier - 1) * 3;
+                }
 
                 TavernCompanion tavernCompanion = new TavernCompanion()
                 {
-                    FoodCost = 10,
-                    Companion = companionsList.Find(x => x.Id == companionId)
+                    FoodCost = foodCost,
+                    Companion = selectedCompanion
                 };
 
                 profile.Tavern.Companions.Add(tavernCompanion);
