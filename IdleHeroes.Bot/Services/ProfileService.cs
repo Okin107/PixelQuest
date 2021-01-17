@@ -47,7 +47,7 @@ namespace IdleHeroes.Services
                 Tavern = new Tavern(),
                 //Only for debug
                 Food = 100,
-                Coins = 100000
+                Coins = 200000
             }).ConfigureAwait(false);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
