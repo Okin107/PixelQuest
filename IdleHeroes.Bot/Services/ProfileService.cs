@@ -46,7 +46,8 @@ namespace IdleHeroes.Services
                 LastPlayed = DateTime.Now,
                 Tavern = new Tavern(),
                 //Only for debug
-                Food = 10
+                Food = 100,
+                Coins = 100000
             }).ConfigureAwait(false);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
