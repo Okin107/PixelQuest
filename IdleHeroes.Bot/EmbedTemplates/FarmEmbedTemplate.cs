@@ -6,7 +6,7 @@ using System;
 
 namespace IdleHeroes.EmbedTemplates
 {
-    public static class StageEmbedTemplate
+    public static class FarmEmbedTemplate
     {
         private static DiscordEmbedBuilder _embed;
 
@@ -14,7 +14,7 @@ namespace IdleHeroes.EmbedTemplates
         {
             _embed = new DiscordEmbedBuilder()
             {
-                Color = DiscordColor.Aquamarine,
+                Color = DiscordColor.Green,
                 //Title = $"{profile.Username}'s Current Stage",
                 Author = new DiscordEmbedBuilder.EmbedAuthor()
                 {

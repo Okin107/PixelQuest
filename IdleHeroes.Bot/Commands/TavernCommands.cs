@@ -67,7 +67,7 @@ namespace IdleHeroes.Commands
                     }
                 }
 
-                await ctx.Channel.SendMessageAsync(embed: TavernEmbedTemplate.Show(ctx, profile.Tavern).Build())
+                await ctx.Channel.SendMessageAsync(embed: TavernEmbedTemplate.Show(ctx, profile).Build())
                    .ConfigureAwait(false);
             }
             catch (Exception ex)

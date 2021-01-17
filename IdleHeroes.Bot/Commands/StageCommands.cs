@@ -25,7 +25,37 @@ namespace IdleHeroes.Commands
 
         [Command("stage")]
         [Description("Check the stage you currently are in.")]
-        public async Task Stage(CommandContext ctx, [Description("Collect the rewards you have earned from farming.")] string collect = null)
+        public async Task Stage(CommandContext ctx)
+        {
+            try
+            {
+                //Check if user is registered
+                if (!await _profileService.IsUserRegistered(ctx.Message.Author.Id))
+                {
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Use `.create` to first create a Profile in order to play the game.").Build())
+                        .ConfigureAwait(false);
+                    return;
+                }
+
+                Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
+                Stage stage = await _stageService.GetStageFromProfile(profile).ConfigureAwait(false);
+
+                await ctx.Channel.SendMessageAsync(embed: StageInfoEmbedTemplate.Show(ctx, profile, stage).Build()).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                if (BotSettings.IsDebugMode)
+                {
+                    await ctx.Channel.SendMessageAsync(embed: ErrorEmbedTemplate.Get(ctx, $"COMMAND ERROR: {ex.Message}").Build())
+                    .ConfigureAwait(false);
+                }
+                Console.WriteLine($"COMMAND ERROR: {ex.Message}");
+            }
+        }
+
+        [Command("farm")]
+        [Description("Check the stage you currently are in.")]
+        public async Task Farm(CommandContext ctx, [Description("Collect the rewards you have earned from farming.")] string collect = null)
         {
             try
             {
@@ -57,7 +87,7 @@ namespace IdleHeroes.Commands
                     await ctx.Channel.SendMessageAsync(embed: StageInfoEmbedTemplate.Show(ctx, profile, stage).Build()).ConfigureAwait(false);
                     return;
                 }
-                
+
                 if (!string.IsNullOrEmpty(collect))
                 {
                     await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Make sure to use the correct parameters for the command. Please check `.help` for more information.").Build())
@@ -68,7 +98,7 @@ namespace IdleHeroes.Commands
                 //Save the profile
                 await _profileService.Update(ctx, profile);
 
-                await ctx.Channel.SendMessageAsync(embed: StageEmbedTemplate.Show(ctx, profile, stage).Build()).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(embed: FarmEmbedTemplate.Show(ctx, profile, stage).Build()).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -149,7 +179,7 @@ namespace IdleHeroes.Commands
 
                 TimeSpan lastRewardCollectedTime = DateTime.Now - profile.LastRewardsCollected;
 
-                if(lastRewardCollectedTime.TotalSeconds / 60 >= 1)
+                if (lastRewardCollectedTime.TotalSeconds / 60 >= 1)
                 {
                     profile.RewardMinutesAlreadyCalculated = 0;
                     profile.LastRewardsCollected = DateTime.Now;

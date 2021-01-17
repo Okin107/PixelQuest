@@ -11,9 +11,11 @@ namespace IdleHeroes.Support
     {
         private static readonly List<DiscordEmoji> Emojis = new List<DiscordEmoji>();
 
-        public static string GetEmoji(string name)
+        public static DiscordEmoji GetEmoji(string name)
         {
-            return Emojis.Find(x => x.Name.Substring(4).Equals(name));
+            DiscordEmoji emojiFound = Emojis.Find(x => x.Name.Substring(4).Equals(name));
+
+            return emojiFound;
         }
 
         public static void SetupEmojis(DiscordClient client)

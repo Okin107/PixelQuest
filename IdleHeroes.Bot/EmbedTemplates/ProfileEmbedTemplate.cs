@@ -44,12 +44,13 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Gems)}" +
                 $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Relics)}", true);
 
-            _embed.AddField("Level & DPS", 
-                $"Level: {profile.Level}" +
+            _embed.AddField("Hero", 
+                $"{EmojiHandler.GetEmoji("lvl")} {profile.Level}" +
                 $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.XP)}" +
-                $"\nHero DPS: {UtilityFunctions.FormatNumber(profile.BaseDPS)}", true);
+                $"\n⚔️ {UtilityFunctions.FormatNumber(profile.BaseDPS)}", true);
 
-            _embed.AddField("Stage Info", $"Number: {profile.Stage.Number}", true);
+            _embed.AddField("Stage", $"Nr: {profile.Stage.Number}" +
+                $"\nDifficulty: {profile.Stage.Difficulty}", true);
 
             _embed.AddField("Registered", $"{profile.RegisteredOn.ToString(BotSettings.DefaultDateFormat)}", true);
             _embed.AddField("Max Idle Time", $"{profile.MaximumIdleRewardHours} hours", true);
