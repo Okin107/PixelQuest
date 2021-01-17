@@ -46,7 +46,7 @@ namespace IdleHeroes.Commands
 
         [Command("comp")]
         [Description("Preview and manage all your Companions.")]
-        public async Task OwnedCompanions(CommandContext ctx, [Description("The Companion ID which you wish to select.")] string companionId = null, [Description("The action you want to take on the selected Copmanion (<level>, <ascend>)")] string action = null)
+        public async Task OwnedCompanions(CommandContext ctx, [Description("The Companion ID which you wish to select.")] string companionId = null, [Description("The action you want to take on the selected Companion (<level>, <ascend>)")] string action = null)
         {
             try
             {
