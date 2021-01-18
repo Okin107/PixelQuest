@@ -56,6 +56,7 @@ namespace IdleHeroes
             Commands.RegisterCommands<StageCommands>();
             Commands.RegisterCommands<CompanionCommands>();
             Commands.RegisterCommands<TavernCommands>();
+            Commands.RegisterCommands<TeamCommands>();
 
             Client.ConnectAsync();
 

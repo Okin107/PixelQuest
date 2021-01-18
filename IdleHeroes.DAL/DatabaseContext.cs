@@ -13,5 +13,7 @@ namespace IdleHeroesDAL
         public DbSet<OwnedCompanions> OwnedCompanions { get; set; }
         public DbSet<Tavern> Tavern { get; set; }
         public DbSet<TavernCompanion> TavernCompanion { get; set; }
+        public DbSet<Team> Team { get; set; }
+        public DbSet<TeamCompanion> TeamCompanion { get; set; }
     }
 }

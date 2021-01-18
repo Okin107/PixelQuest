@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210118110017_TeamTablesAdded2")]
+    partial class TeamTablesAdded2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -359,7 +361,7 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("OwnedCompanionId")
+                    b.Property<int?>("CompanionId")
                         .HasColumnType("int");
 
                     b.Property<int?>("TeamId")
@@ -370,7 +372,7 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnedCompanionId");
+                    b.HasIndex("CompanionId");
 
                     b.HasIndex("TeamId");
 
@@ -427,9 +429,9 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 
             modelBuilder.Entity("IdleHeroesDAL.Models.TeamCompanion", b =>
                 {
-                    b.HasOne("IdleHeroesDAL.Models.OwnedCompanions", "OwnedCompanion")
+                    b.HasOne("IdleHeroesDAL.Models.Companion", "Companion")
                         .WithMany()
-                        .HasForeignKey("OwnedCompanionId");
+                        .HasForeignKey("CompanionId");
 
                     b.HasOne("IdleHeroesDAL.Models.Team", null)
                         .WithMany("Companions")

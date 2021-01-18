@@ -45,6 +45,7 @@ namespace IdleHeroes.Services
                 RegisteredOn = DateTime.Now,
                 LastPlayed = DateTime.Now,
                 Tavern = new Tavern(),
+                Team = new Team(),
                 //Only for debug
                 Food = 500,
                 Coins = 1000000,
@@ -66,6 +67,10 @@ namespace IdleHeroes.Services
                 .Include(x => x.Tavern)
                 .ThenInclude(x => x.Purchases)
                 .ThenInclude(x => x.TavernCompanion)
+                .Include(x => x.Team)
+                .ThenInclude(x => x.Companions)
+                .ThenInclude(x => x.OwnedCompanion)
+                .ThenInclude(x => x.Companion)
                 .FirstOrDefaultAsync(x => x.Username.Equals(username));
         }
 
@@ -81,6 +86,10 @@ namespace IdleHeroes.Services
                 .Include(x => x.Tavern)
                 .ThenInclude(x => x.Purchases)
                 .ThenInclude(x => x.TavernCompanion)
+                .Include(x => x.Team)
+                .ThenInclude(x => x.Companions)
+                .ThenInclude(x => x.OwnedCompanion)
+                .ThenInclude(x => x.Companion)
                 .FirstOrDefaultAsync(x => x.DiscordId.Equals(ctx.Message.Author.Id));
         }
 

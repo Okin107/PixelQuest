@@ -1,9 +1,9 @@
 {
   "token": "Nzk3Nzc5NjIxNDQ5Njk1Mjcy.X_rcKw.tAznmN4HwpBERsxqUqfM87zf7W8",
   "devtoken": "Nzk5NzUwODk3OTgyNjM2MDMy.YAIIEA.8wqsBGAPujVJOni_XTEXjAG_L_o",
-  "devmode": false,
+  "devmode": true,
   "prefix": ".",
-  "statusMessages": true,
+  "statusMessages": false,
   "isdebugmode": true,
   "defaultdateformat": "dd MMMM yyyy",
   "defaultdatetimeformat": "dd MMMM yyyy - HH:mm",

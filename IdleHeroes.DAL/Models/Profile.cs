@@ -36,7 +36,8 @@ namespace IdleHeroesDAL.Models
         //Owned items
         public List<OwnedCompanions> OwnedCompanions { get; set; }
 
-        //Tavern
+        //Relations
         public Tavern Tavern { get; set; }
+        public Team Team { get; set; }
     }
 }

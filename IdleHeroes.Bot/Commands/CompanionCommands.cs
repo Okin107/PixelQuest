@@ -153,7 +153,7 @@ namespace IdleHeroes.Commands
 
             await _profileService.Update(ctx, profile);
 
-            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully ascended {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** to **{selectedCompanion.CompanionAscendTier} {EmojiHandler.GetEmoji(selectedCompanion.CompanionAscendTier.ToString().ToLower())}** by using **{ascendCopiesNeeded}** of his copies.").Build())
+            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully ascended {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** to **{UtilityFunctions.GetTierStars((int)selectedCompanion.CompanionAscendTier)}** by using **{ascendCopiesNeeded}** of his copies.").Build())
     .ConfigureAwait(false);
             return;
         }
