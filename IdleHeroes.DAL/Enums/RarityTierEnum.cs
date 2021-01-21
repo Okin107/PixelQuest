@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IdleHeroesDAL.Enums
 {
-    public enum AscendTierEnum
+    public enum RarityTierEnum
     {
         Common = 1,
         Rare = 2,

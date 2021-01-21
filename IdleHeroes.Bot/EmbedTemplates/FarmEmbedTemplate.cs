@@ -10,7 +10,7 @@ namespace IdleHeroes.EmbedTemplates
     {
         private static DiscordEmbedBuilder _embed;
 
-        public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile, Stage stage)
+        public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile)
         {
             _embed = new DiscordEmbedBuilder()
             {
@@ -18,7 +18,7 @@ namespace IdleHeroes.EmbedTemplates
                 //Title = $"{profile.Username}'s Current Stage",
                 Author = new DiscordEmbedBuilder.EmbedAuthor()
                 {
-                    Name = $"{profile.Username} - Stage {stage.Number}",
+                    Name = $"{profile.Username} - Stage {profile.Stage.Number}",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
                 //Description = $"**Stage info**" +

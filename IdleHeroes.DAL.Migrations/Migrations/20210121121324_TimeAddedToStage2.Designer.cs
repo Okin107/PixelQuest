@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210121121324_TimeAddedToStage2")]
+    partial class TimeAddedToStage2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,9 +240,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("decimal(20,0)");
 
                     b.Property<decimal>("Gems")
-                        .HasColumnType("decimal(20,0)");
-
-                    b.Property<decimal>("HP")
                         .HasColumnType("decimal(20,0)");
 
                     b.Property<decimal>("IdleCoins")

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace IdleHeroes.EmbedTemplates
 {
-    public static class StageInfoEmbedTemplate
+    public static class StageFightResultEmbedTemplate
     {
         private static DiscordEmbedBuilder _embed;
 
@@ -29,8 +29,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.CoinsPerMinute)} per min" +
                 $"\n{EmojiHandler.GetEmoji("food")} {profile.Stage.FoodChancePerMinute}% for {UtilityFunctions.FormatNumber(profile.Stage.FoodAmount)} per min" +
                 $"\n{EmojiHandler.GetEmoji("gem")} {profile.Stage.GemsDropChancePerMinute}% for {UtilityFunctions.FormatNumber(profile.Stage.GemsAmount)} per min" +
-                $"\n{EmojiHandler.GetEmoji("relic")} {profile.Stage.RelicsDropChancePerMinute}% for {UtilityFunctions.FormatNumber(profile.Stage.RelicsAmount)} per min" +
-                $"\nTime to beat: {profile.Stage.TimeToBeat}"
+                $"\n{EmojiHandler.GetEmoji("relic")} {profile.Stage.RelicsDropChancePerMinute}% for {UtilityFunctions.FormatNumber(profile.Stage.RelicsAmount)} per min"
                 ,
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {

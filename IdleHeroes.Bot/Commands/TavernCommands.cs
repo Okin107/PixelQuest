@@ -78,6 +78,9 @@ namespace IdleHeroes.Commands
 
                             await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully refreshed the **Tavern** by spending **1** {EmojiHandler.GetEmoji("gem")}.").Build())
                 .ConfigureAwait(false);
+
+                            await ctx.Channel.SendMessageAsync(embed: TavernEmbedTemplate.Show(ctx, profile).Build())
+                   .ConfigureAwait(false);
                             return;
                         }
 
@@ -133,24 +136,24 @@ namespace IdleHeroes.Commands
             }
 
             //Find if already owned
-            OwnedCompanions ownedCompanionSearch = profile.OwnedCompanions.Find(x => x.Companion.Id == selectedCompanion.Companion.Id);
+            OwnedCompanion ownedCompanionSearch = profile.OwnedCompanions.Find(x => x.Companion.Id == selectedCompanion.Companion.Id);
 
-            OwnedCompanions purchasedCompanion = null;
+            OwnedCompanion purchasedCompanion = null;
             if (ownedCompanionSearch == null)
             {
-                purchasedCompanion = new OwnedCompanions()
+                purchasedCompanion = new OwnedCompanion()
                 {
                     Companion = selectedCompanion.Companion,
-                    CompanionCopies = 1,
-                    CompanionLevel = 1,
-                    CompanionAscendTier = IdleHeroesDAL.Enums.AscendTierEnum.Common
+                    Copies = 1,
+                    Level = 1,
+                    RarirtyTier = IdleHeroesDAL.Enums.RarityTierEnum.Common
                 };
 
                 profile.OwnedCompanions.Add(purchasedCompanion);
             }
             else
             {
-                ownedCompanionSearch.CompanionCopies += 1;
+                ownedCompanionSearch.Copies += 1;
             }
 
             //Add purchase to tavern history

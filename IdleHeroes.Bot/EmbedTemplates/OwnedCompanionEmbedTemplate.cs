@@ -38,118 +38,105 @@ namespace IdleHeroes.EmbedTemplates
                 _embed.Description += "\n\nYou do not have any Companions yet. You can hire some from the Tavern(`.tavern`).";
             }
 
-            foreach (OwnedCompanions ownedCompanion in profile.OwnedCompanions)
+            foreach (OwnedCompanion ownedCompanion in profile.OwnedCompanions)
             {
-                double levelMultiplierBoost = 1;
-
-                if ((int)ownedCompanion.CompanionAscendTier >= 2)
-                {
-                    levelMultiplierBoost = Math.Pow(2, Math.Floor((double)ownedCompanion.CompanionAscendTier - 1));
-                }
-
-                string tierStarString = UtilityFunctions.GetTierStars((int)ownedCompanion.CompanionAscendTier);
-
-                //Find max level
-                double maxLevel = (ownedCompanion.Companion.MaxLevel / 5) * (double)ownedCompanion.CompanionAscendTier;
-                double ascendCopiesNeeded = ownedCompanion.Companion.BaseAscendCopiesNeeded * Math.Pow(ownedCompanion.Companion.AscendCopiesTierIncrease, (double)ownedCompanion.CompanionAscendTier - 1);
-
-                if (ownedCompanion.CompanionLevel < maxLevel && ownedCompanion.CompanionAscendTier != AscendTierEnum.Mythic)
+                if (ownedCompanion.Level < CompanionHelper.GetMaxLevel(ownedCompanion) && ownedCompanion.RarirtyTier != RarityTierEnum.Mythic)
                 {
                     _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.AscendTier.ToString().ToLower())}",
+                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
-                    $"\nLv: {ownedCompanion.CompanionLevel}/{maxLevel}" +
+                    $"\nLv: {ownedCompanion.Level}/{CompanionHelper.GetMaxLevel(ownedCompanion)}" +
                     $"\n" +
                     $"\n**Attributes -> Next Lv.**" +
-                    $"\nTier: {tierStarString}" +
-                    $"\nDPS: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
-                    $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
-                    $"\nHP: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
-                    $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
-                    $"\nArmor: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Armor * Math.Pow(ownedCompanion.Companion.ArmorIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
-                    $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Armor * Math.Pow(ownedCompanion.Companion.ArmorIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
-                    $"\nAccuracy: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Accuracy * Math.Pow(ownedCompanion.Companion.AccuracyIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
-                    $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Accuracy * Math.Pow(ownedCompanion.Companion.AccuracyIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
-                    $"\nAgility: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Agility * Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
-                    $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Agility * Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
+                    $"\nTier: {UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
+                    $"\nDPS: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS)}" +
+                    $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS, true)}" +
+                    $"\nHP: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP)}" +
+                    $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP, true)}" +
+                    $"\nArmor: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor)}" +
+                    $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor, true)}" +
+                    $"\nAccuracy: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
+                    $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy, true)}" +
+                    $"\nAgility: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
+                    $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility, true)}" +
                     $"\n" +
                      $"\n**Upgrade**" +
-                    $"\nLevel: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.BaseLevelCost * Math.Pow(ownedCompanion.Companion.LevelCostIncrease, ownedCompanion.CompanionLevel - 1))} {EmojiHandler.GetEmoji("coin")}" +
-                    $"\nAscend: { ownedCompanion.CompanionCopies}/{ ascendCopiesNeeded} Copies", true);
+                    $"\nLevel: {CompanionHelper.NextLevelCost(ownedCompanion)} {EmojiHandler.GetEmoji("coin")}" +
+                    $"\nAscend: {ownedCompanion.Copies}/{CompanionHelper.GetAscendCopiesNeeded(ownedCompanion)} Copies", true);
                 }
-                else if (ownedCompanion.CompanionLevel < maxLevel && ownedCompanion.CompanionAscendTier == AscendTierEnum.Mythic)
+                else if (ownedCompanion.Level < CompanionHelper.GetMaxLevel(ownedCompanion) && ownedCompanion.RarirtyTier == RarityTierEnum.Mythic)
                 {
                     _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.AscendTier.ToString().ToLower())}",
+                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
-                    $"\nLv: {ownedCompanion.CompanionLevel}/{maxLevel}" +
+                    $"\nLv: {ownedCompanion.Level}/{CompanionHelper.GetMaxLevel(ownedCompanion)}" +
                     $"\n" +
                     $"\n**Attributes -> Next Lv.**" +
-                    $"\nTier: {tierStarString}" +
-                    $"\nDPS: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
-                    $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
-                    $"\nHP: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
-                    $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
-                    $"\nArmor: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Armor * Math.Pow(ownedCompanion.Companion.ArmorIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
-                    $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Armor * Math.Pow(ownedCompanion.Companion.ArmorIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
-                    $"\nAccuracy: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Accuracy * Math.Pow(ownedCompanion.Companion.AccuracyIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
-                    $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Accuracy * Math.Pow(ownedCompanion.Companion.AccuracyIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
-                    $"\nAgility: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Agility * Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
-                    $" -> {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Agility * Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, ownedCompanion.CompanionLevel) * levelMultiplierBoost)}" +
+                    $"\nTier: {UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
+                    $"\nDPS: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS)}" +
+                    $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS, true)}" +
+                    $"\nHP: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP)}" +
+                    $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP, true)}" +
+                    $"\nArmor: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor)}" +
+                    $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor, true)}" +
+                    $"\nAccuracy: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
+                    $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy, true)}" +
+                    $"\nAgility: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
+                    $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility, true)}" +
                     $"\n" +
                      $"\n**Upgrade**" +
-                    $"\nLevel: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.BaseLevelCost * Math.Pow(ownedCompanion.Companion.LevelCostIncrease, ownedCompanion.CompanionLevel - 1))} {EmojiHandler.GetEmoji("coin")}" +
+                    $"\nLevel: {CompanionHelper.NextLevelCost(ownedCompanion)} {EmojiHandler.GetEmoji("coin")}" +
                     $"\nAscend: MAX", true);
                 }
-                else if (ownedCompanion.CompanionLevel == maxLevel && ownedCompanion.CompanionAscendTier != AscendTierEnum.Mythic)
+                else if (ownedCompanion.Level == CompanionHelper.GetMaxLevel(ownedCompanion) && ownedCompanion.RarirtyTier != RarityTierEnum.Mythic)
                 {
                     _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.AscendTier.ToString().ToLower())}",
+                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
-                    $"\nLv: {ownedCompanion.CompanionLevel}/{maxLevel}" +
+                    $"\nLv: {ownedCompanion.Level}/{CompanionHelper.GetMaxLevel(ownedCompanion)}" +
                     $"\n" +
                     $"\n**Attributes -> Next Lv.**" +
-                    $"\nTier: {tierStarString}" +
-                    $"\nDPS: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                    $"\nTier: {UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
+                    $"\nDPS: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS)}" +
                     $" -> MAX" +
-                    $"\nHP: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                    $"\nHP: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP)}" +
                     $" -> MAX" +
-                    $"\nArmor: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Armor * Math.Pow(ownedCompanion.Companion.ArmorIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                    $"\nArmor: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor)}" +
                     $" -> MAX" +
-                    $"\nAccuracy: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Accuracy * Math.Pow(ownedCompanion.Companion.AccuracyIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                    $"\nAccuracy: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
                     $" -> MAX" +
-                    $"\nAgility: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Agility * Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                     $"\nAgility: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
                     $" -> MAX" +
                     $"\n" +
                     $"\n**Upgrade**" +
-                    $"\nAscend: {ownedCompanion.CompanionCopies}/{ascendCopiesNeeded} Copies", true);
+                    $"\nAscend: {ownedCompanion.Copies}/{CompanionHelper.GetAscendCopiesNeeded(ownedCompanion)} Copies", true);
                 }
                 else
                 {
                     _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.AscendTier.ToString().ToLower())}",
+                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
-                    $"\nLv: {ownedCompanion.CompanionLevel}/{maxLevel}" +
+                    $"\nLv: {ownedCompanion.Level}/{CompanionHelper.GetMaxLevel(ownedCompanion)}" +
                     $"\n" +
                     $"\n**Attributes -> Next Lv.**" +
-                    $"\nTier: {tierStarString}" +
-                    $"\nDPS: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.DPS * Math.Pow(ownedCompanion.Companion.DPSIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                    $"\nTier: {UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
+                    $"\nDPS: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS)}" +
                     $" -> MAX" +
-                    $"\nHP: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                    $"\nHP: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP)}" +
                     $" -> MAX" +
-                    $"\nArmor: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Armor * Math.Pow(ownedCompanion.Companion.ArmorIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                    $"\nArmor: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor)}" +
                     $" -> MAX" +
-                    $"\nAccuracy: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Accuracy * Math.Pow(ownedCompanion.Companion.AccuracyIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                    $"\nAccuracy: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
                     $" -> MAX" +
-                    $"\nAgility: {UtilityFunctions.FormatNumber(ownedCompanion.Companion.Agility * Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, ownedCompanion.CompanionLevel - 1) * levelMultiplierBoost)}" +
+                     $"\nAgility: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
                     $" -> MAX" +
                     $"\n" +
                     $"\n**Upgrade**" +

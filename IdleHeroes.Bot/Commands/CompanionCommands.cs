@@ -110,7 +110,7 @@ namespace IdleHeroes.Commands
 
         private async Task AscendCompanion(CommandContext ctx, Profile profile, int compId)
         {
-            OwnedCompanions selectedCompanion = profile.OwnedCompanions.Find(x => x.Companion.Id == compId);
+            OwnedCompanion selectedCompanion = profile.OwnedCompanions.Find(x => x.Companion.Id == compId);
 
             if (selectedCompanion == null)
             {
@@ -120,7 +120,7 @@ namespace IdleHeroes.Commands
             }
 
             //Max ascend reached
-            if (selectedCompanion.CompanionAscendTier == IdleHeroesDAL.Enums.AscendTierEnum.Mythic)
+            if (selectedCompanion.RarirtyTier == IdleHeroesDAL.Enums.RarityTierEnum.Mythic)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"{EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** has reached the maximum **Ascend Tier**.").Build())
     .ConfigureAwait(false);
@@ -128,9 +128,9 @@ namespace IdleHeroes.Commands
             }
 
             //Check if companion is at max level
-            double maxLevel = (selectedCompanion.Companion.MaxLevel / 5) * (double)selectedCompanion.CompanionAscendTier;
+            double maxLevel = (selectedCompanion.Companion.MaxLevel / 5) * (double)selectedCompanion.RarirtyTier;
 
-            if (selectedCompanion.CompanionLevel < maxLevel)
+            if (selectedCompanion.Level < maxLevel)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"{EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** has to be at the maximum level of his current **Ascend Tier** in order to be ascended further.").Build())
     .ConfigureAwait(false);
@@ -138,29 +138,29 @@ namespace IdleHeroes.Commands
             }
 
             //Check if it can be ascended
-            double ascendCopiesNeeded = selectedCompanion.Companion.BaseAscendCopiesNeeded * Math.Pow(selectedCompanion.Companion.AscendCopiesTierIncrease, (double)selectedCompanion.CompanionAscendTier - 1);
+            double ascendCopiesNeeded = selectedCompanion.Companion.BaseAscendCopiesNeeded * Math.Pow(selectedCompanion.Companion.AscendCopiesTierIncrease, (double)selectedCompanion.RarirtyTier - 1);
 
-            if (selectedCompanion.CompanionCopies < ascendCopiesNeeded)
+            if (selectedCompanion.Copies < ascendCopiesNeeded)
             {
-                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have **{selectedCompanion.CompanionCopies}** copies," +
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have **{selectedCompanion.Copies}** copies," +
                     $" but you need **{ascendCopiesNeeded}** copies to ascend {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** to the next **Ascend Tier**.").Build())
     .ConfigureAwait(false);
                 return;
             }
 
-            selectedCompanion.CompanionCopies -= Convert.ToInt32(ascendCopiesNeeded);
-            selectedCompanion.CompanionAscendTier += 1;
+            selectedCompanion.Copies -= Convert.ToInt32(ascendCopiesNeeded);
+            selectedCompanion.RarirtyTier += 1;
 
             await _profileService.Update(ctx, profile);
 
-            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully ascended {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** to **{UtilityFunctions.GetTierStars((int)selectedCompanion.CompanionAscendTier)}** by using **{ascendCopiesNeeded}** of his copies.").Build())
+            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully ascended {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** to **{UtilityFunctions.GetTierStars((int)selectedCompanion.RarirtyTier)}** by using **{ascendCopiesNeeded}** of his copies.").Build())
     .ConfigureAwait(false);
             return;
         }
 
         private async Task LevelCompanion(CommandContext ctx, Profile profile, int compId)
         {
-            OwnedCompanions selectedCompanion = profile.OwnedCompanions.Find(x => x.Companion.Id == compId);
+            OwnedCompanion selectedCompanion = profile.OwnedCompanions.Find(x => x.Companion.Id == compId);
 
             if (selectedCompanion == null)
             {
@@ -170,9 +170,9 @@ namespace IdleHeroes.Commands
             }
 
             //Max level reached
-            double maxLevel = (selectedCompanion.Companion.MaxLevel / 5) * (double)selectedCompanion.CompanionAscendTier;
+            double maxLevel = (selectedCompanion.Companion.MaxLevel / 5) * (double)selectedCompanion.RarirtyTier;
 
-            if(selectedCompanion.CompanionLevel == maxLevel)
+            if(selectedCompanion.Level == maxLevel)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"{EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** has reached the maximum level for this **Ascend Tier**.").Build())
     .ConfigureAwait(false);
@@ -182,9 +182,9 @@ namespace IdleHeroes.Commands
             //Check if it can be purchased
             double levelCost = selectedCompanion.Companion.BaseLevelCost;
 
-            if (selectedCompanion.CompanionLevel > 1)
+            if (selectedCompanion.Level > 1)
             {
-                double levelCostMultiplier = Math.Pow(selectedCompanion.Companion.LevelCostIncrease, selectedCompanion.CompanionLevel - 1);
+                double levelCostMultiplier = Math.Pow(selectedCompanion.Companion.LevelCostIncrease, selectedCompanion.Level - 1);
                 levelCost = selectedCompanion.Companion.BaseLevelCost * levelCostMultiplier;
             }
 
@@ -201,11 +201,11 @@ namespace IdleHeroes.Commands
             
 
             profile.Coins -= (ulong)levelCost;
-            selectedCompanion.CompanionLevel += 1;
+            selectedCompanion.Level += 1;
 
             await _profileService.Update(ctx, profile);
 
-            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully leveled {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** to level **{selectedCompanion.CompanionLevel}** for **{UtilityFunctions.FormatNumber((ulong)levelCost)}** {EmojiHandler.GetEmoji("coin")}.").Build())
+            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully leveled {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** to level **{selectedCompanion.Level}** for **{UtilityFunctions.FormatNumber((ulong)levelCost)}** {EmojiHandler.GetEmoji("coin")}.").Build())
     .ConfigureAwait(false);
             return;
         }

@@ -48,7 +48,7 @@ namespace IdleHeroes.EmbedTemplates
                 }
 
                 _embed.AddField($"**{tavernCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(tavernCompanion.Companion.IconName)} {nameString} " +
-                $"{EmojiHandler.GetEmoji(tavernCompanion.Companion.AscendTier.ToString().ToLower())}",
+                $"{EmojiHandler.GetEmoji(tavernCompanion.Companion.RarityTier.ToString().ToLower())}",
                 $"\n" +
                 $"\n{EmojiHandler.GetEmoji(tavernCompanion.Companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(tavernCompanion.Companion.Class.ToString().ToLower())} " +

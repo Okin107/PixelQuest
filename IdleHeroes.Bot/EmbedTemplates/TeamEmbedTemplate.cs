@@ -5,6 +5,7 @@ using IdleHeroesDAL.Enums;
 using IdleHeroesDAL.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace IdleHeroes.EmbedTemplates
 {
@@ -156,11 +157,29 @@ namespace IdleHeroes.EmbedTemplates
             _embed.AddField($"Team grid", $"🟦 \u200B \u200B \u200B \u200B \u200B 🇨 " +
                 $"\u200B \u200B \u200B \u200B \u200B 🇧 " +
                 $"\u200B \u200B \u200B \u200B \u200B 🇦 \n" +
-                                        $"\n1️⃣ \u200B \u200B \u200B \u200B \u200B {stringC1} \u200B \u200B \u200B \u200B \u200B {stringB1} \u200B \u200B \u200B \u200B \u200B {stringA1}" +
-                                        $"\n" +
-                                        $"\n2️⃣ \u200B \u200B \u200B \u200B \u200B {stringC2} \u200B \u200B \u200B \u200B \u200B {stringB2} \u200B \u200B \u200B \u200B \u200B {stringA2}" +
-                                        $"\n" +
-                                        $"\n3️⃣ \u200B \u200B \u200B \u200B \u200B {stringC3} \u200B \u200B \u200B \u200B \u200B {stringB3} \u200B \u200B \u200B \u200B \u200B {stringA3}", true);
+                $"\n1️⃣ \u200B \u200B \u200B \u200B \u200B {stringC1} \u200B \u200B \u200B \u200B \u200B {stringB1} \u200B \u200B \u200B \u200B \u200B {stringA1}" +
+                $"\n" +
+                $"\n2️⃣ \u200B \u200B \u200B \u200B \u200B {stringC2} \u200B \u200B \u200B \u200B \u200B {stringB2} \u200B \u200B \u200B \u200B \u200B {stringA2}" +
+                $"\u200B \u200B \u200B \u200B \u200B ---> Enemy" +
+                $"\n" +
+                $"\n3️⃣ \u200B \u200B \u200B \u200B \u200B {stringC3} \u200B \u200B \u200B \u200B \u200B {stringB3} \u200B \u200B \u200B \u200B \u200B {stringA3}");
+
+            profile.Team.Companions = profile.Team.Companions.OrderBy(x => x.TeamPosition).ToList();
+
+            _embed.AddField($"\u200B", "**Grid details**");
+
+            _embed.AddField($"**{heroPosition}**: ⚔️ {profile.Username}",
+                $"Lv: {profile.Level}");
+
+            foreach (TeamCompanion companion in profile.Team.Companions)
+            {
+                _embed.AddField($"**{companion.TeamPosition}**: {EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.IconName)} {companion.OwnedCompanion.Companion.Name}" +
+                $" {EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.RarityTier.ToString().ToLower())}",
+                $"\n{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.Element.ToString().ToLower())} " +
+                $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.Class.ToString().ToLower())} " +
+                $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.DamageType.ToString().ToLower())} " +
+                $"\nLv: {companion.OwnedCompanion.Level}/{CompanionHelper.GetMaxLevel(companion.OwnedCompanion)}");
+            }
 
             return _embed;
         }

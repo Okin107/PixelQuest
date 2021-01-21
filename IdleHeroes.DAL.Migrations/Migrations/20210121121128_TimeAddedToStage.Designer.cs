@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210121121128_TimeAddedToStage")]
+    partial class TimeAddedToStage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,9 +242,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.Property<decimal>("Gems")
                         .HasColumnType("decimal(20,0)");
 
-                    b.Property<decimal>("HP")
-                        .HasColumnType("decimal(20,0)");
-
                     b.Property<decimal>("IdleCoins")
                         .HasColumnType("decimal(20,0)");
 
@@ -345,8 +344,8 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.Property<decimal>("RelicsDropChancePerMinute")
                         .HasColumnType("decimal(20,0)");
 
-                    b.Property<TimeSpan>("TimeToBeat")
-                        .HasColumnType("time");
+                    b.Property<int>("TimeToBeatSeconds")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("XPPerMinute")
                         .HasColumnType("decimal(20,0)");

@@ -8,12 +8,12 @@ namespace IdleHeroesDAL.Enums
     {
         A1 = 0,
         A2 = 1,
-        A3 = 3,
-        B1 = 4,
-        B2 = 5,
-        B3 = 6,
-        C1 = 7,
-        C2 = 8,
-        C3 = 9
+        A3 = 2,
+        B1 = 3,
+        B2 = 4,
+        B3 = 5,
+        C1 = 6,
+        C2 = 7,
+        C3 = 8
     }
 }

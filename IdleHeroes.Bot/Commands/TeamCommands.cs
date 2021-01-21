@@ -171,7 +171,7 @@ namespace IdleHeroes.Commands
             }
 
             TeamCompanion companionToBeReplaced = profile.Team.Companions.Find(x => x.TeamPosition == tPosition);
-            OwnedCompanions companionToPlace = profile.OwnedCompanions.Find(x => x.Companion.Id == compId);
+            OwnedCompanion companionToPlace = profile.OwnedCompanions.Find(x => x.Companion.Id == compId);
 
             if(companionToPlace == null)
             {

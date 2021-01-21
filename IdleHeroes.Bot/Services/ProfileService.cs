@@ -38,7 +38,8 @@ namespace IdleHeroes.Services
                 DiscordId = ctx.Message.Author.Id,
                 DiscordName = $"{ctx.Message.Author.Username}#{ctx.Message.Author.Discriminator}",
                 Level = 1,
-                BaseDPS = 1,
+                BaseDPS = 2,
+                HP = 100,
                 LastRewardsCollected = DateTime.Now,
                 MaximumIdleRewardHours = 1,
                 Stage = await _stageService.GetStageFromNumber(1),
@@ -46,6 +47,8 @@ namespace IdleHeroes.Services
                 LastPlayed = DateTime.Now,
                 Tavern = new Tavern(),
                 Team = new Team(),
+                XPBaseLevel = 50,
+                XPIncreasePerLevel = 1.5,
                 //Only for debug
                 Food = 500,
                 Coins = 1000000,
@@ -59,6 +62,8 @@ namespace IdleHeroes.Services
         {
             return await _context.Profile
                 .Include(x => x.Stage)
+                .ThenInclude(x => x.Enemies)
+                .ThenInclude(x => x.Enemy)
                 .Include(x => x.OwnedCompanions)
                 .ThenInclude(x => x.Companion)
                 .Include(x => x.Tavern)
@@ -78,6 +83,8 @@ namespace IdleHeroes.Services
         {
             return await _context.Profile
                 .Include(x => x.Stage)
+                .ThenInclude(x => x.Enemies)
+                .ThenInclude(x => x.Enemy)
                 .Include(x => x.OwnedCompanions)
                 .ThenInclude(x => x.Companion)
                 .Include(x => x.Tavern)

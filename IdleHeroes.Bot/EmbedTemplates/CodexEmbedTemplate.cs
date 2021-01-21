@@ -24,11 +24,11 @@ namespace IdleHeroes.EmbedTemplates
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
                 Description = $"**Icons description:**" +
-                $"\nRarity: {EmojiHandler.GetEmoji(AscendTierEnum.Common.ToString().ToLower())} Common, " +
-                $"{EmojiHandler.GetEmoji(AscendTierEnum.Rare.ToString().ToLower())} Rare, " +
-                $"{EmojiHandler.GetEmoji(AscendTierEnum.Epic.ToString().ToLower())} Epic, " +
-                $"{EmojiHandler.GetEmoji(AscendTierEnum.Legendary.ToString().ToLower())} Legendary, " +
-                $"{EmojiHandler.GetEmoji(AscendTierEnum.Mythic.ToString().ToLower())} Mythic." +
+                $"\nRarity: {EmojiHandler.GetEmoji(RarityTierEnum.Common.ToString().ToLower())} Common, " +
+                $"{EmojiHandler.GetEmoji(RarityTierEnum.Rare.ToString().ToLower())} Rare, " +
+                $"{EmojiHandler.GetEmoji(RarityTierEnum.Epic.ToString().ToLower())} Epic, " +
+                $"{EmojiHandler.GetEmoji(RarityTierEnum.Legendary.ToString().ToLower())} Legendary, " +
+                $"{EmojiHandler.GetEmoji(RarityTierEnum.Mythic.ToString().ToLower())} Mythic." +
                 $"\nElements: {EmojiHandler.GetEmoji(ElementTypeEnum.Nature.ToString().ToLower())} Nature, " +
                 $"{EmojiHandler.GetEmoji(ElementTypeEnum.Water.ToString().ToLower())} Water, " +
                 $"{EmojiHandler.GetEmoji(ElementTypeEnum.Fire.ToString().ToLower())} Fire. " +
@@ -53,7 +53,7 @@ namespace IdleHeroes.EmbedTemplates
             foreach (Companion companion in companions)
             {
                 _embed.AddField($"**{companion.Id}**: {EmojiHandler.GetEmoji(companion.IconName)} {companion.Name} " +
-                $"{EmojiHandler.GetEmoji(companion.AscendTier.ToString().ToLower())}",
+                $"{EmojiHandler.GetEmoji(companion.RarityTier.ToString().ToLower())}",
                 $"\n{EmojiHandler.GetEmoji(companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.DamageType.ToString().ToLower())} " +
@@ -62,11 +62,11 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n" +
                 $"\n**Attributes**" +
                 $"\nTier: {UtilityFunctions.GetTierStars(5)}" +
-                $"\nDPS: {UtilityFunctions.FormatNumber(companion.DPS * Math.Pow(companion.DPSIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +
-                $"\nHP: {UtilityFunctions.FormatNumber(companion.HP * Math.Pow(companion.HPIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +
-                $"\nArmor: {UtilityFunctions.FormatNumber(companion.Armor * Math.Pow(companion.ArmorIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +
-                $"\nAccuracy: {UtilityFunctions.FormatNumber(companion.Accuracy * Math.Pow(companion.AccuracyIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}" +
-                $"\nAgility: {UtilityFunctions.FormatNumber(companion.Agility * Math.Pow(companion.AgilityIncreasePerLevel, companion.MaxLevel - 1) * Math.Pow(2, (companion.MaxLevel / companion.LevelToMultiplyIncreases) - 1))}", true);
+                $"\nDPS: {CompanionHelper.CalculateAttributeString(companion, CompanionAttributeEnum.DPS)}" +
+                $"\nHP: {CompanionHelper.CalculateAttributeString(companion, CompanionAttributeEnum.HP)}" +
+                $"\nArmor: {CompanionHelper.CalculateAttributeString(companion, CompanionAttributeEnum.Armor)}" +
+                $"\nAccuracy: {CompanionHelper.CalculateAttributeString(companion, CompanionAttributeEnum.Accuracy)}" +
+                $"\nAgility: {CompanionHelper.CalculateAttributeString(companion, CompanionAttributeEnum.Agility)}", true);
             }
 
             return _embed;

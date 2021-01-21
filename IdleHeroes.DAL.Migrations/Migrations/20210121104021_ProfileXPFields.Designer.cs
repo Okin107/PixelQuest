@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210121104021_ProfileXPFields")]
+    partial class ProfileXPFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,7 +186,7 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.ToTable("Enemy");
                 });
 
-            modelBuilder.Entity("IdleHeroesDAL.Models.OwnedCompanion", b =>
+            modelBuilder.Entity("IdleHeroesDAL.Models.OwnedCompanions", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -238,9 +240,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("decimal(20,0)");
 
                     b.Property<decimal>("Gems")
-                        .HasColumnType("decimal(20,0)");
-
-                    b.Property<decimal>("HP")
                         .HasColumnType("decimal(20,0)");
 
                     b.Property<decimal>("IdleCoins")
@@ -345,9 +344,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.Property<decimal>("RelicsDropChancePerMinute")
                         .HasColumnType("decimal(20,0)");
 
-                    b.Property<TimeSpan>("TimeToBeat")
-                        .HasColumnType("time");
-
                     b.Property<decimal>("XPPerMinute")
                         .HasColumnType("decimal(20,0)");
 
@@ -356,7 +352,7 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.ToTable("Stage");
                 });
 
-            modelBuilder.Entity("IdleHeroesDAL.Models.StageEnemy", b =>
+            modelBuilder.Entity("IdleHeroesDAL.Models.StageEnemies", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -378,7 +374,7 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 
                     b.HasIndex("StageId");
 
-                    b.ToTable("StageEnemy");
+                    b.ToTable("StageEnemies");
                 });
 
             modelBuilder.Entity("IdleHeroesDAL.Models.Tavern", b =>
@@ -492,7 +488,7 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.ToTable("TeamCompanion");
                 });
 
-            modelBuilder.Entity("IdleHeroesDAL.Models.OwnedCompanion", b =>
+            modelBuilder.Entity("IdleHeroesDAL.Models.OwnedCompanions", b =>
                 {
                     b.HasOne("IdleHeroesDAL.Models.Companion", "Companion")
                         .WithMany()
@@ -518,7 +514,7 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasForeignKey("TeamId");
                 });
 
-            modelBuilder.Entity("IdleHeroesDAL.Models.StageEnemy", b =>
+            modelBuilder.Entity("IdleHeroesDAL.Models.StageEnemies", b =>
                 {
                     b.HasOne("IdleHeroesDAL.Models.Enemy", "Enemy")
                         .WithMany()
@@ -553,7 +549,7 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 
             modelBuilder.Entity("IdleHeroesDAL.Models.TeamCompanion", b =>
                 {
-                    b.HasOne("IdleHeroesDAL.Models.OwnedCompanion", "OwnedCompanion")
+                    b.HasOne("IdleHeroesDAL.Models.OwnedCompanions", "OwnedCompanion")
                         .WithMany()
                         .HasForeignKey("OwnedCompanionId");
 

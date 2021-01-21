@@ -1,13 +1,16 @@
 ﻿using IdleHeroesDAL.Enums;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace IdleHeroesDAL.Models
 {
-    public class Companion : Entity
+    public class Enemy : Entity
     {
         public string Name { get; set; }
         public string Lore { get; set; }
         public string IconName { get; set; }
-        
+
         //Leveling
         public string Level { get; set; }
         public double MaxLevel { get; set; }
@@ -15,11 +18,6 @@ namespace IdleHeroesDAL.Models
         public double IncreaseMultiplier { get; set; }
         public ulong BaseLevelCost { get; set; }
         public double LevelCostIncrease { get; set; }
-
-        //Ascending
-        public RarityTierEnum RarityTier { get; set; }
-        public int BaseAscendCopiesNeeded { get; set; }
-        public int AscendCopiesTierIncrease { get; set; }
 
         //Element and classes
         public ElementTypeEnum Element { get; set; }

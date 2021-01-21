@@ -33,14 +33,14 @@ namespace IdleHeroes.Services
 
         public async Task Refresh(CommandContext ctx, Profile profile)
         {
-            List<int> currentCompanionsIds = profile.Tavern.Companions.Select(x => x.Companion.Id).ToList();
+            List<int> currentCompanionsIds = new List<int>(); //profile.Tavern.Companions.Select(x => x.Companion.Id).ToList();
             List<Companion> companionsList = await _companionService.GetCompanions();
 
             //Delete current companions
             //TODO: Fix this to actually delete
             profile.Tavern.Companions.RemoveRange(0, profile.Tavern.Companions.Count);
 
-            var rand = new System.Random();
+            var rand = new Random();
 
             for (int i = 1; i <= 3; i++)
             {
@@ -52,9 +52,9 @@ namespace IdleHeroes.Services
 
                 ulong foodCost = 10;
 
-                if (selectedCompanion.AscendTier != IdleHeroesDAL.Enums.AscendTierEnum.Common)
+                if (selectedCompanion.RarityTier != IdleHeroesDAL.Enums.RarityTierEnum.Common)
                 {
-                    foodCost = foodCost * (ulong)Math.Pow(3, ((double)selectedCompanion.AscendTier - 1)) ;
+                    foodCost = foodCost * (ulong)Math.Pow(3, ((double)selectedCompanion.RarityTier - 1)) ;
                 }
 
                 TavernCompanion tavernCompanion = new TavernCompanion()

@@ -9,7 +9,10 @@ namespace IdleHeroesDAL.Models
         public string DiscordName { get; set; }
         public string Username { get; set; }
         public ulong Level { get; set; }
+
+        //Attributes
         public ulong BaseDPS { get; set; }
+        public ulong HP { get; set; }
 
         //Utility fields
         public DateTime LastRewardsCollected { get; set; }
@@ -24,7 +27,11 @@ namespace IdleHeroesDAL.Models
         public ulong Food { get; set; }
         public ulong Gems { get; set; }
         public ulong Relics { get; set; }
+
+        //Leveling
         public ulong XP { get; set; }
+        public ulong XPBaseLevel { get; set; }
+        public double XPIncreasePerLevel { get; set; }
 
         //Idle resources ready to collect
         public ulong IdleCoins { get; set; }
@@ -34,7 +41,7 @@ namespace IdleHeroesDAL.Models
         public ulong IdleXP { get; set; }
 
         //Owned items
-        public List<OwnedCompanions> OwnedCompanions { get; set; }
+        public List<OwnedCompanion> OwnedCompanions { get; set; }
 
         //Relations
         public Tavern Tavern { get; set; }
