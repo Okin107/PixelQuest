@@ -113,13 +113,13 @@ namespace IdleHeroes.Commands
                         //Attack non dead enemies
                         if (!defeatedEnemyPositions.Contains(enemy.Position))
                         {
-                            if (teamDpsSpread.ContainsKey(profile.Team.HeroTeamPosition))
+                            if (teamDpsSpread.ContainsKey(enemy.Position))
                             {
-                                teamDpsSpread[profile.Team.HeroTeamPosition] += profile.BaseDPS;
+                                teamDpsSpread[enemy.Position] += profile.BaseDPS;
                             }
                             else
                             {
-                                teamDpsSpread[profile.Team.HeroTeamPosition] = profile.BaseDPS;
+                                teamDpsSpread[enemy.Position] = profile.BaseDPS;
                             }
                             break; //Exit the enemy loop once dps is applied
                         }
@@ -151,39 +151,55 @@ namespace IdleHeroes.Commands
                     //not dead enemies
                     if (!defeatedEnemyPositions.Contains(enemy.Position))
                     {
-                        foreach (TeamCompanion companion in profile.Team.Companions.OrderBy(x => x.TeamPosition))
+                        if(profile.Team.Companions.Count > 0)
                         {
-                            bool dmgApplied = false;
-
-                            //Attack non dead companions
-                            if (!defeatedTeamPositions.Contains(companion.TeamPosition) && companion.TeamPosition < profile.Team.HeroTeamPosition)
+                            foreach (TeamCompanion companion in profile.Team.Companions.OrderBy(x => x.TeamPosition))
                             {
-                                dmgApplied = true;
-                                if (enemyDpsSpread.ContainsKey(companion.TeamPosition))
-                                {
-                                    enemyDpsSpread[companion.TeamPosition] += enemy.Enemy.DPS;
-                                }
-                                else
-                                {
-                                    enemyDpsSpread[companion.TeamPosition] = enemy.Enemy.DPS;
-                                }
-                                break; //Exit the enemy loop once dps is applied
-                            }
+                                bool dmgApplied = false;
 
-                            //Check if Hero is attacked first
-                            if (!dmgApplied)
-                            {
-                                if (enemyDpsSpread.ContainsKey(profile.Team.HeroTeamPosition))
+                                //Attack non dead companions
+                                if (!defeatedTeamPositions.Contains(companion.TeamPosition) && companion.TeamPosition < profile.Team.HeroTeamPosition)
                                 {
-                                    enemyDpsSpread[profile.Team.HeroTeamPosition] += enemy.Enemy.DPS;
+                                    dmgApplied = true;
+                                    if (enemyDpsSpread.ContainsKey(companion.TeamPosition))
+                                    {
+                                        enemyDpsSpread[companion.TeamPosition] += enemy.Enemy.DPS;
+                                    }
+                                    else
+                                    {
+                                        enemyDpsSpread[companion.TeamPosition] = enemy.Enemy.DPS;
+                                    }
+                                    break; //Exit the enemy loop once dps is applied
                                 }
-                                else
+
+                                //Check if Hero is attacked first
+                                if (!dmgApplied)
                                 {
-                                    enemyDpsSpread[profile.Team.HeroTeamPosition] = enemy.Enemy.DPS;
+                                    if (enemyDpsSpread.ContainsKey(profile.Team.HeroTeamPosition))
+                                    {
+                                        enemyDpsSpread[profile.Team.HeroTeamPosition] += enemy.Enemy.DPS;
+                                    }
+                                    else
+                                    {
+                                        enemyDpsSpread[profile.Team.HeroTeamPosition] = enemy.Enemy.DPS;
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
+                        else
+                        {
+                            if (enemyDpsSpread.ContainsKey(profile.Team.HeroTeamPosition))
+                            {
+                                enemyDpsSpread[profile.Team.HeroTeamPosition] += enemy.Enemy.DPS;
+                            }
+                            else
+                            {
+                                enemyDpsSpread[profile.Team.HeroTeamPosition] = enemy.Enemy.DPS;
+                            }
+                            break;
+                        }
+                        
                     }
                 }
 
