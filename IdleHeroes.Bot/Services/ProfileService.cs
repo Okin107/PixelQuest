@@ -50,7 +50,7 @@ namespace IdleHeroes.Services
                 XPBaseLevel = 50,
                 XPIncreasePerLevel = 1.5,
                 //Only for debug
-                //Food = 500,
+                Food = 10,
                 //Coins = 1000000,
                 //Gems = 10
             }).ConfigureAwait(false);
