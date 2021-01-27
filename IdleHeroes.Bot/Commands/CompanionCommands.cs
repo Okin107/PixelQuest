@@ -148,7 +148,7 @@ namespace IdleHeroes.Commands
                 return;
             }
 
-            selectedCompanion.Copies -= Convert.ToInt32(ascendCopiesNeeded);
+            //selectedCompanion.Copies -= Convert.ToInt32(ascendCopiesNeeded);
             selectedCompanion.RarirtyTier += 1;
 
             await _profileService.Update(ctx, profile);
