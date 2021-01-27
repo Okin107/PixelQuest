@@ -178,7 +178,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.DamageType.ToString().ToLower())} " +
-                $"\nLv: {companion.OwnedCompanion.Level}/{CompanionHelper.GetMaxLevel(companion.OwnedCompanion)}");
+                $"\nLv: {companion.OwnedCompanion.Level}/{CompanionHelper.GetMaxLevel(companion.OwnedCompanion)}", true);
             }
 
             return _embed;

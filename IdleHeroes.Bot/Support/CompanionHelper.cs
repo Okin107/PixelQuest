@@ -117,7 +117,7 @@ namespace IdleHeroes.Support
 
             if ((int)ownedCompanion.RarirtyTier >= 2)
             {
-                levelMultiplierBoost = Math.Pow(2, Math.Floor((double)ownedCompanion.RarirtyTier - 1));
+                levelMultiplierBoost = Math.Pow(ownedCompanion.Companion.IncreaseMultiplier, Math.Floor((double)ownedCompanion.RarirtyTier - 1));
             }
 
             return levelMultiplierBoost;

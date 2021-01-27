@@ -149,6 +149,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"{EmojiHandler.GetEmoji(enemy.Enemy.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(enemy.Enemy.DamageType.ToString().ToLower())} " +
                 $"\nLv: {enemy.Enemy.Level}" +
+                $"\nDPS: {enemy.Enemy.DPS}" +
                 $"\nHP: {UtilityFunctions.FormatNumber(enemy.Enemy.HP)}", true);
             }
 
