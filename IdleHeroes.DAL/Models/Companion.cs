@@ -27,17 +27,17 @@ namespace IdleHeroesDAL.Models
         public CompanionClassesEnum Class { get; set; }
 
         //Attacking attributes
-        public ulong DPS { get; set; }
+        public double DPS { get; set; }
         public double DPSIncreasePerLevel { get; set; }
-        public ulong Accuracy { get; set; }
+        public double Accuracy { get; set; }
         public double AccuracyIncreasePerLevel { get; set; }
 
         //Defensive attributes
-        public ulong HP { get; set; }
+        public double HP { get; set; }
         public double HPIncreasePerLevel { get; set; }
-        public ulong Armor { get; set; }
+        public double Armor { get; set; }
         public double ArmorIncreasePerLevel { get; set; }
-        public ulong Agility { get; set; }
+        public double Agility { get; set; }
         public double AgilityIncreasePerLevel { get; set; }
     }
 }

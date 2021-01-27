@@ -131,7 +131,7 @@ namespace IdleHeroes.EmbedTemplates
 
             _embed.AddField($"Enemy grid", $"🇦 \u200B \u200B \u200B \u200B \u200B " +
                 $" 🇧 \u200B \u200B \u200B \u200B \u200B " +
-                $" 🇨 \u200B \u200B \u200B \u200B \u200B 🟦 \n" +
+                $" 🇨 \u200B \u200B \u200B \u200B \u200B {EmojiHandler.GetEmoji("blank")} \n" +
                 $"\n{stringA1} \u200B \u200B \u200B \u200B \u200B {stringB1} \u200B \u200B \u200B \u200B \u200B {stringC1} \u200B \u200B \u200B \u200B \u200B 1️⃣" +
                 $"\n" +
                 $"\n{stringA2} \u200B \u200B \u200B \u200B \u200B {stringB2} \u200B \u200B \u200B \u200B \u200B {stringC2} \u200B \u200B \u200B \u200B \u200B 2️⃣" +
@@ -149,7 +149,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"{EmojiHandler.GetEmoji(enemy.Enemy.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(enemy.Enemy.DamageType.ToString().ToLower())} " +
                 $"\nLv: {enemy.Enemy.Level}" +
-                $"\nHP: {UtilityFunctions.FormatNumber(enemy.Enemy.HP)}");
+                $"\nHP: {UtilityFunctions.FormatNumber(enemy.Enemy.HP)}", true);
             }
 
             return _embed;

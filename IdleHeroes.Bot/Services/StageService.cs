@@ -14,7 +14,7 @@ namespace IdleHeroes.Services
             _context = context;
         }
 
-        public async Task<Stage> GetStageFromNumber(ulong stageNumber)
+        public async Task<Stage> GetStageFromNumber(double stageNumber)
         {
             return await _context.Stage.FirstOrDefaultAsync(x => x.Number == stageNumber).ConfigureAwait(false);
         }

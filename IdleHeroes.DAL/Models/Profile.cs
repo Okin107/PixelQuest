@@ -8,11 +8,11 @@ namespace IdleHeroesDAL.Models
         public ulong DiscordId { get; set; }
         public string DiscordName { get; set; }
         public string Username { get; set; }
-        public ulong Level { get; set; }
+        public double Level { get; set; }
 
         //Attributes
-        public ulong BaseDPS { get; set; }
-        public ulong HP { get; set; }
+        public double BaseDPS { get; set; }
+        public double HP { get; set; }
 
         //Utility fields
         public DateTime LastRewardsCollected { get; set; }
@@ -23,22 +23,22 @@ namespace IdleHeroesDAL.Models
         public DateTime LastPlayed { get; set; }
 
         //Resources
-        public ulong Coins { get; set; }
-        public ulong Food { get; set; }
-        public ulong Gems { get; set; }
-        public ulong Relics { get; set; }
+        public double Coins { get; set; }
+        public double Food { get; set; }
+        public double Gems { get; set; }
+        public double Relics { get; set; }
 
         //Leveling
-        public ulong XP { get; set; }
-        public ulong XPBaseLevel { get; set; }
+        public double XP { get; set; }
+        public double XPBaseLevel { get; set; }
         public double XPIncreasePerLevel { get; set; }
 
         //Idle resources ready to collect
-        public ulong IdleCoins { get; set; }
-        public ulong IdleFood { get; set; }
-        public ulong IdleGems { get; set; }
-        public ulong IdleRelics { get; set; }
-        public ulong IdleXP { get; set; }
+        public double IdleCoins { get; set; }
+        public double IdleFood { get; set; }
+        public double IdleGems { get; set; }
+        public double IdleRelics { get; set; }
+        public double IdleXP { get; set; }
 
         //Owned items
         public List<OwnedCompanion> OwnedCompanions { get; set; }

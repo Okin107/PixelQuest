@@ -163,6 +163,14 @@ namespace IdleHeroes.Commands
 
         private async Task AddToPosition(CommandContext ctx, Profile profile, TeamPositionEnum tPosition, int compId)
         {
+            //Check if team is maxed
+            if (profile.Team.Companions.Count >= 4)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"The maximum amount of companions you can add to a team is **4**.").Build())
+                   .ConfigureAwait(false);
+                return;
+            }
+
             if (profile.Team.HeroTeamPosition == tPosition)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Position **{tPosition}** is taken by your **Hero**. You need to move your **Hero** first.").Build())

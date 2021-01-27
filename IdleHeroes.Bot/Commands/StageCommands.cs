@@ -61,20 +61,19 @@ namespace IdleHeroes.Commands
 
         private async Task FightStage(CommandContext ctx, Profile profile)
         {
-            bool battleFinished = false;
             bool battleWon = false;
+            int battleSeconds = 1;
 
             List<TeamPositionEnum> defeatedTeamPositions = new List<TeamPositionEnum>();
             List<TeamPositionEnum> defeatedEnemyPositions = new List<TeamPositionEnum>();
 
-            Dictionary<TeamPositionEnum, ulong> teamDpsSpread = new Dictionary<TeamPositionEnum, ulong>();
-            Dictionary<TeamPositionEnum, ulong> enemyDpsSpread = new Dictionary<TeamPositionEnum, ulong>();
+            Dictionary<TeamPositionEnum, double> teamDpsSpread = new Dictionary<TeamPositionEnum, double>();
+            Dictionary<TeamPositionEnum, double> enemyDpsSpread = new Dictionary<TeamPositionEnum, double>();
 
-            for (int i = 1; i <= profile.Stage.TimeToBeat.TotalSeconds; i++)
+            for (battleSeconds = 1; battleSeconds <= profile.Stage.TimeToBeat.TotalSeconds; battleSeconds++)
             {
                 if (defeatedTeamPositions.Count == profile.Team.Companions.Count + 1)
                 {
-                    battleFinished = true;
                     battleWon = false;
                     break;
                 }
@@ -99,6 +98,11 @@ namespace IdleHeroes.Commands
                                     teamDpsSpread[enemy.Position] = CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.DPS);
                                 }
 
+                                //Check if enemy died and mark it
+                                if (teamDpsSpread[enemy.Position] >= enemy.Enemy.HP && !defeatedEnemyPositions.Contains(enemy.Position))
+                                {
+                                    defeatedEnemyPositions.Add(enemy.Position);
+                                }
                                 break; //Exit the enemy loop once dps is applied
                             }
                         }
@@ -121,26 +125,31 @@ namespace IdleHeroes.Commands
                             {
                                 teamDpsSpread[enemy.Position] = profile.BaseDPS;
                             }
+
+                            //Check if enemy died and mark it
+                            if (teamDpsSpread[enemy.Position] >= enemy.Enemy.HP && !defeatedEnemyPositions.Contains(enemy.Position))
+                            {
+                                defeatedEnemyPositions.Add(enemy.Position);
+                            }
                             break; //Exit the enemy loop once dps is applied
                         }
                     }
                 }
 
                 //Mark defeated enemies
-                foreach (StageEnemy enemy in profile.Stage.Enemies.OrderBy(x => x.Position))
-                {
-                    ulong teamDpsFound = teamDpsSpread.ContainsKey(enemy.Position) ? teamDpsSpread[enemy.Position] : 0;
+                //foreach (StageEnemy enemy in profile.Stage.Enemies.OrderBy(x => x.Position))
+                //{
+                //    ulong teamDpsFound = teamDpsSpread.ContainsKey(enemy.Position) ? teamDpsSpread[enemy.Position] : 0;
 
-                    if (teamDpsFound >= enemy.Enemy.HP && !defeatedEnemyPositions.Contains(enemy.Position))
-                    {
-                        defeatedEnemyPositions.Add(enemy.Position);
-                    }
-                }
+                //    if (teamDpsFound >= enemy.Enemy.HP && !defeatedEnemyPositions.Contains(enemy.Position))
+                //    {
+                //        defeatedEnemyPositions.Add(enemy.Position);
+                //    }
+                //}
                 #endregion
 
                 if (defeatedEnemyPositions.Count == profile.Stage.Enemies.Count)
                 {
-                    battleFinished = true;
                     battleWon = true;
                     break;
                 }
@@ -155,12 +164,12 @@ namespace IdleHeroes.Commands
                         {
                             foreach (TeamCompanion companion in profile.Team.Companions.OrderBy(x => x.TeamPosition))
                             {
-                                bool dmgApplied = false;
+                                bool companionDmgApplied = false;
 
                                 //Attack non dead companions
                                 if (!defeatedTeamPositions.Contains(companion.TeamPosition) && companion.TeamPosition < profile.Team.HeroTeamPosition)
                                 {
-                                    dmgApplied = true;
+                                    companionDmgApplied = true;
                                     if (enemyDpsSpread.ContainsKey(companion.TeamPosition))
                                     {
                                         enemyDpsSpread[companion.TeamPosition] += enemy.Enemy.DPS;
@@ -169,11 +178,16 @@ namespace IdleHeroes.Commands
                                     {
                                         enemyDpsSpread[companion.TeamPosition] = enemy.Enemy.DPS;
                                     }
+
+                                    if (enemyDpsSpread[companion.TeamPosition] >= CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.HP) && !defeatedTeamPositions.Contains(companion.TeamPosition))
+                                    {
+                                        defeatedTeamPositions.Add(companion.TeamPosition);
+                                    }
                                     break; //Exit the enemy loop once dps is applied
                                 }
 
                                 //Check if Hero is attacked first
-                                if (!dmgApplied)
+                                if (!companionDmgApplied)
                                 {
                                     if (enemyDpsSpread.ContainsKey(profile.Team.HeroTeamPosition))
                                     {
@@ -182,6 +196,11 @@ namespace IdleHeroes.Commands
                                     else
                                     {
                                         enemyDpsSpread[profile.Team.HeroTeamPosition] = enemy.Enemy.DPS;
+                                    }
+
+                                    if (enemyDpsSpread[profile.Team.HeroTeamPosition] >= profile.HP && !defeatedTeamPositions.Contains(companion.TeamPosition))
+                                    {
+                                        defeatedTeamPositions.Add(profile.Team.HeroTeamPosition);
                                     }
                                     break;
                                 }
@@ -197,6 +216,11 @@ namespace IdleHeroes.Commands
                             {
                                 enemyDpsSpread[profile.Team.HeroTeamPosition] = enemy.Enemy.DPS;
                             }
+
+                            if (enemyDpsSpread[profile.Team.HeroTeamPosition] >= profile.HP)
+                            {
+                                defeatedTeamPositions.Add(profile.Team.HeroTeamPosition);
+                            }
                             break;
                         }
                         
@@ -204,45 +228,43 @@ namespace IdleHeroes.Commands
                 }
 
                 //Mark defeated companions
-                foreach (TeamCompanion companion in profile.Team.Companions.OrderBy(x => x.TeamPosition))
-                {
-                    ulong enemyDpsFound = enemyDpsSpread.ContainsKey(companion.TeamPosition) ? enemyDpsSpread[companion.TeamPosition] : 0;
+                //foreach (TeamCompanion companion in profile.Team.Companions.OrderBy(x => x.TeamPosition))
+                //{
+                //    ulong enemyDpsFound = enemyDpsSpread.ContainsKey(companion.TeamPosition) ? enemyDpsSpread[companion.TeamPosition] : 0;
 
-                    if (enemyDpsFound >= companion.OwnedCompanion.Companion.HP && !defeatedTeamPositions.Contains(companion.TeamPosition))
-                    {
-                        defeatedTeamPositions.Add(companion.TeamPosition);
-                    }
-                }
+                //    if (enemyDpsFound >= companion.OwnedCompanion.Companion.HP && !defeatedTeamPositions.Contains(companion.TeamPosition))
+                //    {
+                //        defeatedTeamPositions.Add(companion.TeamPosition);
+                //    }
+                //}
 
                 //Check if hero is defeated
-                ulong heroDpsFound = enemyDpsSpread.ContainsKey(profile.Team.HeroTeamPosition) ? enemyDpsSpread[profile.Team.HeroTeamPosition] : 0;
+                //ulong heroDpsFound = enemyDpsSpread.ContainsKey(profile.Team.HeroTeamPosition) ? enemyDpsSpread[profile.Team.HeroTeamPosition] : 0;
 
-                if (heroDpsFound >= profile.HP)
-                {
-                    defeatedTeamPositions.Add(profile.Team.HeroTeamPosition);
-                }
+                //if (heroDpsFound >= profile.HP)
+                //{
+                //    defeatedTeamPositions.Add(profile.Team.HeroTeamPosition);
+                //}
                 #endregion
             }
 
             if(battleWon)
             {
+                await ctx.Channel.SendMessageAsync(embed: StageFightResultEmbedTemplate.Show(ctx, profile, battleWon, defeatedTeamPositions, defeatedEnemyPositions, teamDpsSpread, enemyDpsSpread, battleSeconds - 1).Build())
+                   .ConfigureAwait(false);
+
                 //Temp stage soft cap to 10 stages
-                if(profile.Stage.Number >= 10)
+                if (profile.Stage.Number < 10)
                 {
-                    await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have won the battle and beat the maximum stage. (This is a temporary battle message. The detailed message is under development)").Build())
-                   .ConfigureAwait(false);
+                    //Increment stage
+                    profile.Stage = await _stageService.GetStageFromNumber(profile.Stage.Number + 1);
                 }
-
-                //Increment stage
-                profile.Stage = await _stageService.GetStageFromNumber(profile.Stage.Number + 1);
+                
                 await _profileService.Update(ctx, profile);
-
-                await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have won the battle and moved to **Stage {profile.Stage.Number}**. (This is a temporary battle message. The detailed message is under development)").Build())
-                   .ConfigureAwait(false);
             }
             else
             {
-                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You did not win the battle. (This is a temporary battle message. The detailed message is under development)").Build())
+                await ctx.Channel.SendMessageAsync(embed: StageFightResultEmbedTemplate.Show(ctx, profile, battleWon, defeatedTeamPositions, defeatedEnemyPositions, teamDpsSpread, enemyDpsSpread, battleSeconds - 1).Build())
                    .ConfigureAwait(false);
             }
             

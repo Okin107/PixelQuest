@@ -64,7 +64,7 @@ namespace IdleHeroes.Support
             return heroCalculatedAttribute;
         }
 
-        public static ulong CalculateAttribute(OwnedCompanion ownedCompanion, CompanionAttributeEnum companionAttribute, bool nextLevel = false)
+        public static double CalculateAttribute(OwnedCompanion ownedCompanion, CompanionAttributeEnum companionAttribute, bool nextLevel = false)
         {
             double heroCalculatedAttribute = 0;
             double companionLevel = ownedCompanion.Level - 1;
