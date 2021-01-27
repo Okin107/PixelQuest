@@ -165,9 +165,16 @@ namespace IdleHeroes.Commands
                             foreach (TeamCompanion companion in profile.Team.Companions.OrderBy(x => x.TeamPosition))
                             {
                                 bool companionDmgApplied = false;
+                                bool heroAttacks = false;
+
+                                if(companion.TeamPosition < profile.Team.HeroTeamPosition && !enemyDpsSpread.ContainsKey(profile.Team.HeroTeamPosition))
+                                {
+                                    heroAttacks = true;
+                                }
+
 
                                 //Attack non dead companions
-                                if (!defeatedTeamPositions.Contains(companion.TeamPosition) && companion.TeamPosition < profile.Team.HeroTeamPosition)
+                                if (!defeatedTeamPositions.Contains(companion.TeamPosition) && !heroAttacks)
                                 {
                                     companionDmgApplied = true;
                                     if (enemyDpsSpread.ContainsKey(companion.TeamPosition))
@@ -198,7 +205,7 @@ namespace IdleHeroes.Commands
                                         enemyDpsSpread[profile.Team.HeroTeamPosition] = enemy.Enemy.DPS;
                                     }
 
-                                    if (enemyDpsSpread[profile.Team.HeroTeamPosition] >= profile.HP && !defeatedTeamPositions.Contains(companion.TeamPosition))
+                                    if (enemyDpsSpread[profile.Team.HeroTeamPosition] >= profile.HP && !defeatedTeamPositions.Contains(profile.Team.HeroTeamPosition))
                                     {
                                         defeatedTeamPositions.Add(profile.Team.HeroTeamPosition);
                                     }
