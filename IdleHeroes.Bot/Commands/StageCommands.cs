@@ -160,21 +160,35 @@ namespace IdleHeroes.Commands
                     //not dead enemies
                     if (!defeatedEnemyPositions.Contains(enemy.Position))
                     {
-                        if(profile.Team.Companions.Count > 0)
+                        if (profile.Team.Companions.Count > 0)
                         {
                             foreach (TeamCompanion companion in profile.Team.Companions.OrderBy(x => x.TeamPosition))
                             {
                                 bool companionDmgApplied = false;
-                                bool heroAttacks = false;
+                                bool attackHero = true;
 
-                                if(companion.TeamPosition < profile.Team.HeroTeamPosition && !enemyDpsSpread.ContainsKey(profile.Team.HeroTeamPosition))
+                                //Check if another companion is before hero
+                                List<TeamCompanion> companionsFound = profile.Team.Companions.Where(x => x.TeamPosition < profile.Team.HeroTeamPosition).ToList();
+
+                                if (companion.TeamPosition > profile.Team.HeroTeamPosition && defeatedTeamPositions.Contains(profile.Team.HeroTeamPosition))
                                 {
-                                    heroAttacks = true;
+                                    attackHero = false;
+                                }
+                                else if (companionsFound.Any())
+                                {
+                                    foreach (TeamCompanion companionFound in companionsFound)
+                                    {
+                                        if (!defeatedTeamPositions.Contains(companionFound.TeamPosition))
+                                        {
+                                            attackHero = false;
+                                            break;
+                                        }
+
+                                    }
                                 }
 
-
-                                //Attack non dead companions
-                                if (!defeatedTeamPositions.Contains(companion.TeamPosition) && !heroAttacks)
+                                //Attack companions
+                                if (!defeatedTeamPositions.Contains(companion.TeamPosition) && !attackHero)
                                 {
                                     companionDmgApplied = true;
                                     if (enemyDpsSpread.ContainsKey(companion.TeamPosition))
@@ -192,9 +206,13 @@ namespace IdleHeroes.Commands
                                     }
                                     break; //Exit the enemy loop once dps is applied
                                 }
+                                else
+                                {
+                                    attackHero = true;
+                                }
 
-                                //Check if Hero is attacked first
-                                if (!companionDmgApplied)
+                                //Attack hero
+                                if (!companionDmgApplied && attackHero && !defeatedTeamPositions.Contains(profile.Team.HeroTeamPosition))
                                 {
                                     if (enemyDpsSpread.ContainsKey(profile.Team.HeroTeamPosition))
                                     {
@@ -230,7 +248,7 @@ namespace IdleHeroes.Commands
                             }
                             break;
                         }
-                        
+
                     }
                 }
 
@@ -255,7 +273,7 @@ namespace IdleHeroes.Commands
                 #endregion
             }
 
-            if(battleWon)
+            if (battleWon)
             {
                 await ctx.Channel.SendMessageAsync(embed: StageFightResultEmbedTemplate.Show(ctx, profile, battleWon, defeatedTeamPositions, defeatedEnemyPositions, teamDpsSpread, enemyDpsSpread, battleSeconds - 1).Build())
                    .ConfigureAwait(false);
@@ -266,7 +284,7 @@ namespace IdleHeroes.Commands
                     //Increment stage
                     profile.Stage = await _stageService.GetStageFromNumber(profile.Stage.Number + 1);
                 }
-                
+
                 await _profileService.Update(ctx, profile);
             }
             else
@@ -274,7 +292,7 @@ namespace IdleHeroes.Commands
                 await ctx.Channel.SendMessageAsync(embed: StageFightResultEmbedTemplate.Show(ctx, profile, battleWon, defeatedTeamPositions, defeatedEnemyPositions, teamDpsSpread, enemyDpsSpread, battleSeconds - 1).Build())
                    .ConfigureAwait(false);
             }
-            
+
         }
 
         [Command("farm")]
