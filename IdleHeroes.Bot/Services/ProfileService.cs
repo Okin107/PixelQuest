@@ -70,7 +70,7 @@ namespace IdleHeroes.Services
                 BoostMaxLevel = 10,
                 
                 //Only for testing
-                Food = 10,
+                //Food = 10,
                 //Coins = 1000000,
                 //Gems = 10
             }).ConfigureAwait(false);
