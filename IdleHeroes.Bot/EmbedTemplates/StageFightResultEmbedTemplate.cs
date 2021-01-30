@@ -203,25 +203,16 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{enemyPositions[TeamPositionEnum.A2]} {EmojiHandler.GetEmoji("blank")} {enemyPositions[TeamPositionEnum.B2]} {EmojiHandler.GetEmoji("blank")} {enemyPositions[TeamPositionEnum.C2]} " +
                 $"\n{enemyHP[TeamPositionEnum.A3]} {EmojiHandler.GetEmoji("blank")} {enemyHP[TeamPositionEnum.B3]} {EmojiHandler.GetEmoji("blank")} {enemyHP[TeamPositionEnum.C3]}" +
                 $"\n{enemyPositions[TeamPositionEnum.A3]} {EmojiHandler.GetEmoji("blank")} {enemyPositions[TeamPositionEnum.B3]} {EmojiHandler.GetEmoji("blank")} {enemyPositions[TeamPositionEnum.C3]}", true);
-
-            _embed.AddField("Rewards gained",
-                $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.Stage.StaticXP)}" +
-                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.StaticCoins)}" +
-                $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Stage.StaticFood)}" +
-                $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Stage.StaticGems)}" +
-                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}");
-            //profile.Stage.Enemies = profile.Stage.Enemies.OrderBy(x => x.Position).ToList();
-
-            //_embed.AddField($"\u200B", "**Grid details**");
-
-            //foreach (StageEnemy enemy in profile.Stage.Enemies)
-            //{
-            //    _embed.AddField($"**{enemy.Position}**: {EmojiHandler.GetEmoji(enemy.Enemy.IconName)} {enemy.Enemy.Name}",
-            //    $"\n{EmojiHandler.GetEmoji(enemy.Enemy.Element.ToString().ToLower())} " +
-            //    $"{EmojiHandler.GetEmoji(enemy.Enemy.Class.ToString().ToLower())} " +
-            //    $"{EmojiHandler.GetEmoji(enemy.Enemy.DamageType.ToString().ToLower())} " +
-            //    $"\nLv: {enemy.Enemy.Level}");
-            //}
+            
+            if(battleWon)
+            {
+                _embed.AddField("Rewards gained",
+                   $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.Stage.StaticXP)}" +
+                   $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.StaticCoins)}" +
+                   $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Stage.StaticFood)}" +
+                   $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Stage.StaticGems)}" +
+                   $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}");
+            }
 
             return _embed;
         }
