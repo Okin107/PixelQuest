@@ -3,9 +3,12 @@ using DSharpPlus.CommandsNext.Attributes;
 using IdleHeroes.EmbedTemplates;
 using IdleHeroes.Models;
 using IdleHeroes.Services;
+using IdleHeroes.Support;
+using IdleHeroesDAL.Enums;
 using IdleHeroesDAL.Models;
 using System;
 using System.Threading.Tasks;
+using static IdleHeroes.Support.ProfileHelper;
 
 namespace IdleHeroes.Commands
 {
@@ -122,7 +125,6 @@ namespace IdleHeroes.Commands
 
                 Profile profile = await _profileService.FindByDiscordId(ctx);
 
-
                 await ctx.Channel.SendMessageAsync(embed: HeroEmbedTemplate.Get(ctx, profile).Build())
                 .ConfigureAwait(false);
             }
@@ -135,6 +137,188 @@ namespace IdleHeroes.Commands
                 }
                 Console.WriteLine($"COMMAND ERROR: {ex.Message}");
             }
+        }
+
+        [Command("skills")]
+        [Description("View and manage your Hero's skills.")]
+        public async Task Skills(CommandContext ctx, [Description("The ID of the Skill that you want to purchase. This is the number in front of the each Skill. You can also reset your skill points by typing <reset>.")] string skillId = null)
+        {
+            try
+            {
+                //Check if user is registered
+                if (!await _profileService.IsUserRegistered(ctx.Message.Author.Id))
+                {
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Use `.create` to first create a Profile in order to play the game.").Build())
+                        .ConfigureAwait(false);
+                    return;
+                }
+                Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
+
+                //Buy skill
+                if (!string.IsNullOrEmpty(skillId))
+                {
+                    if (Enum.TryParse(skillId, out ProfileSkillTypeEnum skillType))
+                    {
+                        await UpgradeSkill(ctx, profile, skillType);
+                    }
+                    else
+                    {
+                        if(skillId == "reset")
+                        {
+                            await ResetSkills(ctx, profile);
+                            return;
+                        }
+                        else
+                        {
+                            await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"The **Skill ID** is wrong. Use `.help skills` to find out more.").Build())
+                .ConfigureAwait(false);
+                            return;
+                        }
+                    }
+                }
+
+                await ctx.Channel.SendMessageAsync(embed: SkillsEmbedTemplate.Show(ctx, profile).Build())
+                   .ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                if (BotSettings.IsDebugMode)
+                {
+                    await ctx.Channel.SendMessageAsync(embed: ErrorEmbedTemplate.Get(ctx, $"COMMAND ERROR: {ex.Message}").Build())
+                    .ConfigureAwait(false);
+                }
+                Console.WriteLine($"COMMAND ERROR: {ex.Message}");
+            }
+        }
+
+        private async Task ResetSkills(CommandContext ctx, Profile profile)
+        {
+            if (profile.SkillPointsSpent == 0)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have not spent any **Skill Points**, so you have nothing to reset.").Build())
+                  .ConfigureAwait(false);
+                return;
+            }
+
+            if (profile.Gems < 50)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{profile.Gems}** {EmojiHandler.GetEmoji("gem")}," +
+                   $" but you need **50** {EmojiHandler.GetEmoji("gem")} to reset your **Skill Points**.").Build())
+               .ConfigureAwait(false);
+                return;
+            }
+
+            ProfileLevelData profileLevelData = CalculateProfileData(profile);
+
+            profile.SkillPointsSpent = 0;
+            profile.DPSBoostLevel = 0;
+            profile.HPBoostLevel = 0;
+            profile.ArmorBoostLevel = 0;
+            profile.AccuracyBoostLevel = 0;
+            profile.AgilityBoostLevel = 0;
+            profile.Gems -= 50;
+
+            await _profileService.Update(ctx, profile);
+
+            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully reset all your **Skill Points** by using **50** {EmojiHandler.GetEmoji("gem")}.").Build()).ConfigureAwait(false);
+        }
+
+        private async Task UpgradeSkill(CommandContext ctx, Profile profile, ProfileSkillTypeEnum skillId)
+        {
+            ProfileLevelData profileLevelData = CalculateProfileData(profile);
+            double skillPoints = profileLevelData.Level - profile.SkillPointsSpent;
+            double skillCost = 999999;
+
+            switch (skillId)
+            {
+                case ProfileSkillTypeEnum.DPS:
+                    skillCost = Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.DPSBoostLevel - 1), 0);
+
+                    if (skillCost <= skillPoints)
+                    {
+                        profile.SkillPointsSpent += skillCost;
+                        profile.DPSBoostLevel++;
+
+                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.DPS}** to level **{profile.DPSBoostLevel}** by using **{skillCost}** Skill Points.").Build()).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** Skill Points," +
+                    $" but you need **{skillCost}** Skill Points to upgrade **{ProfileSkillTypeEnum.DPS}**.").Build())
+                .ConfigureAwait(false);
+                    }
+                    break;
+                case ProfileSkillTypeEnum.HP:
+                    skillCost = Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.HPBoostLevel - 1), 0);
+
+                    if (skillCost <= skillPoints)
+                    {
+                        profile.SkillPointsSpent += skillCost;
+                        profile.HPBoostLevel++;
+
+                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.HP}** to level **{profile.HPBoostLevel}** by using **{skillCost}** Skill Points.").Build()).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** Skill Points," +
+                    $" but you need **{skillCost}** Skill Points to upgrade **{ProfileSkillTypeEnum.HP}**.").Build())
+                .ConfigureAwait(false);
+                    }
+                    break;
+                case ProfileSkillTypeEnum.Armor:
+                    skillCost = Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.ArmorBoostLevel - 1), 0);
+
+                    if (skillCost <= skillPoints)
+                    {
+                        profile.SkillPointsSpent += skillCost;
+                        profile.ArmorBoostLevel++;
+
+                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.Armor}** to level **{profile.ArmorBoostLevel}** by using **{skillCost}** Skill Points.").Build()).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** Skill Points," +
+                    $" but you need **{skillCost}** Skill Points to upgrade **{ProfileSkillTypeEnum.Armor}**.").Build())
+                .ConfigureAwait(false);
+                    }
+                    break;
+                case ProfileSkillTypeEnum.Accuracy:
+                    skillCost = Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.AccuracyBoostLevel - 1), 0);
+
+                    if (skillCost <= skillPoints)
+                    {
+                        profile.SkillPointsSpent += skillCost;
+                        profile.AccuracyBoostLevel++;
+
+                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.Accuracy}** to level **{profile.AccuracyBoostLevel}** by using **{skillCost}** Skill Points.").Build()).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** Skill Points," +
+                    $" but you need **{skillCost}** Skill Points to upgrade **{ProfileSkillTypeEnum.Accuracy}**.").Build())
+                .ConfigureAwait(false);
+                    }
+                    break;
+                case ProfileSkillTypeEnum.Agility:
+                    skillCost = Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.AgilityBoostLevel - 1), 0);
+
+                    if (skillCost <= skillPoints)
+                    {
+                        profile.SkillPointsSpent += skillCost;
+                        profile.AgilityBoostLevel++;
+
+                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.Agility}** to level **{profile.AgilityBoostLevel}** by using **{skillCost}** Skill Points.").Build()).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** Skill Points," +
+                    $" but you need **{skillCost}** Skill Points to upgrade **{ProfileSkillTypeEnum.Agility}**.").Build())
+                .ConfigureAwait(false);
+                    }
+                    break;
+            }
+
+            await _profileService.Update(ctx, profile);
         }
     }
 }
