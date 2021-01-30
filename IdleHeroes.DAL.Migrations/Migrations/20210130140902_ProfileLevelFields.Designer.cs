@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210130140902_ProfileLevelFields")]
+    partial class ProfileLevelFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,28 +194,16 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Accuracy")
-                        .HasColumnType("float");
-
                     b.Property<double>("AccuracyBoostLevel")
                         .HasColumnType("float");
 
                     b.Property<double>("AccuracyBoostLevelIncrease")
                         .HasColumnType("float");
 
-                    b.Property<double>("AccuracyLevelIncrease")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Agility")
-                        .HasColumnType("float");
-
                     b.Property<double>("AgilityBoostLevel")
                         .HasColumnType("float");
 
                     b.Property<double>("AgilityBoostLevelIncrease")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AgilityLevelIncrease")
                         .HasColumnType("float");
 
                     b.Property<double>("Armor")
@@ -223,15 +213,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("float");
 
                     b.Property<double>("ArmorBoostLevelIncrease")
-                        .HasColumnType("float");
-
-                    b.Property<double>("ArmorLevelIncrease")
-                        .HasColumnType("float");
-
-                    b.Property<double>("BoostCostIncrease")
-                        .HasColumnType("float");
-
-                    b.Property<double>("BoostMaxLevel")
                         .HasColumnType("float");
 
                     b.Property<double>("Coins")
@@ -244,9 +225,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("float");
 
                     b.Property<double>("DPSBoostLevelIncrease")
-                        .HasColumnType("float");
-
-                    b.Property<double>("DPSLevelIncrease")
                         .HasColumnType("float");
 
                     b.Property<decimal>("DiscordId")
@@ -268,9 +246,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("float");
 
                     b.Property<double>("HPBoostLevelIncrease")
-                        .HasColumnType("float");
-
-                    b.Property<double>("HPLevelIncrease")
                         .HasColumnType("float");
 
                     b.Property<double>("IdleCoins")
@@ -295,9 +270,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<double>("Level")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MaxLevel")
                         .HasColumnType("float");
 
                     b.Property<int>("MaximumIdleRewardHours")

@@ -9,10 +9,19 @@ namespace IdleHeroesDAL.Models
         public string DiscordName { get; set; }
         public string Username { get; set; }
         public double Level { get; set; }
+        public double MaxLevel { get; set; }
 
         //Attributes
-        public double BaseDPS { get; set; }
+        public double DPS { get; set; }
+        public double DPSLevelIncrease { get; set; }
         public double HP { get; set; }
+        public double HPLevelIncrease { get; set; }
+        public double Armor { get; set; }
+        public double ArmorLevelIncrease { get; set; }
+        public double Accuracy { get; set; }
+        public double AccuracyLevelIncrease { get; set; }
+        public double Agility { get; set; }
+        public double AgilityLevelIncrease { get; set; }
 
         //Utility fields
         public DateTime LastRewardsCollected { get; set; }
@@ -32,6 +41,22 @@ namespace IdleHeroesDAL.Models
         public double XP { get; set; }
         public double XPBaseLevel { get; set; }
         public double XPIncreasePerLevel { get; set; }
+        public double SkillPointsAvailable { get; set; }
+        public double TotalSkillPoints { get; set; }
+
+        //Skills
+        public double DPSBoostLevel { get; set; }
+        public double DPSBoostLevelIncrease { get; set; }
+        public double HPBoostLevel { get; set; }
+        public double HPBoostLevelIncrease { get; set; }
+        public double ArmorBoostLevel { get; set; }
+        public double ArmorBoostLevelIncrease { get; set; }
+        public double AccuracyBoostLevel { get; set; }
+        public double AccuracyBoostLevelIncrease { get; set; }
+        public double AgilityBoostLevel { get; set; }
+        public double AgilityBoostLevelIncrease { get; set; }
+        public double BoostCostIncrease { get; set; }
+        public double BoostMaxLevel { get; set; }
 
         //Idle resources ready to collect
         public double IdleCoins { get; set; }

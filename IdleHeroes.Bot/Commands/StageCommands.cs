@@ -119,11 +119,11 @@ namespace IdleHeroes.Commands
                         {
                             if (teamDpsSpread.ContainsKey(enemy.Position))
                             {
-                                teamDpsSpread[enemy.Position] += profile.BaseDPS;
+                                teamDpsSpread[enemy.Position] += profile.DPS;
                             }
                             else
                             {
-                                teamDpsSpread[enemy.Position] = profile.BaseDPS;
+                                teamDpsSpread[enemy.Position] = profile.DPS;
                             }
 
                             //Check if enemy died and mark it
