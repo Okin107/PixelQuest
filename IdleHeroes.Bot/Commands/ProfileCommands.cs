@@ -106,5 +106,35 @@ namespace IdleHeroes.Commands
             }
         }
 
+        [Command("hero")]
+        [Description("View and manage your Hero.")]
+        public async Task Hero(CommandContext ctx)
+        {
+            try
+            {
+                //Check if user is registered
+                if (!await _profileService.IsUserRegistered(ctx.Message.Author.Id))
+                {
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Use `.create` to first create a Profile in order to play the game.").Build())
+                        .ConfigureAwait(false);
+                    return;
+                }
+
+                Profile profile = await _profileService.FindByDiscordId(ctx);
+
+
+                await ctx.Channel.SendMessageAsync(embed: HeroEmbedTemplate.Get(ctx, profile).Build())
+                .ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                if (BotSettings.IsDebugMode)
+                {
+                    await ctx.Channel.SendMessageAsync(embed: ErrorEmbedTemplate.Get(ctx, $"COMMAND ERROR: {ex.Message}").Build())
+                    .ConfigureAwait(false);
+                }
+                Console.WriteLine($"COMMAND ERROR: {ex.Message}");
+            }
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Relics)}", true);
 
             _embed.AddField("Hero", 
-                $"{EmojiHandler.GetEmoji("lvl")} {profile.Level}" +
+                $"{EmojiHandler.GetEmoji("lvl")} {ProfileHelper.CalculateProfileData(profile).Level}" +
                 $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.XP)}" +
                 $"\n⚔️ {UtilityFunctions.FormatNumber(profile.DPS)}" +
                 $"\nHP {UtilityFunctions.FormatNumber(profile.HP)}", true);

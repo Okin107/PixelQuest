@@ -42,7 +42,7 @@ namespace IdleHeroesDAL.Models
         public double XPBaseLevel { get; set; }
         public double XPIncreasePerLevel { get; set; }
         public double SkillPointsAvailable { get; set; }
-        public double TotalSkillPoints { get; set; }
+        public double SkillPointsSpent { get; set; }
 
         //Skills
         public double DPSBoostLevel { get; set; }
