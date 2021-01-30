@@ -136,9 +136,16 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n" +
                 $"\n{stringA2} \u200B \u200B \u200B \u200B \u200B {stringB2} \u200B \u200B \u200B \u200B \u200B {stringC2} \u200B \u200B \u200B \u200B \u200B 2️⃣" +
                 $"\n" +
-                $"\n{stringA3} \u200B \u200B \u200B \u200B \u200B {stringB3} \u200B \u200B \u200B \u200B \u200B {stringC3} \u200B \u200B \u200B \u200B \u200B 3️⃣");
+                $"\n{stringA3} \u200B \u200B \u200B \u200B \u200B {stringB3} \u200B \u200B \u200B \u200B \u200B {stringC3} \u200B \u200B \u200B \u200B \u200B 3️⃣", true);
 
             profile.Stage.Enemies = profile.Stage.Enemies.OrderBy(x => x.Position).ToList();
+
+            _embed.AddField("Fight rewards",
+                $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.Stage.StaticXP)}" +
+                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.StaticCoins)}" +
+                $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Stage.StaticFood)}" +
+                $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Stage.StaticGems)}" +
+                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}", true);
 
             _embed.AddField($"\u200B", "**Grid details**");
 

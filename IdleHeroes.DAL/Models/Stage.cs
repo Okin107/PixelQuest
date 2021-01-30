@@ -17,6 +17,14 @@ namespace IdleHeroesDAL.Models
         public double RelicsAmount { get; set; }
         public TimeSpan TimeToBeat { get; set; }
         public StageDifficultyEnum Difficulty { get; set; }
+
+        //Static rewards
+        public double StaticXP { get; set; }
+        public double StaticCoins { get; set; }
+        public double StaticFood { get; set; }
+        public double StaticGems { get; set; }
+        public double StaticRelics { get; set; }
+
         public List<StageEnemy> Enemies { get; set; }
     }
 }

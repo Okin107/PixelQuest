@@ -191,7 +191,7 @@ namespace IdleHeroes.EmbedTemplates
 
             _embed.AddField($"Team", $"{teamHP[TeamPositionEnum.C1]} {EmojiHandler.GetEmoji("blank")} {teamHP[TeamPositionEnum.B1]} {EmojiHandler.GetEmoji("blank")} {teamHP[TeamPositionEnum.A1]}" +
                 $"\n{teamPositions[TeamPositionEnum.C1]} {EmojiHandler.GetEmoji("blank")} {teamPositions[TeamPositionEnum.B1]} {EmojiHandler.GetEmoji("blank")} {teamPositions[TeamPositionEnum.A1]}" +
-                $"\n{teamHP[TeamPositionEnum.C2]} \u200B \u200B \u200B \u200B \u200B {teamHP[TeamPositionEnum.B2]} \u200B \u200B \u200B \u200B \u200B {teamHP[TeamPositionEnum.A2]}" +
+                $"\n{teamHP[TeamPositionEnum.C2]} {EmojiHandler.GetEmoji("blank")} {teamHP[TeamPositionEnum.B2]} {EmojiHandler.GetEmoji("blank")} {teamHP[TeamPositionEnum.A2]}" +
                 $"\n{teamPositions[TeamPositionEnum.C2]} {EmojiHandler.GetEmoji("blank")} {teamPositions[TeamPositionEnum.B2]} {EmojiHandler.GetEmoji("blank")} {teamPositions[TeamPositionEnum.A2]}" +
                 $"\u200B \u200B VS " +
                 $"\n{teamHP[TeamPositionEnum.C3]} {EmojiHandler.GetEmoji("blank")} {teamHP[TeamPositionEnum.B3]} {EmojiHandler.GetEmoji("blank")} {teamHP[TeamPositionEnum.A3]}" +
@@ -204,6 +204,12 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{enemyHP[TeamPositionEnum.A3]} {EmojiHandler.GetEmoji("blank")} {enemyHP[TeamPositionEnum.B3]} {EmojiHandler.GetEmoji("blank")} {enemyHP[TeamPositionEnum.C3]}" +
                 $"\n{enemyPositions[TeamPositionEnum.A3]} {EmojiHandler.GetEmoji("blank")} {enemyPositions[TeamPositionEnum.B3]} {EmojiHandler.GetEmoji("blank")} {enemyPositions[TeamPositionEnum.C3]}", true);
 
+            _embed.AddField("Rewards gained",
+                $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.Stage.StaticXP)}" +
+                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.StaticCoins)}" +
+                $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Stage.StaticFood)}" +
+                $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Stage.StaticGems)}" +
+                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}");
             //profile.Stage.Enemies = profile.Stage.Enemies.OrderBy(x => x.Position).ToList();
 
             //_embed.AddField($"\u200B", "**Grid details**");

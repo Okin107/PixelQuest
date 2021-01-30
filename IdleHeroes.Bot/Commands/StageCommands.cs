@@ -278,12 +278,21 @@ namespace IdleHeroes.Commands
                 await ctx.Channel.SendMessageAsync(embed: StageFightResultEmbedTemplate.Show(ctx, profile, battleWon, defeatedTeamPositions, defeatedEnemyPositions, teamDpsSpread, enemyDpsSpread, battleSeconds - 1).Build())
                    .ConfigureAwait(false);
 
+                //Add static rewards
+                profile.XP += profile.Stage.StaticXP;
+                profile.Coins += profile.Stage.StaticCoins;
+                profile.Food += profile.Stage.StaticFood;
+                profile.Gems += profile.Stage.StaticGems;
+                profile.Relics += profile.Stage.StaticRelics;
+
                 //Temp stage soft cap to 10 stages
                 if (profile.Stage.Number < 10)
                 {
                     //Increment stage
                     profile.Stage = await _stageService.GetStageFromNumber(profile.Stage.Number + 1);
                 }
+
+                
 
                 await _profileService.Update(ctx, profile);
             }
