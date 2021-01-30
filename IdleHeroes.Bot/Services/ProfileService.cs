@@ -48,7 +48,7 @@ namespace IdleHeroes.Services
                 Agility = 10,
                 AgilityLevelIncrease = 1.01,
                 LastRewardsCollected = DateTime.Now,
-                MaximumIdleRewardHours = 1,
+                MaximumIdleRewardHours = 6,
                 Stage = await _stageService.GetStageFromNumber(1),
                 RegisteredOn = DateTime.Now,
                 LastPlayed = DateTime.Now,
