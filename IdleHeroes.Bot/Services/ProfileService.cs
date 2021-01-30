@@ -38,7 +38,7 @@ namespace IdleHeroes.Services
                 DiscordId = ctx.Message.Author.Id,
                 DiscordName = $"{ctx.Message.Author.Username}#{ctx.Message.Author.Discriminator}",
                 Level = 1,
-                DPS = 2,
+                DPS = 5,
                 HP = 100,
                 DPSLevelIncrease = 1.01,
                 Armor = 5,
