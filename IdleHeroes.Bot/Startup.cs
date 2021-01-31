@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace IdleHeroes
 {
@@ -22,6 +23,7 @@ namespace IdleHeroes
             {
                 options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=IdleHeroes;Trusted_Connection=True;MultipleActiveResultSets=true",
                     x => x.MigrationsAssembly("IdleHeroes.DAL.Migrations"));
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
             ServiceProvider serviceProvider = services.BuildServiceProvider();

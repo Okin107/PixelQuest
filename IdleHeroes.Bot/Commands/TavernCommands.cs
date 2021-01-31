@@ -17,11 +17,9 @@ namespace IdleHeroes.Commands
         ITavernService _tavernService = null;
         IProfileService _profileService = null;
         ICompanionService _companionService = null;
-        private readonly DatabaseContext _context;
 
-        public TavernCommands(DatabaseContext context, ITavernService tavernService, IProfileService profileService, ICompanionService companionService)
+        public TavernCommands(ITavernService tavernService, IProfileService profileService, ICompanionService companionService)
         {
-            _context = context;
             _tavernService = tavernService;
             _profileService = profileService;
             _companionService = companionService;
