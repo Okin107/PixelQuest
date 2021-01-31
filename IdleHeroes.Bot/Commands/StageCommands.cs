@@ -362,7 +362,7 @@ namespace IdleHeroes.Commands
             int Max = 100;
 
             //Calculate idle resources gained
-            TimeSpan idleTime = UtilityFunctions.GetIdleTime(profile);
+            TimeSpan idleTime = UtilityFunctions.GetIdleDisplayTime(profile);
 
             if (idleTime.TotalMinutes >= 1)
             {
@@ -407,6 +407,8 @@ namespace IdleHeroes.Commands
 
                 //Set the rewards template here
                 string rewardsString = $"**You have successfully collected your rewards.**" +
+                    $"\n" +
+                    $"\nStage {profile.Stage.Number} • Idle Time: {UtilityFunctions.GetIdleDisplayTime(profile).ToString("h'h, 'm'm, 's's'")}" +
                     $"\n" +
                     $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.XP)} **(+{UtilityFunctions.FormatNumber(profile.IdleXP)})**" +
                     $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Coins)} **(+{UtilityFunctions.FormatNumber(profile.IdleCoins)})**" +
