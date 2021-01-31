@@ -117,7 +117,7 @@ namespace IdleHeroes.Commands
                                     }
                                     else
                                     {
-                                        teamDpsSpread[enemy.Position] += CalculateTeamDPSToApply(companion, enemy);
+                                        teamDpsSpread[enemy.Position] = CalculateTeamDPSToApply(companion, enemy);
                                     }
 
                                     //Check if enemy died and mark it
