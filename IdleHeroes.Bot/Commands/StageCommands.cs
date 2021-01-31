@@ -119,10 +119,23 @@ namespace IdleHeroes.Commands
                                 }
 
                                 //Check if enemy died and mark it
-                                if (teamDpsSpread[enemy.Position] >= enemy.Enemy.HP && !defeatedEnemyPositions.Contains(enemy.Position))
+                                if (companion.OwnedCompanion.Companion.Class == CompanionClassesEnum.Assasin)
                                 {
-                                    defeatedEnemyPositions.Add(enemy.Position);
+                                    TeamPositionEnum enemyPosition = profile.Stage.Enemies.OrderBy(x => x.Position).LastOrDefault().Position;
+
+                                    if (teamDpsSpread[enemyPosition] >= enemy.Enemy.HP && !defeatedEnemyPositions.Contains(enemyPosition))
+                                    {
+                                        defeatedEnemyPositions.Add(enemyPosition);
+                                    }
                                 }
+                                else
+                                {
+                                    if (teamDpsSpread[enemy.Position] >= enemy.Enemy.HP && !defeatedEnemyPositions.Contains(enemy.Position))
+                                    {
+                                        defeatedEnemyPositions.Add(enemy.Position);
+                                    }
+                                }
+                                
                                 break; //Exit the enemy loop once dps is applied
                             }
                         }
@@ -228,10 +241,24 @@ namespace IdleHeroes.Commands
                                         }
                                     }
 
-                                    if (enemyDpsSpread[companion.TeamPosition] >= CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.HP) && !defeatedTeamPositions.Contains(companion.TeamPosition))
+                                    if (enemy.Enemy.Class == CompanionClassesEnum.Assasin)
                                     {
-                                        defeatedTeamPositions.Add(companion.TeamPosition);
+                                        TeamPositionEnum teamPosition = profile.Team.Companions.OrderBy(x => x.TeamPosition).LastOrDefault().TeamPosition;
+
+                                        if (enemyDpsSpread[teamPosition] >= CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.HP) && !defeatedTeamPositions.Contains(teamPosition))
+                                        {
+                                            defeatedTeamPositions.Add(teamPosition);
+                                        }
                                     }
+                                    else
+                                    {
+                                        if (enemyDpsSpread[companion.TeamPosition] >= CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.HP) && !defeatedTeamPositions.Contains(companion.TeamPosition))
+                                        {
+                                            defeatedTeamPositions.Add(companion.TeamPosition);
+                                        }
+                                    }
+
+                                    
                                     break; //Exit the enemy loop once dps is applied
                                 }
                                 else
@@ -251,7 +278,7 @@ namespace IdleHeroes.Commands
                                         enemyDpsSpread[profile.Team.HeroTeamPosition] = CalculateEnemyDPSToApply(enemy, profile);
                                     }
 
-                                    if (enemyDpsSpread[profile.Team.HeroTeamPosition] >= profile.HP && !defeatedTeamPositions.Contains(profile.Team.HeroTeamPosition))
+                                    if (enemyDpsSpread[profile.Team.HeroTeamPosition] >= ProfileHelper.CalculateAttribute(profile, CompanionAttributeEnum.HP) && !defeatedTeamPositions.Contains(profile.Team.HeroTeamPosition))
                                     {
                                         defeatedTeamPositions.Add(profile.Team.HeroTeamPosition);
                                     }
@@ -263,18 +290,17 @@ namespace IdleHeroes.Commands
                         {
                             if (enemyDpsSpread.ContainsKey(profile.Team.HeroTeamPosition))
                             {
-                                enemyDpsSpread[profile.Team.HeroTeamPosition] += enemy.Enemy.DPS;
+                                enemyDpsSpread[profile.Team.HeroTeamPosition] += CalculateEnemyDPSToApply(enemy, profile);
                             }
                             else
                             {
-                                enemyDpsSpread[profile.Team.HeroTeamPosition] = enemy.Enemy.DPS;
+                                enemyDpsSpread[profile.Team.HeroTeamPosition] = CalculateEnemyDPSToApply(enemy, profile);
                             }
 
-                            if (enemyDpsSpread[profile.Team.HeroTeamPosition] >= profile.HP)
+                            if (enemyDpsSpread[profile.Team.HeroTeamPosition] >= ProfileHelper.CalculateAttribute(profile, CompanionAttributeEnum.HP) && !defeatedTeamPositions.Contains(profile.Team.HeroTeamPosition))
                             {
                                 defeatedTeamPositions.Add(profile.Team.HeroTeamPosition);
                             }
-                            break;
                         }
 
                     }
