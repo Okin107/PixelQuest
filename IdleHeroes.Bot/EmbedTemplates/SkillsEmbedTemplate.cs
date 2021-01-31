@@ -24,7 +24,7 @@ namespace IdleHeroes.EmbedTemplates
                     Name = $"{profile.Username}'s Hero skills",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
-                Description = $"Skill Points: {profileLevelData.Level - profile.SkillPointsSpent}" +
+                Description = $"Skill Points: {profileLevelData.Level - profile.SkillPointsSpent - 1}" +
                 $"\n\nWelcome to the Skills page. Here you can upgrade your Hero's skills by spending Skill Points." +
                 $"\n" +
                 $"\nYou can reset your Skill Points for **50** {EmojiHandler.GetEmoji("gem")} by using `.skills reset`.",

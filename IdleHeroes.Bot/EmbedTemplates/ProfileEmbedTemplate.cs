@@ -46,9 +46,7 @@ namespace IdleHeroes.EmbedTemplates
 
             _embed.AddField("Hero", 
                 $"{EmojiHandler.GetEmoji("lvl")} {ProfileHelper.CalculateProfileData(profile).Level}" +
-                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.XP)}" +
-                $"\n⚔️ {UtilityFunctions.FormatNumber(profile.DPS)}" +
-                $"\nHP {UtilityFunctions.FormatNumber(profile.HP)}", true);
+                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.XP)}", true);
 
             _embed.AddField("Stage", $"Nr: {profile.Stage.Number}" +
                 $"\nDifficulty: {profile.Stage.Difficulty}", true);

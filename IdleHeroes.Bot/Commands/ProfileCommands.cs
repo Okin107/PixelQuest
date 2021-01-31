@@ -226,7 +226,7 @@ namespace IdleHeroes.Commands
         private async Task UpgradeSkill(CommandContext ctx, Profile profile, ProfileSkillTypeEnum skillId)
         {
             ProfileLevelData profileLevelData = CalculateProfileData(profile);
-            double skillPoints = profileLevelData.Level - profile.SkillPointsSpent;
+            double skillPoints = profileLevelData.Level - profile.SkillPointsSpent - 1;
             double skillCost = 999999;
 
             switch (skillId)

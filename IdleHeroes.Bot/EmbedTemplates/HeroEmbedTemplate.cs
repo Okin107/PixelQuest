@@ -26,7 +26,7 @@ namespace IdleHeroes.EmbedTemplates
                     Name = $"{profile.Username}'s Hero ({profile.DiscordName})",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
-                Description = $"Skill Points: {profileLevelData.Level - profile.SkillPointsSpent}" +
+                Description = $"Skill Points: {profileLevelData.Level - profile.SkillPointsSpent - 1}" +
                 $" • {EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Gems)}",
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {
