@@ -207,11 +207,11 @@ namespace IdleHeroes.Commands
                                         {
                                             TeamPositionEnum teamPosition = profile.Team.Companions.OrderBy(x => x.TeamPosition).LastOrDefault().TeamPosition;
 
-                                            teamDpsSpread[teamPosition] += CalculateEnemyDPSToApply(enemy, companion);
+                                            enemyDpsSpread[teamPosition] += CalculateEnemyDPSToApply(enemy, companion);
                                         }
                                         else
                                         {
-                                            teamDpsSpread[companion.TeamPosition] += CalculateEnemyDPSToApply(enemy, companion);
+                                            enemyDpsSpread[companion.TeamPosition] += CalculateEnemyDPSToApply(enemy, companion);
                                         }
                                     }
                                     else
@@ -220,11 +220,11 @@ namespace IdleHeroes.Commands
                                         {
                                             TeamPositionEnum teamPosition = profile.Team.Companions.OrderBy(x => x.TeamPosition).LastOrDefault().TeamPosition;
 
-                                            teamDpsSpread[teamPosition] = CalculateEnemyDPSToApply(enemy, companion);
+                                            enemyDpsSpread[teamPosition] = CalculateEnemyDPSToApply(enemy, companion);
                                         }
                                         else
                                         {
-                                            teamDpsSpread[companion.TeamPosition] = CalculateEnemyDPSToApply(enemy, companion);
+                                            enemyDpsSpread[companion.TeamPosition] = CalculateEnemyDPSToApply(enemy, companion);
                                         }
                                     }
 
