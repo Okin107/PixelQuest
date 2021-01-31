@@ -7,6 +7,6 @@ namespace IdleHeroesDAL.Enums
         Warrior = 0,
         Tank = 1,
         Ranger = 2,
-        Support = 3
+        Assasin = 3
     }
 }

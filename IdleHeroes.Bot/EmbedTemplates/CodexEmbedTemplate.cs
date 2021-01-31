@@ -23,25 +23,7 @@ namespace IdleHeroes.EmbedTemplates
                     Name = $"Companions codex",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
-                Description = $"**Icons description:**" +
-                $"\nRarity: {EmojiHandler.GetEmoji(RarityTierEnum.Common.ToString().ToLower())} Common, " +
-                $"{EmojiHandler.GetEmoji(RarityTierEnum.Rare.ToString().ToLower())} Rare, " +
-                $"{EmojiHandler.GetEmoji(RarityTierEnum.Epic.ToString().ToLower())} Epic, " +
-                $"{EmojiHandler.GetEmoji(RarityTierEnum.Legendary.ToString().ToLower())} Legendary, " +
-                $"{EmojiHandler.GetEmoji(RarityTierEnum.Mythic.ToString().ToLower())} Mythic." +
-                $"\nElements: {EmojiHandler.GetEmoji(ElementTypeEnum.Nature.ToString().ToLower())} Nature, " +
-                $"{EmojiHandler.GetEmoji(ElementTypeEnum.Water.ToString().ToLower())} Water, " +
-                $"{EmojiHandler.GetEmoji(ElementTypeEnum.Fire.ToString().ToLower())} Fire. " +
-                $"\nClasses: {EmojiHandler.GetEmoji(CompanionClassesEnum.Warrior.ToString().ToLower())} Warrior, " +
-                $"{EmojiHandler.GetEmoji(CompanionClassesEnum.Ranger.ToString().ToLower())} Ranger, " +
-                $"{EmojiHandler.GetEmoji(CompanionClassesEnum.Tank.ToString().ToLower())} Tank, " +
-                $"{EmojiHandler.GetEmoji(CompanionClassesEnum.Support.ToString().ToLower())} Support." +
-                $"\nDMG Types: {EmojiHandler.GetEmoji(DamageTypeEnum.Melee.ToString().ToLower())} Melee, " +
-                $"{EmojiHandler.GetEmoji(DamageTypeEnum.Ranged.ToString().ToLower())} Ranged. " +
-                $"\nAscend Tiers: {UtilityFunctions.GetTierStars(5)}" +
-                $"\n" +
-                $"\n" +
-                $"Here you can preview all the companions at their maximum level.",
+                Description = $"Here you can preview all the companions at their maximum level.",
                 Timestamp = DateTime.UtcNow,
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {

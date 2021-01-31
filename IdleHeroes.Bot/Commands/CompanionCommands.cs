@@ -4,6 +4,7 @@ using IdleHeroes.EmbedTemplates;
 using IdleHeroes.Models;
 using IdleHeroes.Services;
 using IdleHeroes.Support;
+using IdleHeroesDAL.Enums;
 using IdleHeroesDAL.Models;
 using System;
 using System.Collections.Generic;
@@ -24,11 +25,37 @@ namespace IdleHeroes.Commands
 
         [Command("codex")]
         [Description("Preview all the companions at their maximum level and stats.")]
-        public async Task CompanionCodex(CommandContext ctx)
+        public async Task CompanionCodex(CommandContext ctx, [Description("Apply a filter to the codex list. <rarity> <stats>")] string filter = null)
         {
             try
             {
-                List<Companion> companionList = await _companionService.GetCompanions();
+                List<Companion> companionList = await _companionService.GetCompanions(RarityTierEnum.Common);
+
+                if (!string.IsNullOrEmpty(filter))
+                {
+                    if(filter == "stats")
+                    {
+                        await ctx.Channel.SendMessageAsync(embed: CodexStatsEmbedTemplate.Show(ctx).Build())
+                   .ConfigureAwait(false);
+                        return;
+                    }
+                    if(filter == "rare")
+                    {
+                        companionList = await _companionService.GetCompanions(RarityTierEnum.Rare);
+                    }
+                    if (filter == "epic")
+                    {
+                        companionList = await _companionService.GetCompanions(RarityTierEnum.Epic);
+                    }
+                    if (filter == "legendary")
+                    {
+                        companionList = await _companionService.GetCompanions(RarityTierEnum.Legendary);
+                    }
+                    if (filter == "mythic")
+                    {
+                        companionList = await _companionService.GetCompanions(RarityTierEnum.Mythic);
+                    }
+                }
 
                 await ctx.Channel.SendMessageAsync(embed: CodexEmbedTemplate.Show(ctx, companionList).Build())
                    .ConfigureAwait(false);

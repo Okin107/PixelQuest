@@ -1,4 +1,5 @@
 ﻿using IdleHeroesDAL;
+using IdleHeroesDAL.Enums;
 using IdleHeroesDAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -18,6 +19,13 @@ namespace IdleHeroes.Services
         public async Task<List<Companion>> GetCompanions()
         {
             return await _context.Companion.ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task<List<Companion>> GetCompanions(RarityTierEnum rarity)
+        {
+            List<Companion> companionList = await _context.Companion.ToListAsync().ConfigureAwait(false);
+
+            return companionList.FindAll(x => x.RarityTier == rarity);
         }
     }
 }
