@@ -40,6 +40,8 @@ namespace IdleHeroes.Services
                 Level = 1,
                 DPS = 5,
                 HP = 100,
+                HPLevelIncrease = 1.01,
+                MaxLevel = 100,
                 DPSLevelIncrease = 1.01,
                 Armor = 5,
                 ArmorLevelIncrease = 1.01,
