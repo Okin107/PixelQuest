@@ -89,53 +89,44 @@ namespace IdleHeroes.Commands
                             //Attack non dead enemies
                             if (!defeatedEnemyPositions.Contains(enemy.Position))
                             {
-                                if (teamDpsSpread.ContainsKey(enemy.Position))
+                                //Check if assasin so attack the back
+                                if (companion.OwnedCompanion.Companion.Class == CompanionClassesEnum.Assasin)
                                 {
-                                    //Check if assasin so attack the back
-                                    if (companion.OwnedCompanion.Companion.Class == CompanionClassesEnum.Assasin)
-                                    {
-                                        TeamPositionEnum enemyPosition = profile.Stage.Enemies.OrderBy(x => x.Position).LastOrDefault().Position;
+                                    StageEnemy lastEnemy = profile.Stage.Enemies.OrderBy(x => x.Position).LastOrDefault();
 
-                                        teamDpsSpread[enemyPosition] += CalculateTeamDPSToApply(companion, enemy);
+                                    if (teamDpsSpread.ContainsKey(lastEnemy.Position))
+                                    {
+                                        teamDpsSpread[lastEnemy.Position] += CalculateTeamDPSToApply(companion, enemy);
+                                    }
+                                    else
+                                    {
+                                        teamDpsSpread[lastEnemy.Position] = CalculateTeamDPSToApply(companion, enemy);
+                                    }
+
+                                    //Check if enemy died and mark it
+                                    if (teamDpsSpread[lastEnemy.Position] >= lastEnemy.Enemy.HP && !defeatedEnemyPositions.Contains(lastEnemy.Position))
+                                    {
+                                        defeatedEnemyPositions.Add(lastEnemy.Position);
+                                    }
+                                }
+                                else
+                                {
+                                    if (teamDpsSpread.ContainsKey(enemy.Position))
+                                    {
+                                        teamDpsSpread[enemy.Position] += CalculateTeamDPSToApply(companion, enemy);
                                     }
                                     else
                                     {
                                         teamDpsSpread[enemy.Position] += CalculateTeamDPSToApply(companion, enemy);
                                     }
-                                }
-                                else
-                                {
-                                    //Check if assasin so attack the back
-                                    if (companion.OwnedCompanion.Companion.Class == CompanionClassesEnum.Assasin)
-                                    {
-                                        TeamPositionEnum enemyPosition = profile.Stage.Enemies.OrderBy(x => x.Position).LastOrDefault().Position;
 
-                                        teamDpsSpread[enemyPosition] = CalculateTeamDPSToApply(companion, enemy);
-                                    }
-                                    else
-                                    {
-                                        teamDpsSpread[enemy.Position] = CalculateTeamDPSToApply(companion, enemy);
-                                    }
-                                }
-
-                                //Check if enemy died and mark it
-                                if (companion.OwnedCompanion.Companion.Class == CompanionClassesEnum.Assasin)
-                                {
-                                    TeamPositionEnum enemyPosition = profile.Stage.Enemies.OrderBy(x => x.Position).LastOrDefault().Position;
-
-                                    if (teamDpsSpread[enemyPosition] >= enemy.Enemy.HP && !defeatedEnemyPositions.Contains(enemyPosition))
-                                    {
-                                        defeatedEnemyPositions.Add(enemyPosition);
-                                    }
-                                }
-                                else
-                                {
+                                    //Check if enemy died and mark it
                                     if (teamDpsSpread[enemy.Position] >= enemy.Enemy.HP && !defeatedEnemyPositions.Contains(enemy.Position))
                                     {
                                         defeatedEnemyPositions.Add(enemy.Position);
                                     }
                                 }
-                                
+
                                 break; //Exit the enemy loop once dps is applied
                             }
                         }
@@ -214,51 +205,42 @@ namespace IdleHeroes.Commands
                                 if (!defeatedTeamPositions.Contains(companion.TeamPosition) && !attackHero)
                                 {
                                     companionDmgApplied = true;
-                                    if (enemyDpsSpread.ContainsKey(companion.TeamPosition))
-                                    {
-                                        if (enemy.Enemy.Class == CompanionClassesEnum.Assasin)
-                                        {
-                                            TeamPositionEnum teamPosition = profile.Team.Companions.OrderBy(x => x.TeamPosition).LastOrDefault().TeamPosition;
 
-                                            enemyDpsSpread[teamPosition] += CalculateEnemyDPSToApply(enemy, companion);
+                                    if (enemy.Enemy.Class == CompanionClassesEnum.Assasin)
+                                    {
+                                        TeamCompanion lastCompanion = profile.Team.Companions.OrderBy(x => x.TeamPosition).LastOrDefault();
+
+                                        if (enemyDpsSpread.ContainsKey(lastCompanion.TeamPosition))
+                                        {
+                                            enemyDpsSpread[lastCompanion.TeamPosition] += CalculateEnemyDPSToApply(enemy, companion);
                                         }
                                         else
                                         {
-                                            enemyDpsSpread[companion.TeamPosition] += CalculateEnemyDPSToApply(enemy, companion);
+                                            enemyDpsSpread[lastCompanion.TeamPosition] = CalculateEnemyDPSToApply(enemy, companion);
+                                        }
+
+                                        if (enemyDpsSpread[lastCompanion.TeamPosition] >= CompanionHelper.CalculateAttribute(lastCompanion.OwnedCompanion, CompanionAttributeEnum.HP) && !defeatedTeamPositions.Contains(lastCompanion.TeamPosition))
+                                        {
+                                            defeatedTeamPositions.Add(lastCompanion.TeamPosition);
                                         }
                                     }
                                     else
                                     {
-                                        if (enemy.Enemy.Class == CompanionClassesEnum.Assasin)
+                                        if (enemyDpsSpread.ContainsKey(companion.TeamPosition))
                                         {
-                                            TeamPositionEnum teamPosition = profile.Team.Companions.OrderBy(x => x.TeamPosition).LastOrDefault().TeamPosition;
-
-                                            enemyDpsSpread[teamPosition] = CalculateEnemyDPSToApply(enemy, companion);
+                                            enemyDpsSpread[companion.TeamPosition] += CalculateEnemyDPSToApply(enemy, companion);
                                         }
                                         else
                                         {
                                             enemyDpsSpread[companion.TeamPosition] = CalculateEnemyDPSToApply(enemy, companion);
                                         }
-                                    }
 
-                                    if (enemy.Enemy.Class == CompanionClassesEnum.Assasin)
-                                    {
-                                        TeamPositionEnum teamPosition = profile.Team.Companions.OrderBy(x => x.TeamPosition).LastOrDefault().TeamPosition;
-
-                                        if (enemyDpsSpread[teamPosition] >= CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.HP) && !defeatedTeamPositions.Contains(teamPosition))
-                                        {
-                                            defeatedTeamPositions.Add(teamPosition);
-                                        }
-                                    }
-                                    else
-                                    {
                                         if (enemyDpsSpread[companion.TeamPosition] >= CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.HP) && !defeatedTeamPositions.Contains(companion.TeamPosition))
                                         {
                                             defeatedTeamPositions.Add(companion.TeamPosition);
                                         }
                                     }
 
-                                    
                                     break; //Exit the enemy loop once dps is applied
                                 }
                                 else
