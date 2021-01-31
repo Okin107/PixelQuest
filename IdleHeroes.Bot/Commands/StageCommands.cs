@@ -707,7 +707,7 @@ namespace IdleHeroes.Commands
             int Max = 100;
 
             //Calculate idle resources gained
-            TimeSpan idleTime = UtilityFunctions.GetIdleDisplayTime(profile);
+            TimeSpan idleTime = UtilityFunctions.GetIdleTime(profile);
 
             if (idleTime.TotalMinutes >= 1)
             {
