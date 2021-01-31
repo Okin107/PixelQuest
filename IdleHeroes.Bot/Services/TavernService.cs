@@ -54,7 +54,7 @@ namespace IdleHeroes.Services
 
                 if (selectedCompanion.RarityTier != IdleHeroesDAL.Enums.RarityTierEnum.Common)
                 {
-                    foodCost = foodCost * (ulong)Math.Pow(3, ((double)selectedCompanion.RarityTier - 1)) ;
+                    foodCost = foodCost * (ulong)Math.Pow(2, ((double)selectedCompanion.RarityTier - 1)) ;
                 }
 
                 TavernCompanion tavernCompanion = new TavernCompanion()
