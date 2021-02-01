@@ -60,7 +60,14 @@ namespace IdleHeroes.Commands
                             //Switc places
                             else if (Enum.TryParse(companionId.ToUpper(), out TeamPositionEnum tPosition2) && !int.TryParse(companionId, out int n2) && !int.TryParse(teamPosition, out int n3))
                             {
-                                await SwapPositions(ctx, profile, tPosition, tPosition2);
+                                if(tPosition != tPosition2)
+                                {
+                                    await SwapPositions(ctx, profile, tPosition, tPosition2);
+                                }
+                                else
+                                {
+                                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You cannot swap the same position.").Build()).ConfigureAwait(false);
+                                }
                             }
                             else
                             {
