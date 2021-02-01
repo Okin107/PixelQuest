@@ -3,6 +3,7 @@ using IdleHeroesDAL;
 using IdleHeroesDAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace IdleHeroes.Services
@@ -143,6 +144,28 @@ namespace IdleHeroes.Services
             _context.Profile.Update(profile);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
+        }
+
+        public async Task<List<Profile>> GetAll()
+        {
+            return await _context.Profile
+                .Include(x => x.Stage)
+                .ThenInclude(x => x.Enemies)
+                .ThenInclude(x => x.Companion)
+                .Include(x => x.Stage)
+                .ThenInclude(x => x.Companion)
+                .Include(x => x.OwnedCompanions)
+                .ThenInclude(x => x.Companion)
+                .Include(x => x.Tavern)
+                .ThenInclude(x => x.Companions)
+                .ThenInclude(x => x.Companion)
+                .Include(x => x.Tavern)
+                .ThenInclude(x => x.Purchases)
+                .ThenInclude(x => x.TavernCompanion)
+                .Include(x => x.Team)
+                .ThenInclude(x => x.Companions)
+                .ThenInclude(x => x.OwnedCompanion)
+                .ThenInclude(x => x.Companion).ToListAsync().ConfigureAwait(false);
         }
     }
 }

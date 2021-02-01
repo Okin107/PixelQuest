@@ -1,5 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using IdleHeroesDAL.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace IdleHeroes.Services
@@ -12,5 +13,6 @@ namespace IdleHeroes.Services
         Task<Profile> FindByUsername(CommandContext ctx, string username);
         Task<Profile> FindByDiscordId(CommandContext ctx);
         Task<bool> IsUserRegistered(ulong userId);
+        Task<List<Profile>> GetAll();
     }
 }
