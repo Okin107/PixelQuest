@@ -60,7 +60,7 @@ namespace IdleHeroes.EmbedTemplates
             if (stageEnemy != null)
             {
                 stringA1 = stringA1 == "🔳"
-                ? $"{EmojiHandler.GetEmoji(stageEnemy.Enemy.IconName)}"
+                ? $"{EmojiHandler.GetEmoji(stageEnemy.IconName)}"
                 : stringA1;
             }
 
@@ -68,7 +68,7 @@ namespace IdleHeroes.EmbedTemplates
             if (stageEnemy != null)
             {
                 stringA2 = stringA2 == "🔳"
-                ? $"{EmojiHandler.GetEmoji(stageEnemy.Enemy.IconName)}"
+                ? $"{EmojiHandler.GetEmoji(stageEnemy.IconName)}"
                 : stringA2;
             }
 
@@ -76,7 +76,7 @@ namespace IdleHeroes.EmbedTemplates
             if (stageEnemy != null)
             {
                 stringA3 = stringA3 == "🔳"
-                ? $"{EmojiHandler.GetEmoji(stageEnemy.Enemy.IconName)}"
+                ? $"{EmojiHandler.GetEmoji(stageEnemy.IconName)}"
                 : stringA3;
             }
 
@@ -84,7 +84,7 @@ namespace IdleHeroes.EmbedTemplates
             if (stageEnemy != null)
             {
                 stringB1 = stringB1 == "🔳"
-                ? $"{EmojiHandler.GetEmoji(stageEnemy.Enemy.IconName)}"
+                ? $"{EmojiHandler.GetEmoji(stageEnemy.IconName)}"
                 : stringB1;
             }
 
@@ -92,7 +92,7 @@ namespace IdleHeroes.EmbedTemplates
             if (stageEnemy != null)
             {
                 stringB2 = stringB2 == "🔳"
-                ? $"{EmojiHandler.GetEmoji(stageEnemy.Enemy.IconName)}"
+                ? $"{EmojiHandler.GetEmoji(stageEnemy.IconName)}"
                 : stringB2;
             }
 
@@ -100,7 +100,7 @@ namespace IdleHeroes.EmbedTemplates
             if (stageEnemy != null)
             {
                 stringB3 = stringB3 == "🔳"
-                ? $"{EmojiHandler.GetEmoji(stageEnemy.Enemy.IconName)}"
+                ? $"{EmojiHandler.GetEmoji(stageEnemy.IconName)}"
                 : stringB3;
             }
 
@@ -108,7 +108,7 @@ namespace IdleHeroes.EmbedTemplates
             if (stageEnemy != null)
             {
                 stringC1 = stringC1 == "🔳"
-                ? $"{EmojiHandler.GetEmoji(stageEnemy.Enemy.IconName)}"
+                ? $"{EmojiHandler.GetEmoji(stageEnemy.IconName)}"
                 : stringC1;
             }
 
@@ -116,7 +116,7 @@ namespace IdleHeroes.EmbedTemplates
             if (stageEnemy != null)
             {
                 stringC2 = stringC2 == "🔳"
-                ? $"{EmojiHandler.GetEmoji(stageEnemy.Enemy.IconName)}"
+                ? $"{EmojiHandler.GetEmoji(stageEnemy.IconName)}"
                 : stringC2;
             }
 
@@ -124,7 +124,7 @@ namespace IdleHeroes.EmbedTemplates
             if (stageEnemy != null)
             {
                 stringC3 = stringC3 == "🔳"
-                ? $"{EmojiHandler.GetEmoji(stageEnemy.Enemy.IconName)}"
+                ? $"{EmojiHandler.GetEmoji(stageEnemy.IconName)}"
                 : stringC3;
             }
             #endregion
@@ -140,24 +140,35 @@ namespace IdleHeroes.EmbedTemplates
 
             profile.Stage.Enemies = profile.Stage.Enemies.OrderBy(x => x.Position).ToList();
 
+            string companionString = "";
+
+            if(profile.Stage.Companion != null)
+            {
+                companionString = $"**{profile.Stage.Companion.Id}**: {EmojiHandler.GetEmoji(profile.Stage.Companion.IconName)} {profile.Stage.Companion.Name}" +
+                $"\n{EmojiHandler.GetEmoji(profile.Stage.Companion.Element.ToString().ToLower())} " +
+                $"{EmojiHandler.GetEmoji(profile.Stage.Companion.Class.ToString().ToLower())} " +
+                $"{EmojiHandler.GetEmoji(profile.Stage.Companion.DamageType.ToString().ToLower())}";
+            }
+
             _embed.AddField("Fight rewards",
                 $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.Stage.StaticXP)}" +
                 $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.StaticCoins)}" +
                 $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Stage.StaticFood)}" +
                 $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Stage.StaticGems)}" +
-                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}", true);
+                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}" +
+                $"\n{companionString}", true);
 
             _embed.AddField($"\u200B", "**Grid details**");
 
             foreach (StageEnemy enemy in profile.Stage.Enemies)
             {
-                _embed.AddField($"**{enemy.Position}**: {EmojiHandler.GetEmoji(enemy.Enemy.IconName)} {enemy.Enemy.Name}",
-                $"\n{EmojiHandler.GetEmoji(enemy.Enemy.Element.ToString().ToLower())} " +
-                $"{EmojiHandler.GetEmoji(enemy.Enemy.Class.ToString().ToLower())} " +
-                $"{EmojiHandler.GetEmoji(enemy.Enemy.DamageType.ToString().ToLower())} " +
-                $"\nLv: {enemy.Enemy.Level}" +
-                $"\nDPS: {enemy.Enemy.DPS}" +
-                $"\nHP: {UtilityFunctions.FormatNumber(enemy.Enemy.HP)}", true);
+                _embed.AddField($"**{enemy.Position}**: {EmojiHandler.GetEmoji(enemy.IconName)} {enemy.Name}",
+                $"\n{EmojiHandler.GetEmoji(enemy.Companion.Element.ToString().ToLower())} " +
+                $"{EmojiHandler.GetEmoji(enemy.Companion.Class.ToString().ToLower())} " +
+                $"{EmojiHandler.GetEmoji(enemy.Companion.DamageType.ToString().ToLower())} " +
+                $"\nLv: {enemy.Level}" +
+                $"\nDPS: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.DPS)}" +
+                $"\nHP: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.HP)}", true);
             }
 
             return _embed;

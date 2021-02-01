@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210201094745_AddedCompanionsAsEnemies")]
+    partial class AddedCompanionsAsEnemies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -291,9 +293,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.Property<double>("XPIncreasePerLevel")
                         .HasColumnType("float");
 
-                    b.Property<bool>("reachedMaxStage")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("StageId");
@@ -314,9 +313,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 
                     b.Property<double>("CoinsPerMinute")
                         .HasColumnType("float");
-
-                    b.Property<int?>("CompanionId")
-                        .HasColumnType("int");
 
                     b.Property<int>("Difficulty")
                         .HasColumnType("int");
@@ -364,8 +360,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanionId");
 
                     b.ToTable("Stage");
                 });
@@ -542,13 +536,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.HasOne("IdleHeroesDAL.Models.Team", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId");
-                });
-
-            modelBuilder.Entity("IdleHeroesDAL.Models.Stage", b =>
-                {
-                    b.HasOne("IdleHeroesDAL.Models.Companion", "Companion")
-                        .WithMany()
-                        .HasForeignKey("CompanionId");
                 });
 
             modelBuilder.Entity("IdleHeroesDAL.Models.StageEnemy", b =>

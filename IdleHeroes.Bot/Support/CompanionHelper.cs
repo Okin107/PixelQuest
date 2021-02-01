@@ -64,6 +64,7 @@ namespace IdleHeroes.Support
             return heroCalculatedAttribute;
         }
 
+
         public static double CalculateAttribute(OwnedCompanion ownedCompanion, CompanionAttributeEnum companionAttribute, bool nextLevel = false)
         {
             double heroCalculatedAttribute = 0;
@@ -93,8 +94,64 @@ namespace IdleHeroes.Support
                     break;
             }
 
-            return Convert.ToUInt32(heroCalculatedAttribute);
+            return Math.Round(heroCalculatedAttribute, 2);
         }
+
+        public static string CalculateAttributeString(StageEnemy stageEnemy, CompanionAttributeEnum attribute)
+        {
+            string calculatedAttribute = "";
+            double enemyLevel = stageEnemy.Level - 1;
+
+            switch (attribute)
+            {
+                case CompanionAttributeEnum.DPS:
+                    calculatedAttribute = UtilityFunctions.FormatNumber(stageEnemy.Companion.DPS * Math.Pow(stageEnemy.Companion.DPSIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy));
+                    break;
+                case CompanionAttributeEnum.HP:
+                    calculatedAttribute = UtilityFunctions.FormatNumber(stageEnemy.Companion.HP * Math.Pow(stageEnemy.Companion.HPIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy));
+                    break;
+                case CompanionAttributeEnum.Armor:
+                    calculatedAttribute = UtilityFunctions.FormatNumber(stageEnemy.Companion.Armor * Math.Pow(stageEnemy.Companion.ArmorIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy));
+                    break;
+                case CompanionAttributeEnum.Accuracy:
+                    calculatedAttribute = UtilityFunctions.FormatNumber(stageEnemy.Companion.Accuracy * Math.Pow(stageEnemy.Companion.AccuracyIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy));
+                    break;
+                case CompanionAttributeEnum.Agility:
+                    calculatedAttribute = UtilityFunctions.FormatNumber(stageEnemy.Companion.Agility * Math.Pow(stageEnemy.Companion.AgilityIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy));
+                    break;
+            }
+
+            return calculatedAttribute;
+        }
+
+        public static double CalculateAttribute(StageEnemy stageEnemy, CompanionAttributeEnum attribute)
+        {
+            double calculatedAttribute = 0;
+            double enemyLevel = stageEnemy.Level - 1;
+
+            switch (attribute)
+            {
+                case CompanionAttributeEnum.DPS:
+                    calculatedAttribute = stageEnemy.Companion.DPS * Math.Pow(stageEnemy.Companion.DPSIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy);
+                    break;
+                case CompanionAttributeEnum.HP:
+                    calculatedAttribute = stageEnemy.Companion.HP * Math.Pow(stageEnemy.Companion.HPIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy);
+                    break;
+                case CompanionAttributeEnum.Armor:
+                    calculatedAttribute = stageEnemy.Companion.Armor * Math.Pow(stageEnemy.Companion.ArmorIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy);
+                    break;
+                case CompanionAttributeEnum.Accuracy:
+                    calculatedAttribute = stageEnemy.Companion.Accuracy * Math.Pow(stageEnemy.Companion.AccuracyIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy);
+                    break;
+                case CompanionAttributeEnum.Agility:
+                    calculatedAttribute = stageEnemy.Companion.Agility * Math.Pow(stageEnemy.Companion.AgilityIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy);
+                    break;
+            }
+
+            return Math.Round(calculatedAttribute, 2);
+        }
+
+        
 
         public static string NextLevelCost(OwnedCompanion ownedCompanion)
         {
@@ -118,6 +175,18 @@ namespace IdleHeroes.Support
             if ((int)ownedCompanion.RarirtyTier >= 2)
             {
                 levelMultiplierBoost = Math.Pow(ownedCompanion.Companion.IncreaseMultiplier, Math.Floor((double)ownedCompanion.RarirtyTier - 1));
+            }
+
+            return levelMultiplierBoost;
+        }
+
+        private static double CalculateLevelMultiplierBoost(StageEnemy stageEnemy)
+        {
+            double levelMultiplierBoost = 1;
+
+            if ((int)stageEnemy.RarirtyTier >= 2)
+            {
+                levelMultiplierBoost = Math.Pow(stageEnemy.Companion.IncreaseMultiplier, Math.Floor((double)stageEnemy.RarirtyTier - 1));
             }
 
             return levelMultiplierBoost;

@@ -70,7 +70,7 @@ namespace IdleHeroes.Services
                 AgilityBoostLevelIncrease = 1.2,
                 BoostCostIncrease = 1.5,
                 BoostMaxLevel = 10,
-                
+
                 //Only for testing
                 //Food = 10,
                 //Coins = 1000000,
@@ -85,7 +85,9 @@ namespace IdleHeroes.Services
             return await _context.Profile
                 .Include(x => x.Stage)
                 .ThenInclude(x => x.Enemies)
-                .ThenInclude(x => x.Enemy)
+                .ThenInclude(x => x.Companion)
+                .Include(x => x.Stage)
+                .ThenInclude(x => x.Companion)
                 .Include(x => x.OwnedCompanions)
                 .ThenInclude(x => x.Companion)
                 .Include(x => x.Tavern)
@@ -106,7 +108,9 @@ namespace IdleHeroes.Services
             return await _context.Profile
                 .Include(x => x.Stage)
                 .ThenInclude(x => x.Enemies)
-                .ThenInclude(x => x.Enemy)
+                .ThenInclude(x => x.Companion)
+                .Include(x => x.Stage)
+                .ThenInclude(x => x.Companion)
                 .Include(x => x.OwnedCompanions)
                 .ThenInclude(x => x.Companion)
                 .Include(x => x.Tavern)

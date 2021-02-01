@@ -165,8 +165,8 @@ namespace IdleHeroes.EmbedTemplates
 
                 if (teamDpsSpread.ContainsKey(stageEnemy.Position))
                 {
-                    double remainingHP = stageEnemy.Enemy.HP - teamDpsSpread[stageEnemy.Position];
-                    double percentDecimal = remainingHP / (double)stageEnemy.Enemy.HP;
+                    double remainingHP = CompanionHelper.CalculateAttribute(stageEnemy, CompanionAttributeEnum.HP) - teamDpsSpread[stageEnemy.Position];
+                    double percentDecimal = remainingHP / CompanionHelper.CalculateAttribute(stageEnemy, CompanionAttributeEnum.HP);
                     hpPercent = Convert.ToInt32(percentDecimal * 100);
                 }
 
@@ -185,7 +185,7 @@ namespace IdleHeroes.EmbedTemplates
                 }
                 else
                 {
-                    enemyPositions[stageEnemy.Position] = $"{EmojiHandler.GetEmoji(stageEnemy.Enemy.IconName)}";
+                    enemyPositions[stageEnemy.Position] = $"{EmojiHandler.GetEmoji(stageEnemy.IconName)}";
                 }
             }
 
@@ -206,12 +206,23 @@ namespace IdleHeroes.EmbedTemplates
             
             if(battleWon)
             {
+                string companionString = "";
+
+                if (profile.Stage.Companion != null)
+                {
+                    companionString = $"**{profile.Stage.Companion.Id}**: {EmojiHandler.GetEmoji(profile.Stage.Companion.IconName)} {profile.Stage.Companion.Name}" +
+                    $"\n{EmojiHandler.GetEmoji(profile.Stage.Companion.Element.ToString().ToLower())} " +
+                    $"{EmojiHandler.GetEmoji(profile.Stage.Companion.Class.ToString().ToLower())} " +
+                    $"{EmojiHandler.GetEmoji(profile.Stage.Companion.DamageType.ToString().ToLower())}";
+                }
+
                 _embed.AddField("Rewards gained",
                    $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.Stage.StaticXP)}" +
                    $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.StaticCoins)}" +
                    $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Stage.StaticFood)}" +
                    $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Stage.StaticGems)}" +
-                   $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}");
+                   $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}" +
+                   $"\n{companionString}");
             }
 
             return _embed;

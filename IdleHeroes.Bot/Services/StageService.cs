@@ -1,6 +1,7 @@
 ﻿using IdleHeroesDAL;
 using IdleHeroesDAL.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace IdleHeroes.Services
@@ -12,6 +13,11 @@ namespace IdleHeroes.Services
         public StageService(DatabaseContext context)
         {
             _context = context;
+        }
+
+        public async Task<List<Stage>> GetAll()
+        {
+            return await _context.Stage.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<Stage> GetStageFromNumber(double stageNumber)

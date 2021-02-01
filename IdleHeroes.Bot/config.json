@@ -3,7 +3,7 @@
   "devtoken": "Nzk5NzUwODk3OTgyNjM2MDMy.YAIIEA.8wqsBGAPujVJOni_XTEXjAG_L_o",
   "devmode": false,
   "prefix": ".",
-  "statusMessages": true,
+  "statusMessages": false,
   "isdebugmode": true,
   "defaultdateformat": "dd MMMM yyyy",
   "defaultdatetimeformat": "dd MMMM yyyy - HH:mm",

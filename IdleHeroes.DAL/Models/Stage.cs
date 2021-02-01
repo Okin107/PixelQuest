@@ -24,6 +24,7 @@ namespace IdleHeroesDAL.Models
         public double StaticFood { get; set; }
         public double StaticGems { get; set; }
         public double StaticRelics { get; set; }
+        public Companion Companion { get; set; }
 
         public List<StageEnemy> Enemies { get; set; }
     }

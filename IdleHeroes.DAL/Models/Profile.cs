@@ -10,6 +10,7 @@ namespace IdleHeroesDAL.Models
         public string Username { get; set; }
         public double Level { get; set; }
         public double MaxLevel { get; set; }
+        public bool reachedMaxStage { get; set; }
 
         //Attributes
         public double DPS { get; set; }

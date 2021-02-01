@@ -104,7 +104,7 @@ namespace IdleHeroes.Commands
                                     }
 
                                     //Check if enemy died and mark it
-                                    if (teamDpsSpread[lastEnemy.Position] >= lastEnemy.Enemy.HP && !defeatedEnemyPositions.Contains(lastEnemy.Position))
+                                    if (teamDpsSpread[lastEnemy.Position] >= CompanionHelper.CalculateAttribute(lastEnemy, CompanionAttributeEnum.HP) && !defeatedEnemyPositions.Contains(lastEnemy.Position))
                                     {
                                         defeatedEnemyPositions.Add(lastEnemy.Position);
                                     }
@@ -121,7 +121,7 @@ namespace IdleHeroes.Commands
                                     }
 
                                     //Check if enemy died and mark it
-                                    if (teamDpsSpread[enemy.Position] >= enemy.Enemy.HP && !defeatedEnemyPositions.Contains(enemy.Position))
+                                    if (teamDpsSpread[enemy.Position] >= CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.HP) && !defeatedEnemyPositions.Contains(enemy.Position))
                                     {
                                         defeatedEnemyPositions.Add(enemy.Position);
                                     }
@@ -152,7 +152,7 @@ namespace IdleHeroes.Commands
                             }
 
                             //Check if enemy died and mark it
-                            if (teamDpsSpread[enemy.Position] >= enemy.Enemy.HP && !defeatedEnemyPositions.Contains(enemy.Position))
+                            if (teamDpsSpread[enemy.Position] >= CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.HP) && !defeatedEnemyPositions.Contains(enemy.Position))
                             {
                                 defeatedEnemyPositions.Add(enemy.Position);
                             }
@@ -206,7 +206,7 @@ namespace IdleHeroes.Commands
                                 {
                                     companionDmgApplied = true;
 
-                                    if (enemy.Enemy.Class == CompanionClassesEnum.Assasin)
+                                    if (enemy.Companion.Class == CompanionClassesEnum.Assasin)
                                     {
                                         TeamCompanion lastCompanion = profile.Team.Companions.OrderBy(x => x.TeamPosition).LastOrDefault();
 
@@ -295,21 +295,44 @@ namespace IdleHeroes.Commands
                 await ctx.Channel.SendMessageAsync(embed: StageFightResultEmbedTemplate.Show(ctx, profile, battleWon, defeatedTeamPositions, defeatedEnemyPositions, teamDpsSpread, enemyDpsSpread, battleSeconds - 1).Build())
                    .ConfigureAwait(false);
 
-                //Add static rewards
-                profile.XP += profile.Stage.StaticXP;
-                profile.Coins += profile.Stage.StaticCoins;
-                profile.Food += profile.Stage.StaticFood;
-                profile.Gems += profile.Stage.StaticGems;
-                profile.Relics += profile.Stage.StaticRelics;
+                List<Stage> stages = await _stageService.GetAll();
 
-                //Temp stage soft cap to 10 stages
-                if (profile.Stage.Number < 10)
+                //Check if stage is capped
+                if (profile.Stage.Number < stages.Count)
                 {
+                    profile.XP += profile.Stage.StaticXP;
+                    profile.Coins += profile.Stage.StaticCoins;
+                    profile.Food += profile.Stage.StaticFood;
+                    profile.Gems += profile.Stage.StaticGems;
+                    profile.Relics += profile.Stage.StaticRelics;
+
+                    //Give companion reward if it exists
+                    if(profile.Stage.Companion != null)
+                    {
+                        OwnedCompanion ownedCompanionSearch = profile.OwnedCompanions.Find(x => x.Companion.Id == profile.Stage.Companion.Id);
+
+                        OwnedCompanion earnedCompanion = null;
+                        if (ownedCompanionSearch == null)
+                        {
+                            earnedCompanion = new OwnedCompanion()
+                            {
+                                Companion = profile.Stage.Companion,
+                                Copies = 1,
+                                Level = 1,
+                                RarirtyTier = RarityTierEnum.Common
+                            };
+
+                            profile.OwnedCompanions.Add(earnedCompanion);
+                        }
+                        else
+                        {
+                            ownedCompanionSearch.Copies += 1;
+                        }
+                    }
+
                     //Increment stage
                     profile.Stage = await _stageService.GetStageFromNumber(profile.Stage.Number + 1);
                 }
-
-
 
                 await _profileService.Update(ctx, profile);
             }
@@ -323,7 +346,7 @@ namespace IdleHeroes.Commands
 
         private double CalculateEnemyDPSToApply(StageEnemy enemy, Profile profile)
         {
-            double dps = enemy.Enemy.DPS;
+            double dps = CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.DPS);
             bool attackDodged = false;
             double dodgeChance = 0;
             Random random = new Random();
@@ -347,7 +370,7 @@ namespace IdleHeroes.Commands
             }
 
             //Calcualte DPS after armor. Skip if class is ranger (True dmg)
-            if (enemy.Enemy.Class != CompanionClassesEnum.Ranger)
+            if (enemy.Companion.Class != CompanionClassesEnum.Ranger)
             {
                 double dpsAfterArmorMultiplier = 1;
 
@@ -366,13 +389,13 @@ namespace IdleHeroes.Commands
             //Check if crit hapened
             double critChance = 0;
 
-            if (enemy.Enemy.Accuracy >= 10000)
+            if (enemy.Companion.Accuracy >= 10000)
             {
                 critChance = 90;
             }
             else
             {
-                critChance = (enemy.Enemy.Accuracy / 10000) * 100;
+                critChance = (enemy.Companion.Accuracy / 10000) * 100;
             }
 
             int randomCrit = random.Next(1, 100);
@@ -388,7 +411,7 @@ namespace IdleHeroes.Commands
 
         private double CalculateEnemyDPSToApply(StageEnemy enemy, TeamCompanion companion)
         {
-            double dps = enemy.Enemy.DPS;
+            double dps = CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.DPS);
             bool attackDodged = false;
             double dodgeChance = 0;
             Random random = new Random();
@@ -412,7 +435,7 @@ namespace IdleHeroes.Commands
             }
 
             //Calculate element DPS
-            switch (enemy.Enemy.Element)
+            switch (enemy.Companion.Element)
             {
                 case ElementTypeEnum.Fire:
                     if (companion.OwnedCompanion.Companion.Element == ElementTypeEnum.Water)
@@ -447,7 +470,7 @@ namespace IdleHeroes.Commands
             }
 
             //Calcualte DPS after armor. Skip if class is ranger (True dmg)
-            if (enemy.Enemy.Class != CompanionClassesEnum.Ranger)
+            if (enemy.Companion.Class != CompanionClassesEnum.Ranger)
             {
                 double dpsAfterArmorMultiplier = 1;
 
@@ -466,13 +489,13 @@ namespace IdleHeroes.Commands
             //Check if crit hapened
             double critChance = 0;
 
-            if (enemy.Enemy.Accuracy >= 10000)
+            if (enemy.Companion.Accuracy >= 10000)
             {
                 critChance = 90;
             }
             else
             {
-                critChance = (enemy.Enemy.Accuracy / 10000) * 100;
+                critChance = (enemy.Companion.Accuracy / 10000) * 100;
             }
 
             int randomCrit = random.Next(1, 100);
@@ -495,13 +518,13 @@ namespace IdleHeroes.Commands
             Random random = new Random();
 
             //Check if enemy dodged attack
-            if (enemy.Enemy.Agility >= 10000)
+            if (enemy.Companion.Agility >= 10000)
             {
                 dodgeChance = 90;
             }
             else
             {
-                dodgeChance = (enemy.Enemy.Agility / 10000) * 100;
+                dodgeChance = (enemy.Companion.Agility / 10000) * 100;
             }
 
             int randomDodge = random.Next(1, 100);
@@ -515,13 +538,13 @@ namespace IdleHeroes.Commands
             //Calcualte DPS after armor. Skip if class is ranger (True dmg)
             double dpsAfterArmorMultiplier = 1;
 
-            if (enemy.Enemy.Armor >= 1000)
+            if (enemy.Companion.Armor >= 1000)
             {
                 dpsAfterArmorMultiplier = 0.9;
             }
             else
             {
-                dpsAfterArmorMultiplier = 1 - (enemy.Enemy.Armor / 1000);
+                dpsAfterArmorMultiplier = 1 - (enemy.Companion.Armor / 1000);
             }
 
             dps = dps * dpsAfterArmorMultiplier;
@@ -557,13 +580,13 @@ namespace IdleHeroes.Commands
             Random random = new Random();
 
             //Check if enemy dodged attack
-            if (enemy.Enemy.Agility >= 10000)
+            if (enemy.Companion.Agility >= 10000)
             {
                 dodgeChance = 90;
             }
             else
             {
-                dodgeChance = (enemy.Enemy.Agility / 10000) * 100;
+                dodgeChance = (enemy.Companion.Agility / 10000) * 100;
             }
 
             int randomDodge = random.Next(1, 100);
@@ -578,31 +601,31 @@ namespace IdleHeroes.Commands
             switch (companion.OwnedCompanion.Companion.Element)
             {
                 case ElementTypeEnum.Fire:
-                    if (enemy.Enemy.Element == ElementTypeEnum.Water)
+                    if (enemy.Companion.Element == ElementTypeEnum.Water)
                     {
                         dps = dps / 2;
                     }
-                    else if (enemy.Enemy.Element == ElementTypeEnum.Nature)
+                    else if (enemy.Companion.Element == ElementTypeEnum.Nature)
                     {
                         dps = dps * 2;
                     }
                     break;
                 case ElementTypeEnum.Water:
-                    if (enemy.Enemy.Element == ElementTypeEnum.Nature)
+                    if (enemy.Companion.Element == ElementTypeEnum.Nature)
                     {
                         dps = dps / 2;
                     }
-                    else if (enemy.Enemy.Element == ElementTypeEnum.Fire)
+                    else if (enemy.Companion.Element == ElementTypeEnum.Fire)
                     {
                         dps = dps * 2;
                     }
                     break;
                 case ElementTypeEnum.Nature:
-                    if (enemy.Enemy.Element == ElementTypeEnum.Fire)
+                    if (enemy.Companion.Element == ElementTypeEnum.Fire)
                     {
                         dps = dps / 2;
                     }
-                    else if (enemy.Enemy.Element == ElementTypeEnum.Water)
+                    else if (enemy.Companion.Element == ElementTypeEnum.Water)
                     {
                         dps = dps * 2;
                     }
@@ -614,13 +637,13 @@ namespace IdleHeroes.Commands
             {
                 double dpsAfterArmorMultiplier = 1;
 
-                if (enemy.Enemy.Armor >= 1000)
+                if (enemy.Companion.Armor >= 1000)
                 {
                     dpsAfterArmorMultiplier = 0.9;
                 }
                 else
                 {
-                    dpsAfterArmorMultiplier = 1 - (enemy.Enemy.Armor / 1000);
+                    dpsAfterArmorMultiplier = 1 - (enemy.Companion.Armor / 1000);
                 }
 
                 dps = dps * dpsAfterArmorMultiplier;
