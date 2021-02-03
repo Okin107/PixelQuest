@@ -333,13 +333,6 @@ namespace IdleHeroes.Commands
                     {
                         if(profile.BattleRetries > 0)
                         {
-                            //Check if stage is capped
-                            profile.XP += selectedStage.StaticXP;
-                            profile.Coins += selectedStage.StaticCoins;
-                            profile.Food += selectedStage.StaticFood;
-                            profile.Gems += selectedStage.StaticGems;
-                            profile.Relics += selectedStage.StaticRelics;
-
                             profile.BattleRetries--;
                             double percentChanceToGet = selectedStage.ChanceToGetCompanion;
                             Random random = new Random();
@@ -380,13 +373,6 @@ namespace IdleHeroes.Commands
                     }
                     else
                     {
-                        //Check if stage is capped
-                        profile.XP += selectedStage.StaticXP;
-                        profile.Coins += selectedStage.StaticCoins;
-                        profile.Food += selectedStage.StaticFood;
-                        profile.Gems += selectedStage.StaticGems;
-                        profile.Relics += selectedStage.StaticRelics;
-
                         hasWonCompanion = true;
                         OwnedCompanion earnedCompanion = null;
                         if (ownedCompanionSearch == null)
@@ -408,8 +394,15 @@ namespace IdleHeroes.Commands
                     }
                 }
 
+                //Give rest of rewards
+                profile.XP += selectedStage.StaticXP;
+                profile.Coins += selectedStage.StaticCoins;
+                profile.Food += selectedStage.StaticFood;
+                profile.Gems += selectedStage.StaticGems;
+                profile.Relics += selectedStage.StaticRelics;
+
                 //Increment stage
-                if(profile.Stage.Number < stages.Count && selectedStage.Number >= profile.Stage.Number)
+                if (profile.Stage.Number < stages.Count && selectedStage.Number >= profile.Stage.Number)
                 {
                     profile.Stage = await _stageService.GetStageFromNumber(selectedStage.Number + 1);
                 }
