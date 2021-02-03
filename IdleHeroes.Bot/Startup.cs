@@ -23,6 +23,7 @@ namespace IdleHeroes
             {
                 options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=IdleHeroes;Trusted_Connection=True;MultipleActiveResultSets=true",
                     x => x.MigrationsAssembly("IdleHeroes.DAL.Migrations"));
+                options.UseSqlServer(x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
             });
 
             ServiceProvider serviceProvider = services.BuildServiceProvider();
