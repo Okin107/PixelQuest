@@ -323,6 +323,21 @@ namespace IdleHeroes.Commands
             {
                 List<Stage> stages = await _stageService.GetAll();
 
+                //If you have no more retries, quit
+                if (selectedStage.Number < profile.Stage.Number || profile.Stage.Number == stages.Count)
+                {
+                    if (profile.BattleRetries == 0)
+                    {
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You do not have any more **Battle Retries** for today.").Build())
+                        .ConfigureAwait(false);
+                        return;
+                    }
+                }
+                else
+                {
+                    profile.BattleRetries--;
+                }
+
                 //Give companion reward if it exists
                 if (selectedStage.Companion != null)
                 {
@@ -331,45 +346,33 @@ namespace IdleHeroes.Commands
                     //If it's a retry, calculate the chance
                     if (selectedStage.Number < profile.Stage.Number || profile.Stage.Number == stages.Count)
                     {
-                        if(profile.BattleRetries > 0)
+                        double percentChanceToGet = selectedStage.ChanceToGetCompanion;
+                        Random random = new Random();
+                        int randomChance = random.Next(1, 100);
+
+                        //Got the companion
+                        if (randomChance <= percentChanceToGet)
                         {
-                            profile.BattleRetries--;
-                            double percentChanceToGet = selectedStage.ChanceToGetCompanion;
-                            Random random = new Random();
-                            int randomChance = random.Next(1, 100);
+                            hasWonCompanion = true;
 
-                            //Got the companion
-                            if (randomChance <= percentChanceToGet)
+                            OwnedCompanion earnedCompanion = null;
+                            if (ownedCompanionSearch == null)
                             {
-                                hasWonCompanion = true;
-
-                                OwnedCompanion earnedCompanion = null;
-                                if (ownedCompanionSearch == null)
+                                earnedCompanion = new OwnedCompanion()
                                 {
-                                    earnedCompanion = new OwnedCompanion()
-                                    {
-                                        Companion = selectedStage.Companion,
-                                        Copies = 1,
-                                        Level = 1,
-                                        RarirtyTier = RarityTierEnum.Common
-                                    };
+                                    Companion = selectedStage.Companion,
+                                    Copies = 1,
+                                    Level = 1,
+                                    RarirtyTier = RarityTierEnum.Common
+                                };
 
-                                    profile.OwnedCompanions.Add(earnedCompanion);
-                                }
-                                else
-                                {
-                                    ownedCompanionSearch.Copies += 1;
-                                }
+                                profile.OwnedCompanions.Add(earnedCompanion);
+                            }
+                            else
+                            {
+                                ownedCompanionSearch.Copies += 1;
                             }
                         }
-                        else
-                        {
-                            await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You do not have any more **Battle Retries** for today.").Build())
-                        .ConfigureAwait(false);
-                            return;
-                        }
-
-                        
                     }
                     else
                     {
