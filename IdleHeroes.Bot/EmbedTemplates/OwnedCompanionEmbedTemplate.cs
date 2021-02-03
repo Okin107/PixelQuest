@@ -1,9 +1,12 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
+using DSharpPlus.Interactivity;
 using IdleHeroes.Support;
 using IdleHeroesDAL.Enums;
 using IdleHeroesDAL.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IdleHeroes.EmbedTemplates
 {
@@ -11,8 +14,10 @@ namespace IdleHeroes.EmbedTemplates
     {
         private static DiscordEmbedBuilder _embed;
 
-        public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile)
+        public static List<Page> Show(CommandContext ctx, Profile profile)
         {
+            List<Page> pages = new List<Page>();
+
             _embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Brown,
@@ -24,7 +29,10 @@ namespace IdleHeroes.EmbedTemplates
                 },
                 Description = $"{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Coins)}" +
                 $" • {EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Food)}" +
-                $"\n\nThis is your Companions page. Here you can manage all of your Companions.",
+                $"\n\nThis is your Companions page. Here you can manage all of your Companions." +
+                $"\n" +
+                $"\nUse `.team` to manage your active team." +
+                $"\nUse `.codex stats` to understand all the companion elements and attributes.",
                 Timestamp = DateTime.UtcNow,
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {
@@ -38,115 +46,135 @@ namespace IdleHeroes.EmbedTemplates
                 _embed.Description += "\n\nYou do not have any Companions yet. You can hire some from the Tavern(`.tavern`).";
             }
 
-            foreach (OwnedCompanion ownedCompanion in profile.OwnedCompanions)
+            //Order list by ID
+            List<OwnedCompanion> orderedCompanions = profile.OwnedCompanions.OrderBy(x => x.Companion.Id).ToList();
+
+            int i = 1;
+            foreach (OwnedCompanion ownedCompanion in orderedCompanions)
             {
                 if (ownedCompanion.Level < CompanionHelper.GetMaxLevel(ownedCompanion) && ownedCompanion.RarirtyTier != RarityTierEnum.Mythic)
                 {
-                    _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}",
+                    _embed.AddField($"{EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} " +
+                        $"**{ownedCompanion.Companion.Id}: {ownedCompanion.Companion.Name}**",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
+                    $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}" +
+                    $"\n{UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
                     $"\nLv: {ownedCompanion.Level}/{CompanionHelper.GetMaxLevel(ownedCompanion)}" +
-                    $"\n" +
-                    $"\n**Attributes -> Next Lv.**" +
-                    $"\nTier: {UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
                     $"\nDPS: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS)}" +
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS, true)}" +
                     $"\nHP: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP)}" +
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP, true)}" +
                     $"\nArmor: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor)}" +
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor, true)}" +
-                    $"\nAccuracy: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
+                    $"\nAcc: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy, true)}" +
-                    $"\nAgility: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
+                    $"\nAgi: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility, true)}" +
-                    $"\n" +
-                     $"\n**Upgrade**" +
-                    $"\nLevel: {CompanionHelper.NextLevelCost(ownedCompanion)} {EmojiHandler.GetEmoji("coin")}" +
-                    $"\nAscend: {ownedCompanion.Copies}/{CompanionHelper.GetAscendCopiesNeeded(ownedCompanion)} Copies", true);
+                    $"\n**Level up: {CompanionHelper.NextLevelCost(ownedCompanion)} {EmojiHandler.GetEmoji("coin")}**" +
+                    $"\n**Ascend: {ownedCompanion.Copies}/{CompanionHelper.GetAscendCopiesNeeded(ownedCompanion)} Copies**" +
+                    $"\n", true);
                 }
                 else if (ownedCompanion.Level < CompanionHelper.GetMaxLevel(ownedCompanion) && ownedCompanion.RarirtyTier == RarityTierEnum.Mythic)
                 {
-                    _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}",
+                    _embed.AddField($"{EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} " +
+                        $"**{ownedCompanion.Companion.Id}: {ownedCompanion.Companion.Name}**",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
+                    $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}" +
+                    $"\n{UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
                     $"\nLv: {ownedCompanion.Level}/{CompanionHelper.GetMaxLevel(ownedCompanion)}" +
-                    $"\n" +
-                    $"\n**Attributes -> Next Lv.**" +
-                    $"\nTier: {UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
                     $"\nDPS: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS)}" +
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS, true)}" +
                     $"\nHP: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP)}" +
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP, true)}" +
                     $"\nArmor: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor)}" +
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor, true)}" +
-                    $"\nAccuracy: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
+                    $"\nAcc: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy, true)}" +
-                    $"\nAgility: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
+                    $"\nAgi: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility, true)}" +
-                    $"\n" +
-                     $"\n**Upgrade**" +
-                    $"\nLevel: {CompanionHelper.NextLevelCost(ownedCompanion)} {EmojiHandler.GetEmoji("coin")}" +
-                    $"\nAscend: MAX", true);
+                    $"\nLevel up: {CompanionHelper.NextLevelCost(ownedCompanion)} {EmojiHandler.GetEmoji("coin")}" +
+                    $"\nAscend: MAX" +
+                    $"\n", true);
                 }
                 else if (ownedCompanion.Level == CompanionHelper.GetMaxLevel(ownedCompanion) && ownedCompanion.RarirtyTier != RarityTierEnum.Mythic)
                 {
-                    _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}",
+                    _embed.AddField($"{EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} " +
+                    $"**{ownedCompanion.Companion.Id}: {ownedCompanion.Companion.Name}**",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
+                    $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}" +
+                    $"\n{UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
                     $"\nLv: {ownedCompanion.Level}/{CompanionHelper.GetMaxLevel(ownedCompanion)}" +
-                    $"\n" +
-                    $"\n**Attributes -> Next Lv.**" +
-                    $"\nTier: {UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
                     $"\nDPS: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS)}" +
                     $" -> MAX" +
                     $"\nHP: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP)}" +
                     $" -> MAX" +
                     $"\nArmor: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor)}" +
                     $" -> MAX" +
-                    $"\nAccuracy: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
+                    $"\nAcc: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
                     $" -> MAX" +
-                     $"\nAgility: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
+                     $"\nAgi: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
                     $" -> MAX" +
-                    $"\n" +
-                    $"\n**Upgrade**" +
-                    $"\nAscend: {ownedCompanion.Copies}/{CompanionHelper.GetAscendCopiesNeeded(ownedCompanion)} Copies", true);
+                    $"\nAscend: {ownedCompanion.Copies}/{CompanionHelper.GetAscendCopiesNeeded(ownedCompanion)} Copies" +
+                    $"\n", true);
                 }
                 else
                 {
-                    _embed.AddField($"**{ownedCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} {ownedCompanion.Companion.Name}" +
-                    $" {EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}",
+                    _embed.AddField($"{EmojiHandler.GetEmoji(ownedCompanion.Companion.IconName)} " +
+                    $"**{ownedCompanion.Companion.Id}: {ownedCompanion.Companion.Name}**",
                     $"\n{EmojiHandler.GetEmoji(ownedCompanion.Companion.Element.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.Class.ToString().ToLower())} " +
                     $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.DamageType.ToString().ToLower())} " +
+                    $"{EmojiHandler.GetEmoji(ownedCompanion.Companion.RarityTier.ToString().ToLower())}" +
+                    $"\n{UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
                     $"\nLv: {ownedCompanion.Level}/{CompanionHelper.GetMaxLevel(ownedCompanion)}" +
-                    $"\n" +
-                    $"\n**Attributes -> Next Lv.**" +
-                    $"\nTier: {UtilityFunctions.GetTierStars((int)ownedCompanion.RarirtyTier)}" +
                     $"\nDPS: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.DPS)}" +
                     $" -> MAX" +
                     $"\nHP: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.HP)}" +
                     $" -> MAX" +
                     $"\nArmor: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Armor)}" +
                     $" -> MAX" +
-                    $"\nAccuracy: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
+                    $"\nAcc: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy)}" +
                     $" -> MAX" +
-                     $"\nAgility: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
+                     $"\nAgi: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
                     $" -> MAX" +
-                    $"\n" +
-                    $"\n**Upgrade**" +
-                    $"\nAscend: MAX", true);
+                    $"\nAscend: MAX" +
+                    $"\n", true);
                 }
 
+                if (i % 3 == 0)
+                {
+                    Page page = new Page()
+                    {
+                        Embed = _embed
+                    };
+                    pages.Add(page);
+                    _embed.ClearFields();
+                    i = 1;
+                }
+                else
+                {
+                    i++;
+                }
 
             }
 
-            return _embed;
+            //add remaining to last page
+            if (i % 3 == 0)
+            {
+                Page page = new Page()
+                {
+                    Embed = _embed
+                };
+                pages.Add(page);
+            }
+
+            return pages;
         }
     }
 }

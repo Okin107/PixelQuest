@@ -38,18 +38,24 @@ namespace IdleHeroes.EmbedTemplates
 
             
 
-            _embed.AddField("Resources", 
+            _embed.AddField("**Resources**", 
                 $"{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Coins)}" +
                 $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Food)}" +
                 $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Gems)}" +
                 $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Relics)}", true);
 
-            _embed.AddField("Hero", 
+            _embed.AddField("**Hero**", 
                 $"{EmojiHandler.GetEmoji("lvl")} {ProfileHelper.CalculateProfileData(profile).Level}" +
-                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.XP)}", true);
+                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.XP)}" +
+                $"\nUse `.hero`", true);
 
-            _embed.AddField("Stage", $"Nr: {profile.Stage.Number}" +
-                $"\nDifficulty: {profile.Stage.Difficulty}", true);
+            _embed.AddField("**Stage**", $"Nr: {profile.Stage.Number}" +
+                $"\nDifficulty: {profile.Stage.Difficulty}" +
+                $"\nUse `.stage`", true);
+
+            _embed.AddField("**Companions**", $"Owned: {profile.OwnedCompanions.Count}" +
+               $"\nUse `.comp` for your companions." +
+               $"\nUse `.tavern` to hire companions", true);
 
             _embed.AddField("Registered", $"{profile.RegisteredOn.ToString(BotSettings.DefaultDateFormat)}", true);
             _embed.AddField("Max Idle Time", $"{profile.MaximumIdleRewardHours} hours", true);

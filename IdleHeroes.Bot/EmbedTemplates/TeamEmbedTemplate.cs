@@ -168,17 +168,28 @@ namespace IdleHeroes.EmbedTemplates
 
             _embed.AddField($"\u200B", "**Grid details**");
 
-            _embed.AddField($"**{heroPosition}**: ⚔️ {profile.Username}",
-                $"Lv: {profile.Level}");
+            _embed.AddField($"⚔️ **{heroPosition}: {profile.Username}**",
+                $"\nLv: {ProfileHelper.CalculateProfileData(profile).Level}" +
+                $"\nDPS: {ProfileHelper.CalculateAttributeString(profile, CompanionAttributeEnum.DPS)}" +
+                $"\nHP: {ProfileHelper.CalculateAttributeString(profile, CompanionAttributeEnum.HP)}" +
+                $"\nArmor: {ProfileHelper.CalculateAttributeString(profile, CompanionAttributeEnum.Armor)}" +
+                $"\nAcc: {ProfileHelper.CalculateAttributeString(profile, CompanionAttributeEnum.Accuracy)}" +
+                $"\nAgi: {ProfileHelper.CalculateAttributeString(profile, CompanionAttributeEnum.Agility)}", true);
 
             foreach (TeamCompanion companion in profile.Team.Companions)
             {
-                _embed.AddField($"**{companion.TeamPosition}**: {EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.IconName)} {companion.OwnedCompanion.Companion.Name}" +
-                $" {EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.RarityTier.ToString().ToLower())}",
+                _embed.AddField($"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.IconName)} " +
+                    $"**{companion.TeamPosition}: {companion.OwnedCompanion.Companion.Name}**",
                 $"\n{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.DamageType.ToString().ToLower())} " +
-                $"\nLv: {companion.OwnedCompanion.Level}/{CompanionHelper.GetMaxLevel(companion.OwnedCompanion)}", true);
+                $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.RarityTier.ToString().ToLower())}" +
+                $"\nLv: {companion.OwnedCompanion.Level}/{CompanionHelper.GetMaxLevel(companion.OwnedCompanion)}" +
+                $"\nDPS: {CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.DPS)}" +
+                $"\nHP: {CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.HP)}" +
+                $"\nArmor: {CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.Armor)}" +
+                $"\nAcc: {CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.Accuracy)}" +
+                $"\nAgi: {CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.Agility)}", true);
             }
 
             return _embed;

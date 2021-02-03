@@ -575,8 +575,7 @@ namespace IdleHeroes.Commands
         private double CalculateTeamDPSToApply(TeamCompanion companion, StageEnemy enemy)
         {
             double dps = CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.DPS);
-            bool attackDodged = false;
-            double dodgeChance = 0;
+            double dodgeChance;
             Random random = new Random();
 
             //Check if enemy dodged attack

@@ -21,14 +21,7 @@ namespace IdleHeroes.EmbedTemplates
                     Name = $"{profile.Username} - Stage {profile.Stage.Number}",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
-                //Description = $"**Stage info**" +
-                //$"\nDifficulty: {stage.Difficulty}" +
-                //$"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(stage.XPPerMinute)} per min" +
-                //$"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(stage.CoinsPerMinute)} per min" +
-                //$"\n{EmojiHandler.GetEmoji("food")} {stage.FoodPerMinute}% for 1 per min" +
-                //$"\n{EmojiHandler.GetEmoji("gem")} {stage.GemsDropChancePerMinute}% for 1 per min" +
-                //$"\n{EmojiHandler.GetEmoji("relic")} {stage.RelicsDropChancePerMinute}% for 1 per min"
-                //,
+                Description = $"Use `.farm collect` to collect your resources.",
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {
                     Url = ctx.Message.Author.AvatarUrl

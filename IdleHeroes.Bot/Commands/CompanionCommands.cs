@@ -1,5 +1,7 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Interactivity;
+using DSharpPlus.Interactivity.Extensions;
 using IdleHeroes.EmbedTemplates;
 using IdleHeroes.Models;
 using IdleHeroes.Services;
@@ -29,6 +31,7 @@ namespace IdleHeroes.Commands
         {
             try
             {
+                InteractivityExtension interactivity = ctx.Client.GetInteractivity();
                 List<Companion> companionList = await _companionService.GetCompanions(RarityTierEnum.Common);
 
                 if (!string.IsNullOrEmpty(filter))
@@ -57,8 +60,10 @@ namespace IdleHeroes.Commands
                     }
                 }
 
-                await ctx.Channel.SendMessageAsync(embed: CodexEmbedTemplate.Show(ctx, companionList).Build())
-                   .ConfigureAwait(false);
+
+                await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, CodexEmbedTemplate.Show(ctx, companionList), timeoutoverride: TimeSpan.FromMinutes(5)).ConfigureAwait(false);
+                //await ctx.Channel.SendMessageAsync(embed: CodexEmbedTemplate.Show(ctx, companionList).Build())
+                //   .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -84,6 +89,7 @@ namespace IdleHeroes.Commands
                         .ConfigureAwait(false);
                     return;
                 }
+                InteractivityExtension interactivity = ctx.Client.GetInteractivity();
 
                 Profile profile = await _profileService.FindByDiscordId(ctx);
                 List<Companion> companionList = await _companionService.GetCompanions();
@@ -121,8 +127,10 @@ namespace IdleHeroes.Commands
                     }
                 }
 
-                await ctx.Channel.SendMessageAsync(embed: OwnedCompanionsEmbedTemplate.Show(ctx, await _profileService.FindByDiscordId(ctx)).Build())
-                   .ConfigureAwait(false);
+
+                await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, OwnedCompanionsEmbedTemplate.Show(ctx, await _profileService.FindByDiscordId(ctx)), timeoutoverride: TimeSpan.FromMinutes(5)).ConfigureAwait(false);
+                //await ctx.Channel.SendMessageAsync(embed: OwnedCompanionsEmbedTemplate.Show(ctx, await _profileService.FindByDiscordId(ctx)).Build())
+                //   .ConfigureAwait(false);
             }
             catch (Exception ex)
             {

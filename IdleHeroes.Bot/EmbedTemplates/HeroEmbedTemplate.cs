@@ -27,7 +27,9 @@ namespace IdleHeroes.EmbedTemplates
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
                 Description = $"Skill Points: {profileLevelData.Level - profile.SkillPointsSpent - 1}" +
-                $" • {EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Gems)}",
+                $" • {EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Gems)}" +
+                $"\n" +
+                $"\nUse `.skills` to view and update your Hero skills.",
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {
                     Url = ctx.Message.Author.AvatarUrl

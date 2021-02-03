@@ -25,7 +25,9 @@ namespace IdleHeroes.EmbedTemplates
                 $" • {EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Gems)}" +
                 $"\n\nWelcome to the Tavern. Here you can meet and hire Companions to help you in your journey." +
                 $"\n" +
-                $"\nYou can refresh the tavern for **1** {EmojiHandler.GetEmoji("gem")} each time by using `.tavern refresh`.",
+                $"\nThe tavern refreshes once a day for free." +
+                $"\n" +
+                $"\nYou can manually refresh the tavern for **1** {EmojiHandler.GetEmoji("gem")} each time by using `.tavern refresh`.",
                 Timestamp = DateTime.UtcNow,
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {
@@ -44,25 +46,22 @@ namespace IdleHeroes.EmbedTemplates
                 if (alreadyPurchasedCompanion != null)
                 {
                     costString = "Purchased";
-                    nameString = $"~~{tavernCompanion.Companion.Name}~~";;
+                    nameString = $"~~{tavernCompanion.Companion.Name}~~"; ;
                 }
 
-                _embed.AddField($"**{tavernCompanion.Companion.Id}**: {EmojiHandler.GetEmoji(tavernCompanion.Companion.IconName)} {nameString} " +
-                $"{EmojiHandler.GetEmoji(tavernCompanion.Companion.RarityTier.ToString().ToLower())}",
-                $"\n" +
+                _embed.AddField($"{EmojiHandler.GetEmoji(tavernCompanion.Companion.IconName)} " +
+                    $"**{tavernCompanion.Companion.Id}:  {nameString}**",
                 $"\n{EmojiHandler.GetEmoji(tavernCompanion.Companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(tavernCompanion.Companion.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(tavernCompanion.Companion.DamageType.ToString().ToLower())} " +
-                $"\n" +
-                $"\n**Attributes**" +
-                $"\nTier: {UtilityFunctions.GetTierStars(1)}" +
+                $"{EmojiHandler.GetEmoji(tavernCompanion.Companion.RarityTier.ToString().ToLower())} " +
+                $"\n{UtilityFunctions.GetTierStars(1)}" +
                 $"\nDPS: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.DPS)}" +
                 $"\nHP: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.HP)}" +
                 $"\nArmor: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.Armor)}" +
                 $"\nAccuracy: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.Accuracy)}" +
                 $"\nAgility: {UtilityFunctions.FormatNumber(tavernCompanion.Companion.Agility)}" +
-                 $"\n" +
-                 $"\nCost: {costString}", true);
+                $"\n**Cost: {costString}**", true);
             }
 
             return _embed;

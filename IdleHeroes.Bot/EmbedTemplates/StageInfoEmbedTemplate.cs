@@ -23,14 +23,17 @@ namespace IdleHeroes.EmbedTemplates
                     Name = $"{profile.Username} - Stage {profile.Stage.Number}",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
-                Description = $"**General info**" +
+                Description = $"Use `.farm` to preview your idle resources." +
+                $"\nUse `.team` to see and manage your active team." +
+                $"\nUse `.stage fight` to initate a battle on this stage." +
+                $"\n" +
                 $"\nDifficulty: {profile.Stage.Difficulty}" +
                 $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.Stage.XPPerMinute)} per min" +
                 $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.CoinsPerMinute)} per min" +
                 $"\n{EmojiHandler.GetEmoji("food")} {profile.Stage.FoodChancePerMinute}% for {UtilityFunctions.FormatNumber(profile.Stage.FoodAmount)} per min" +
                 $"\n{EmojiHandler.GetEmoji("gem")} {profile.Stage.GemsDropChancePerMinute}% for {UtilityFunctions.FormatNumber(profile.Stage.GemsAmount)} per min" +
                 $"\n{EmojiHandler.GetEmoji("relic")} {profile.Stage.RelicsDropChancePerMinute}% for {UtilityFunctions.FormatNumber(profile.Stage.RelicsAmount)} per min" +
-                $"\nTime to beat: {profile.Stage.TimeToBeat}"
+                $"\nBattle time: {profile.Stage.TimeToBeat}"
                 ,
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {
@@ -144,13 +147,15 @@ namespace IdleHeroes.EmbedTemplates
 
             if(profile.Stage.Companion != null)
             {
-                companionString = $"**{profile.Stage.Companion.Id}**: {EmojiHandler.GetEmoji(profile.Stage.Companion.IconName)} {profile.Stage.Companion.Name}" +
+                companionString = $"{EmojiHandler.GetEmoji(profile.Stage.Companion.IconName)} " +
+                $"{profile.Stage.Companion.Id}:  {profile.Stage.Companion.Name}" +
                 $"\n{EmojiHandler.GetEmoji(profile.Stage.Companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(profile.Stage.Companion.Class.ToString().ToLower())} " +
-                $"{EmojiHandler.GetEmoji(profile.Stage.Companion.DamageType.ToString().ToLower())}";
+                $"{EmojiHandler.GetEmoji(profile.Stage.Companion.DamageType.ToString().ToLower())}" +
+                $"{EmojiHandler.GetEmoji(profile.Stage.Companion.RarityTier.ToString().ToLower())}";
             }
 
-            _embed.AddField("Fight rewards",
+            _embed.AddField("**Fight rewards**",
                 $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.Stage.StaticXP)}" +
                 $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.StaticCoins)}" +
                 $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Stage.StaticFood)}" +
@@ -158,17 +163,21 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}" +
                 $"\n{companionString}", true);
 
-            _embed.AddField($"\u200B", "**Grid details**");
+            _embed.AddField($"\u200B", "**Enemies**");
 
             foreach (StageEnemy enemy in profile.Stage.Enemies)
             {
-                _embed.AddField($"**{enemy.Position}**: {EmojiHandler.GetEmoji(enemy.IconName)} {enemy.Name}",
+                _embed.AddField($"{EmojiHandler.GetEmoji(enemy.IconName)}" +
+                $"**{enemy.Position}: {enemy.Name}**",
                 $"\n{EmojiHandler.GetEmoji(enemy.Companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(enemy.Companion.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(enemy.Companion.DamageType.ToString().ToLower())} " +
                 $"\nLv: {enemy.Level}" +
                 $"\nDPS: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.DPS)}" +
-                $"\nHP: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.HP)}", true);
+                $"\nHP: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.HP)}" +
+                $"\nArmor: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.Armor)}" +
+                $"\nAcc: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.Accuracy)}" +
+                $"\nAgi: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.Agility)}", true);
             }
 
             return _embed;
