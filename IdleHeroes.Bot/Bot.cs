@@ -6,6 +6,7 @@ using IdleHeroes.Models;
 using System;
 using System.Threading.Tasks;
 using IdleHeroes.Support;
+using DSharpPlus.Interactivity;
 
 namespace IdleHeroes
 {
@@ -15,6 +16,7 @@ namespace IdleHeroes
         public DiscordClient Client { get; private set; }
         private DiscordRestClient RestClient { get; set; }
         public CommandsNextExtension Commands { get; private set; }
+        public InteractivityExtension interactivityExtension { get; private set; }
 
         public Bot(IServiceProvider services)
         {
