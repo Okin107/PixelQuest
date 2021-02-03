@@ -154,7 +154,7 @@ namespace IdleHeroes.EmbedTemplates
             }
             #endregion
 
-            _embed.AddField($"Team grid", $"🟦 \u200B \u200B \u200B \u200B \u200B 🇨 " +
+            _embed.AddField($"**Team positions**", $"🟦 \u200B \u200B \u200B \u200B \u200B 🇨 " +
                 $"\u200B \u200B \u200B \u200B \u200B 🇧 " +
                 $"\u200B \u200B \u200B \u200B \u200B 🇦 \n" +
                 $"\n1️⃣ \u200B \u200B \u200B \u200B \u200B {stringC1} \u200B \u200B \u200B \u200B \u200B {stringB1} \u200B \u200B \u200B \u200B \u200B {stringA1}" +
@@ -166,7 +166,7 @@ namespace IdleHeroes.EmbedTemplates
 
             profile.Team.Companions = profile.Team.Companions.OrderBy(x => x.TeamPosition).ToList();
 
-            _embed.AddField($"\u200B", "**Grid details**");
+            _embed.AddField($"\u200B", "**Team details**");
 
             _embed.AddField($"⚔️ **{heroPosition}: {profile.Username}**",
                 $"\nLv: {ProfileHelper.CalculateProfileData(profile).Level}" +

@@ -42,7 +42,7 @@ namespace IdleHeroes.Services
 
             var rand = new Random();
 
-            for (int i = 1; i <= 3; i++)
+            for (int i = 1; i <= 6; i++)
             {
                 var range = Enumerable.Range(1, companionsList.Count).Where(i => !currentCompanionsIds.Contains(i));
                 int index = rand.Next(0, companionsList.Count - currentCompanionsIds.Count);

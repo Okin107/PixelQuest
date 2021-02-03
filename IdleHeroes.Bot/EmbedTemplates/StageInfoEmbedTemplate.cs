@@ -132,7 +132,7 @@ namespace IdleHeroes.EmbedTemplates
             }
             #endregion
 
-            _embed.AddField($"Enemy grid", $"🇦 \u200B \u200B \u200B \u200B \u200B " +
+            _embed.AddField($"**Enemy positions**", $"🇦 \u200B \u200B \u200B \u200B \u200B " +
                 $" 🇧 \u200B \u200B \u200B \u200B \u200B " +
                 $" 🇨 \u200B \u200B \u200B \u200B \u200B {EmojiHandler.GetEmoji("blank")} \n" +
                 $"\n{stringA1} \u200B \u200B \u200B \u200B \u200B {stringB1} \u200B \u200B \u200B \u200B \u200B {stringC1} \u200B \u200B \u200B \u200B \u200B 1️⃣" +
@@ -163,7 +163,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}" +
                 $"\n{companionString}", true);
 
-            _embed.AddField($"\u200B", "**Enemies**");
+            _embed.AddField($"\u200B", "**Enemy details**");
 
             foreach (StageEnemy enemy in profile.Stage.Enemies)
             {

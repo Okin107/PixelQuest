@@ -57,9 +57,9 @@ namespace IdleHeroes.EmbedTemplates
                $"\nUse `.comp` for your companions." +
                $"\nUse `.tavern` to hire companions", true);
 
-            _embed.AddField("Registered", $"{profile.RegisteredOn.ToString(BotSettings.DefaultDateFormat)}", true);
-            _embed.AddField("Max Idle Time", $"{profile.MaximumIdleRewardHours} hours", true);
-            _embed.AddField("Last Played", $"{UtilityFunctions.GetRelativeTime(profile.LastPlayed)}", true);
+            _embed.AddField("**General**", $"Registered: {profile.RegisteredOn.ToString(BotSettings.DefaultDateFormat)}" +
+                $"\nMax Idle: {profile.MaximumIdleRewardHours} hours" +
+                $"\nLast played: {UtilityFunctions.GetRelativeTime(profile.LastPlayed)}", true);
 
             return _embed;
         }
