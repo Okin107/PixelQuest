@@ -323,13 +323,6 @@ namespace IdleHeroes.Commands
             {
                 List<Stage> stages = await _stageService.GetAll();
 
-                //Check if stage is capped
-                profile.XP += selectedStage.StaticXP;
-                profile.Coins += selectedStage.StaticCoins;
-                profile.Food += selectedStage.StaticFood;
-                profile.Gems += selectedStage.StaticGems;
-                profile.Relics += selectedStage.StaticRelics;
-
                 //Give companion reward if it exists
                 if (selectedStage.Companion != null)
                 {
@@ -338,37 +331,61 @@ namespace IdleHeroes.Commands
                     //If it's a retry, calculate the chance
                     if (selectedStage.Number < profile.Stage.Number || profile.Stage.Number == stages.Count)
                     {
-                        profile.BattleRetries--;
-                        double percentChanceToGet = selectedStage.ChanceToGetCompanion;
-                        Random random = new Random();
-                        int randomChance = random.Next(1, 100);
-
-                        //Got the companion
-                        if (randomChance <= percentChanceToGet)
+                        if(profile.BattleRetries > 0)
                         {
-                            hasWonCompanion = true;
+                            //Check if stage is capped
+                            profile.XP += selectedStage.StaticXP;
+                            profile.Coins += selectedStage.StaticCoins;
+                            profile.Food += selectedStage.StaticFood;
+                            profile.Gems += selectedStage.StaticGems;
+                            profile.Relics += selectedStage.StaticRelics;
 
-                            OwnedCompanion earnedCompanion = null;
-                            if (ownedCompanionSearch == null)
+                            profile.BattleRetries--;
+                            double percentChanceToGet = selectedStage.ChanceToGetCompanion;
+                            Random random = new Random();
+                            int randomChance = random.Next(1, 100);
+
+                            //Got the companion
+                            if (randomChance <= percentChanceToGet)
                             {
-                                earnedCompanion = new OwnedCompanion()
+                                hasWonCompanion = true;
+
+                                OwnedCompanion earnedCompanion = null;
+                                if (ownedCompanionSearch == null)
                                 {
-                                    Companion = selectedStage.Companion,
-                                    Copies = 1,
-                                    Level = 1,
-                                    RarirtyTier = RarityTierEnum.Common
-                                };
+                                    earnedCompanion = new OwnedCompanion()
+                                    {
+                                        Companion = selectedStage.Companion,
+                                        Copies = 1,
+                                        Level = 1,
+                                        RarirtyTier = RarityTierEnum.Common
+                                    };
 
-                                profile.OwnedCompanions.Add(earnedCompanion);
-                            }
-                            else
-                            {
-                                ownedCompanionSearch.Copies += 1;
+                                    profile.OwnedCompanions.Add(earnedCompanion);
+                                }
+                                else
+                                {
+                                    ownedCompanionSearch.Copies += 1;
+                                }
                             }
                         }
+                        else
+                        {
+                            await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You do not have any more **Battle Retries** for today.").Build())
+                        .ConfigureAwait(false);
+                        }
+
+                        
                     }
                     else
                     {
+                        //Check if stage is capped
+                        profile.XP += selectedStage.StaticXP;
+                        profile.Coins += selectedStage.StaticCoins;
+                        profile.Food += selectedStage.StaticFood;
+                        profile.Gems += selectedStage.StaticGems;
+                        profile.Relics += selectedStage.StaticRelics;
+
                         hasWonCompanion = true;
                         OwnedCompanion earnedCompanion = null;
                         if (ownedCompanionSearch == null)
