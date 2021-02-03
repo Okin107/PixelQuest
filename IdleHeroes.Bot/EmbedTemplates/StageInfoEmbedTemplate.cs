@@ -12,28 +12,36 @@ namespace IdleHeroes.EmbedTemplates
     {
         private static DiscordEmbedBuilder _embed;
 
-        public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile)
+        public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile, Stage stage = null)
         {
+            Stage selectedStage = profile.Stage;
+
+            if(stage != null)
+            {
+                selectedStage = stage;
+            }
+
             _embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Aquamarine,
                 //Title = $"{profile.Username}'s Current Stage",
                 Author = new DiscordEmbedBuilder.EmbedAuthor()
                 {
-                    Name = $"{profile.Username} - Stage {profile.Stage.Number}",
+                    Name = $"{profile.Username} - Stage {selectedStage.Number} - Retries: {profile.BattleRetries}",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
                 Description = $"Use `.farm` to preview your idle resources." +
                 $"\nUse `.team` to see and manage your active team." +
                 $"\nUse `.stage fight` to initate a battle on this stage." +
+                $"\nUse `.stage <stageNunmber` to preview a previous stage or `.stage <stageNumber> fight` to fight a previous stage again." +
                 $"\n" +
-                $"\nDifficulty: {profile.Stage.Difficulty}" +
-                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.Stage.XPPerMinute)} per min" +
-                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.CoinsPerMinute)} per min" +
-                $"\n{EmojiHandler.GetEmoji("food")} {profile.Stage.FoodChancePerMinute}% for {UtilityFunctions.FormatNumber(profile.Stage.FoodAmount)} per min" +
-                $"\n{EmojiHandler.GetEmoji("gem")} {profile.Stage.GemsDropChancePerMinute}% for {UtilityFunctions.FormatNumber(profile.Stage.GemsAmount)} per min" +
-                $"\n{EmojiHandler.GetEmoji("relic")} {profile.Stage.RelicsDropChancePerMinute}% for {UtilityFunctions.FormatNumber(profile.Stage.RelicsAmount)} per min" +
-                $"\nBattle time: {profile.Stage.TimeToBeat}"
+                $"\nDifficulty: {selectedStage.Difficulty}" +
+                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.XPPerMinute)} per min" +
+                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.CoinsPerMinute)} per min" +
+                $"\n{EmojiHandler.GetEmoji("food")} {selectedStage.FoodChancePerMinute}% for {UtilityFunctions.FormatNumber(selectedStage.FoodAmount)} per min" +
+                $"\n{EmojiHandler.GetEmoji("gem")} {selectedStage.GemsDropChancePerMinute}% for {UtilityFunctions.FormatNumber(selectedStage.GemsAmount)} per min" +
+                $"\n{EmojiHandler.GetEmoji("relic")} {selectedStage.RelicsDropChancePerMinute}% for {UtilityFunctions.FormatNumber(selectedStage.RelicsAmount)} per min" +
+                $"\nBattle time: {selectedStage.TimeToBeat}"
                 ,
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {
@@ -59,7 +67,7 @@ namespace IdleHeroes.EmbedTemplates
 
             //Find the team
             #region teamStrings
-            StageEnemy stageEnemy = profile.Stage.Enemies.Find(x => x.Position == TeamPositionEnum.A1);
+            StageEnemy stageEnemy = selectedStage.Enemies.Find(x => x.Position == TeamPositionEnum.A1);
             if (stageEnemy != null)
             {
                 stringA1 = stringA1 == "🔳"
@@ -67,7 +75,7 @@ namespace IdleHeroes.EmbedTemplates
                 : stringA1;
             }
 
-            stageEnemy = profile.Stage.Enemies.Find(x => x.Position == TeamPositionEnum.A2);
+            stageEnemy = selectedStage.Enemies.Find(x => x.Position == TeamPositionEnum.A2);
             if (stageEnemy != null)
             {
                 stringA2 = stringA2 == "🔳"
@@ -75,7 +83,7 @@ namespace IdleHeroes.EmbedTemplates
                 : stringA2;
             }
 
-            stageEnemy = profile.Stage.Enemies.Find(x => x.Position == TeamPositionEnum.A3);
+            stageEnemy = selectedStage.Enemies.Find(x => x.Position == TeamPositionEnum.A3);
             if (stageEnemy != null)
             {
                 stringA3 = stringA3 == "🔳"
@@ -83,7 +91,7 @@ namespace IdleHeroes.EmbedTemplates
                 : stringA3;
             }
 
-            stageEnemy = profile.Stage.Enemies.Find(x => x.Position == TeamPositionEnum.B1);
+            stageEnemy = selectedStage.Enemies.Find(x => x.Position == TeamPositionEnum.B1);
             if (stageEnemy != null)
             {
                 stringB1 = stringB1 == "🔳"
@@ -91,7 +99,7 @@ namespace IdleHeroes.EmbedTemplates
                 : stringB1;
             }
 
-            stageEnemy = profile.Stage.Enemies.Find(x => x.Position == TeamPositionEnum.B2);
+            stageEnemy = selectedStage.Enemies.Find(x => x.Position == TeamPositionEnum.B2);
             if (stageEnemy != null)
             {
                 stringB2 = stringB2 == "🔳"
@@ -99,7 +107,7 @@ namespace IdleHeroes.EmbedTemplates
                 : stringB2;
             }
 
-            stageEnemy = profile.Stage.Enemies.Find(x => x.Position == TeamPositionEnum.B3);
+            stageEnemy = selectedStage.Enemies.Find(x => x.Position == TeamPositionEnum.B3);
             if (stageEnemy != null)
             {
                 stringB3 = stringB3 == "🔳"
@@ -107,7 +115,7 @@ namespace IdleHeroes.EmbedTemplates
                 : stringB3;
             }
 
-            stageEnemy = profile.Stage.Enemies.Find(x => x.Position == TeamPositionEnum.C1);
+            stageEnemy = selectedStage.Enemies.Find(x => x.Position == TeamPositionEnum.C1);
             if (stageEnemy != null)
             {
                 stringC1 = stringC1 == "🔳"
@@ -115,7 +123,7 @@ namespace IdleHeroes.EmbedTemplates
                 : stringC1;
             }
 
-            stageEnemy = profile.Stage.Enemies.Find(x => x.Position == TeamPositionEnum.C2);
+            stageEnemy = selectedStage.Enemies.Find(x => x.Position == TeamPositionEnum.C2);
             if (stageEnemy != null)
             {
                 stringC2 = stringC2 == "🔳"
@@ -123,7 +131,7 @@ namespace IdleHeroes.EmbedTemplates
                 : stringC2;
             }
 
-            stageEnemy = profile.Stage.Enemies.Find(x => x.Position == TeamPositionEnum.C3);
+            stageEnemy = selectedStage.Enemies.Find(x => x.Position == TeamPositionEnum.C3);
             if (stageEnemy != null)
             {
                 stringC3 = stringC3 == "🔳"
@@ -141,31 +149,31 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n" +
                 $"\n{stringA3} \u200B \u200B \u200B \u200B \u200B {stringB3} \u200B \u200B \u200B \u200B \u200B {stringC3} \u200B \u200B \u200B \u200B \u200B 3️⃣", true);
 
-            profile.Stage.Enemies = profile.Stage.Enemies.OrderBy(x => x.Position).ToList();
+            selectedStage.Enemies = selectedStage.Enemies.OrderBy(x => x.Position).ToList();
 
             string companionString = "";
 
-            if(profile.Stage.Companion != null)
+            if(selectedStage.Companion != null)
             {
-                companionString = $"{EmojiHandler.GetEmoji(profile.Stage.Companion.IconName)} " +
-                $"{profile.Stage.Companion.Id}:  {profile.Stage.Companion.Name}" +
-                $"\n{EmojiHandler.GetEmoji(profile.Stage.Companion.Element.ToString().ToLower())} " +
-                $"{EmojiHandler.GetEmoji(profile.Stage.Companion.Class.ToString().ToLower())} " +
-                $"{EmojiHandler.GetEmoji(profile.Stage.Companion.DamageType.ToString().ToLower())}" +
-                $"{EmojiHandler.GetEmoji(profile.Stage.Companion.RarityTier.ToString().ToLower())}";
+                companionString = $"{EmojiHandler.GetEmoji(selectedStage.Companion.IconName)} " +
+                $"{selectedStage.Companion.Id}:  {selectedStage.Companion.Name}" +
+                $"\n{EmojiHandler.GetEmoji(selectedStage.Companion.Element.ToString().ToLower())} " +
+                $"{EmojiHandler.GetEmoji(selectedStage.Companion.Class.ToString().ToLower())} " +
+                $"{EmojiHandler.GetEmoji(selectedStage.Companion.DamageType.ToString().ToLower())}" +
+                $"{EmojiHandler.GetEmoji(selectedStage.Companion.RarityTier.ToString().ToLower())}";
             }
 
             _embed.AddField("**Fight rewards**",
-                $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.Stage.StaticXP)}" +
-                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.StaticCoins)}" +
-                $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Stage.StaticFood)}" +
-                $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Stage.StaticGems)}" +
-                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}" +
+                $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP)}" +
+                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.StaticCoins)}" +
+                $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(selectedStage.StaticFood)}" +
+                $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(selectedStage.StaticGems)}" +
+                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(selectedStage.StaticRelics)}" +
                 $"\n{companionString}", true);
 
             _embed.AddField($"\u200B", "**Enemy details**");
 
-            foreach (StageEnemy enemy in profile.Stage.Enemies)
+            foreach (StageEnemy enemy in selectedStage.Enemies)
             {
                 _embed.AddField($"{EmojiHandler.GetEmoji(enemy.IconName)}" +
                 $"**{enemy.Position}: {enemy.Name}**",

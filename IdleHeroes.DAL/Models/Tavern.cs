@@ -9,5 +9,6 @@ namespace IdleHeroesDAL.Models
         public List<TavernPurchase> Purchases { get; set; }
         public double DiscountPercentage { get; set; }
         public DateTime LastRefresh { get; set; }
+        public DateTime LastRetriesRefresh { get; set; }
     }
 }

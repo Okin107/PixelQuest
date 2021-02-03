@@ -51,6 +51,7 @@ namespace IdleHeroes.EmbedTemplates
 
             _embed.AddField("**Stage**", $"Nr: {profile.Stage.Number}" +
                 $"\nDifficulty: {profile.Stage.Difficulty}" +
+                $"\nBattle retries: {profile.BattleRetries}" +
                 $"\nUse `.stage`", true);
 
             _embed.AddField("**Companions**", $"Owned: {profile.OwnedCompanions.Count}" +

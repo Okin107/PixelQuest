@@ -147,7 +147,7 @@ namespace IdleHeroes.EmbedTemplates
                     $"\n", true);
                 }
 
-                if (i % 3 == 0)
+                if (i % 6 == 0)
                 {
                     Page page = new Page()
                     {
@@ -165,7 +165,7 @@ namespace IdleHeroes.EmbedTemplates
             }
 
             //add remaining to last page
-            if (i % 3 == 0)
+            if (i % 6 == 0)
             {
                 Page page = new Page()
                 {

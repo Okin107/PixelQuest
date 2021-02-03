@@ -27,5 +27,6 @@ namespace IdleHeroesDAL.Models
         public Companion Companion { get; set; }
 
         public List<StageEnemy> Enemies { get; set; }
+        public double ChanceToGetCompanion { get; set; }
     }
 }

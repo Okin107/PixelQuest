@@ -26,7 +26,7 @@ namespace IdleHeroes.Commands
 
         [Command("stage")]
         [Description("Check the stage you currently are in.")]
-        public async Task Stage(CommandContext ctx, [Description("The action you want to perform <fight>.")] string action = null)
+        public async Task Stage(CommandContext ctx, [Description("The action you want to perform <fight>.")] string action = null, [Description("A specific stage number that you want to see or fight.")] string stageNumber = null)
         {
             try
             {
@@ -40,13 +40,34 @@ namespace IdleHeroes.Commands
 
                 Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
 
-                if (action == "fight")
+                //Check and refresh battle retries
+                TimeSpan dateDifference = DateTime.Now - profile.LastRetriesRefresh;
+                if (dateDifference.TotalDays >= 1)
+                {
+                    await _profileService.RefreshBattleRetries(ctx, profile);
+                }
+
+                Stage stage = null;
+                List<Stage> stageList = await _stageService.GetAll();
+
+                //Specific stage
+                if (Int32.TryParse(action, out int stageNr))
+                {
+                    stage = await _stageService.GetStageFromNumber(stageNr).ConfigureAwait(false);
+
+                    if (stageNumber == "fight")
+                    {
+                        await FightStage(ctx, profile, stage);
+                        return;
+                    }
+                }
+                else if (action == "fight")
                 {
                     await FightStage(ctx, profile);
                     return;
                 }
 
-                await ctx.Channel.SendMessageAsync(embed: StageInfoEmbedTemplate.Show(ctx, profile).Build()).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(embed: StageInfoEmbedTemplate.Show(ctx, profile, stage).Build()).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -59,9 +80,17 @@ namespace IdleHeroes.Commands
             }
         }
 
-        private async Task FightStage(CommandContext ctx, Profile profile)
+        private async Task FightStage(CommandContext ctx, Profile profile, Stage stage = null)
         {
+            Stage selectedStage = profile.Stage;
+
+            if (stage != null)
+            {
+                selectedStage = stage;
+            }
+
             bool battleWon = false;
+            bool hasWonCompanion = false;
             int battleSeconds = 1;
 
             List<TeamPositionEnum> defeatedTeamPositions = new List<TeamPositionEnum>();
@@ -70,7 +99,7 @@ namespace IdleHeroes.Commands
             Dictionary<TeamPositionEnum, double> teamDpsSpread = new Dictionary<TeamPositionEnum, double>();
             Dictionary<TeamPositionEnum, double> enemyDpsSpread = new Dictionary<TeamPositionEnum, double>();
 
-            for (battleSeconds = 1; battleSeconds <= profile.Stage.TimeToBeat.TotalSeconds; battleSeconds++)
+            for (battleSeconds = 1; battleSeconds <= selectedStage.TimeToBeat.TotalSeconds; battleSeconds++)
             {
                 if (defeatedTeamPositions.Count == profile.Team.Companions.Count + 1)
                 {
@@ -84,7 +113,7 @@ namespace IdleHeroes.Commands
                     //not dead companions attack
                     if (!defeatedTeamPositions.Contains(companion.TeamPosition))
                     {
-                        foreach (StageEnemy enemy in profile.Stage.Enemies.OrderBy(x => x.Position))
+                        foreach (StageEnemy enemy in selectedStage.Enemies.OrderBy(x => x.Position))
                         {
                             //Attack non dead enemies
                             if (!defeatedEnemyPositions.Contains(enemy.Position))
@@ -92,7 +121,7 @@ namespace IdleHeroes.Commands
                                 //Check if assasin so attack the back
                                 if (companion.OwnedCompanion.Companion.Class == CompanionClassesEnum.Assasin)
                                 {
-                                    StageEnemy lastEnemy = profile.Stage.Enemies.OrderBy(x => x.Position).LastOrDefault();
+                                    StageEnemy lastEnemy = selectedStage.Enemies.OrderBy(x => x.Position).LastOrDefault();
 
                                     if (teamDpsSpread.ContainsKey(lastEnemy.Position))
                                     {
@@ -136,7 +165,7 @@ namespace IdleHeroes.Commands
                 //Add hero damage
                 if (!defeatedTeamPositions.Contains(profile.Team.HeroTeamPosition))
                 {
-                    foreach (StageEnemy enemy in profile.Stage.Enemies.OrderBy(x => x.Position))
+                    foreach (StageEnemy enemy in selectedStage.Enemies.OrderBy(x => x.Position))
                     {
                         //Attack non dead enemies
                         if (!defeatedEnemyPositions.Contains(enemy.Position))
@@ -162,14 +191,14 @@ namespace IdleHeroes.Commands
                 }
                 #endregion
 
-                if (defeatedEnemyPositions.Count == profile.Stage.Enemies.Count)
+                if (defeatedEnemyPositions.Count == selectedStage.Enemies.Count)
                 {
                     battleWon = true;
                     break;
                 }
 
                 #region EnemyDPS
-                foreach (StageEnemy enemy in profile.Stage.Enemies.OrderBy(x => x.Position))
+                foreach (StageEnemy enemy in selectedStage.Enemies.OrderBy(x => x.Position))
                 {
                     //not dead enemies
                     if (!defeatedEnemyPositions.Contains(enemy.Position))
@@ -292,31 +321,61 @@ namespace IdleHeroes.Commands
 
             if (battleWon)
             {
-                await ctx.Channel.SendMessageAsync(embed: StageFightResultEmbedTemplate.Show(ctx, profile, battleWon, defeatedTeamPositions, defeatedEnemyPositions, teamDpsSpread, enemyDpsSpread, battleSeconds - 1).Build())
-                   .ConfigureAwait(false);
-
                 List<Stage> stages = await _stageService.GetAll();
 
                 //Check if stage is capped
-                if (profile.Stage.Number < stages.Count)
+                profile.XP += selectedStage.StaticXP;
+                profile.Coins += selectedStage.StaticCoins;
+                profile.Food += selectedStage.StaticFood;
+                profile.Gems += selectedStage.StaticGems;
+                profile.Relics += selectedStage.StaticRelics;
+
+                //Give companion reward if it exists
+                if (selectedStage.Companion != null)
                 {
-                    profile.XP += profile.Stage.StaticXP;
-                    profile.Coins += profile.Stage.StaticCoins;
-                    profile.Food += profile.Stage.StaticFood;
-                    profile.Gems += profile.Stage.StaticGems;
-                    profile.Relics += profile.Stage.StaticRelics;
+                    OwnedCompanion ownedCompanionSearch = profile.OwnedCompanions.Find(x => x.Companion.Id == selectedStage.Companion.Id);
 
-                    //Give companion reward if it exists
-                    if(profile.Stage.Companion != null)
+                    //If it's a retry, calculate the chance
+                    if (selectedStage.Number < profile.Stage.Number || profile.Stage.Number == stages.Count)
                     {
-                        OwnedCompanion ownedCompanionSearch = profile.OwnedCompanions.Find(x => x.Companion.Id == profile.Stage.Companion.Id);
+                        profile.BattleRetries--;
+                        double percentChanceToGet = selectedStage.ChanceToGetCompanion;
+                        Random random = new Random();
+                        int randomChance = random.Next(1, 100);
 
+                        //Got the companion
+                        if (randomChance <= percentChanceToGet)
+                        {
+                            hasWonCompanion = true;
+
+                            OwnedCompanion earnedCompanion = null;
+                            if (ownedCompanionSearch == null)
+                            {
+                                earnedCompanion = new OwnedCompanion()
+                                {
+                                    Companion = selectedStage.Companion,
+                                    Copies = 1,
+                                    Level = 1,
+                                    RarirtyTier = RarityTierEnum.Common
+                                };
+
+                                profile.OwnedCompanions.Add(earnedCompanion);
+                            }
+                            else
+                            {
+                                ownedCompanionSearch.Copies += 1;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        hasWonCompanion = true;
                         OwnedCompanion earnedCompanion = null;
                         if (ownedCompanionSearch == null)
                         {
                             earnedCompanion = new OwnedCompanion()
                             {
-                                Companion = profile.Stage.Companion,
+                                Companion = selectedStage.Companion,
                                 Copies = 1,
                                 Level = 1,
                                 RarirtyTier = RarityTierEnum.Common
@@ -329,19 +388,19 @@ namespace IdleHeroes.Commands
                             ownedCompanionSearch.Copies += 1;
                         }
                     }
+                }
 
-                    //Increment stage
-                    profile.Stage = await _stageService.GetStageFromNumber(profile.Stage.Number + 1);
+                //Increment stage
+                if(profile.Stage.Number < stages.Count && selectedStage.Number < profile.Stage.Number)
+                {
+                    profile.Stage = await _stageService.GetStageFromNumber(selectedStage.Number + 1);
                 }
 
                 await _profileService.Update(ctx, profile);
             }
-            else
-            {
-                await ctx.Channel.SendMessageAsync(embed: StageFightResultEmbedTemplate.Show(ctx, profile, battleWon, defeatedTeamPositions, defeatedEnemyPositions, teamDpsSpread, enemyDpsSpread, battleSeconds - 1).Build())
-                   .ConfigureAwait(false);
-            }
 
+            await ctx.Channel.SendMessageAsync(embed: StageFightResultEmbedTemplate.Show(ctx, profile, battleWon, defeatedTeamPositions, defeatedEnemyPositions, teamDpsSpread, enemyDpsSpread, battleSeconds - 1, selectedStage, hasWonCompanion).Build())
+                   .ConfigureAwait(false);
         }
 
         private double CalculateEnemyDPSToApply(StageEnemy enemy, Profile profile)

@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210203174759_AddedChanceToGetCompanion")]
+    partial class AddedChanceToGetCompanion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,9 +182,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.Property<double>("ArmorLevelIncrease")
                         .HasColumnType("float");
 
-                    b.Property<int>("BattleRetries")
-                        .HasColumnType("int");
-
                     b.Property<double>("BoostCostIncrease")
                         .HasColumnType("float");
 
@@ -244,9 +243,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("float");
 
                     b.Property<DateTime>("LastPlayed")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LastRetriesRefresh")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("LastRewardsCollected")
@@ -427,9 +423,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                         .HasColumnType("float");
 
                     b.Property<DateTime>("LastRefresh")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LastRetriesRefresh")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

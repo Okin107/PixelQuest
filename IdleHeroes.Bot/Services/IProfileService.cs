@@ -14,5 +14,6 @@ namespace IdleHeroes.Services
         Task<Profile> FindByDiscordId(CommandContext ctx);
         Task<bool> IsUserRegistered(ulong userId);
         Task<List<Profile>> GetAll();
+        Task RefreshBattleRetries(CommandContext ctx, Profile profile);
     }
 }

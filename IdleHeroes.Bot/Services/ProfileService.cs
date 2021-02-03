@@ -71,7 +71,7 @@ namespace IdleHeroes.Services
                 AgilityBoostLevelIncrease = 1.5,
                 BoostCostIncrease = 1.5,
                 BoostMaxLevel = 10,
-
+                BattleRetries = 10,
                 //Only for testing
                 //Food = 10,
                 //Coins = 1000000,
@@ -166,6 +166,13 @@ namespace IdleHeroes.Services
                 .ThenInclude(x => x.Companions)
                 .ThenInclude(x => x.OwnedCompanion)
                 .ThenInclude(x => x.Companion).ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task RefreshBattleRetries(CommandContext ctx, Profile profile)
+        {
+            profile.BattleRetries = 10;
+            profile.LastRetriesRefresh = DateTime.Now;
+            await Update(ctx, profile);
         }
     }
 }

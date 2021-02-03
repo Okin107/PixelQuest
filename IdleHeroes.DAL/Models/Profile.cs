@@ -72,5 +72,7 @@ namespace IdleHeroesDAL.Models
         //Relations
         public Tavern Tavern { get; set; }
         public Team Team { get; set; }
+        public int BattleRetries { get; set; }
+        public DateTime LastRetriesRefresh { get; set; }
     }
 }

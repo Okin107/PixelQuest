@@ -13,15 +13,22 @@ namespace IdleHeroes.EmbedTemplates
     {
         private static DiscordEmbedBuilder _embed;
 
-        public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile, bool battleWon, List<TeamPositionEnum> defeatedTeamPositions, List<TeamPositionEnum> defeatedEnemyPositions, Dictionary<TeamPositionEnum, double> teamDpsSpread, Dictionary<TeamPositionEnum, double> enemyDpsSpread, int battleSeconds)
+        public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile, bool battleWon, List<TeamPositionEnum> defeatedTeamPositions, List<TeamPositionEnum> defeatedEnemyPositions, Dictionary<TeamPositionEnum, double> teamDpsSpread, Dictionary<TeamPositionEnum, double> enemyDpsSpread, int battleSeconds, Stage stage = null, bool hasWonCompanion = true)
         {
+            Stage selectedStage = profile.Stage;
+
+            if (stage != null)
+            {
+                selectedStage = stage;
+            }
+
             _embed = new DiscordEmbedBuilder()
             {
                 Color = battleWon ? DiscordColor.Green : DiscordColor.Red,
                 //Title = $"{profile.Username}'s Current Stage",
                 Author = new DiscordEmbedBuilder.EmbedAuthor()
                 {
-                    Name = $"{profile.Username} - Stage {profile.Stage.Number} - Time {new TimeSpan(0, 0, battleSeconds)}",
+                    Name = $"{profile.Username} - Stage {selectedStage.Number} - Time {new TimeSpan(0, 0, battleSeconds)}",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
                 Description = battleWon ? $"**Battle won!**" : $"**Battle lost!**",
@@ -159,7 +166,7 @@ namespace IdleHeroes.EmbedTemplates
 
 
             //Check companion
-            foreach (StageEnemy stageEnemy in profile.Stage.Enemies)
+            foreach (StageEnemy stageEnemy in selectedStage.Enemies)
             {
                 int hpPercent = 100;
 
@@ -208,20 +215,20 @@ namespace IdleHeroes.EmbedTemplates
             {
                 string companionString = "";
 
-                if (profile.Stage.Companion != null)
+                if (selectedStage.Companion != null && hasWonCompanion)
                 {
-                    companionString = $"**{profile.Stage.Companion.Id}**: {EmojiHandler.GetEmoji(profile.Stage.Companion.IconName)} {profile.Stage.Companion.Name}" +
-                    $"\n{EmojiHandler.GetEmoji(profile.Stage.Companion.Element.ToString().ToLower())} " +
-                    $"{EmojiHandler.GetEmoji(profile.Stage.Companion.Class.ToString().ToLower())} " +
-                    $"{EmojiHandler.GetEmoji(profile.Stage.Companion.DamageType.ToString().ToLower())}";
+                    companionString = $"**{selectedStage.Companion.Id}**: {EmojiHandler.GetEmoji(selectedStage.Companion.IconName)} {selectedStage.Companion.Name}" +
+                    $"\n{EmojiHandler.GetEmoji(selectedStage.Companion.Element.ToString().ToLower())} " +
+                    $"{EmojiHandler.GetEmoji(selectedStage.Companion.Class.ToString().ToLower())} " +
+                    $"{EmojiHandler.GetEmoji(selectedStage.Companion.DamageType.ToString().ToLower())}";
                 }
 
                 _embed.AddField("Rewards gained",
-                   $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(profile.Stage.StaticXP)}" +
-                   $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Stage.StaticCoins)}" +
-                   $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Stage.StaticFood)}" +
-                   $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Stage.StaticGems)}" +
-                   $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Stage.StaticRelics)}" +
+                   $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP)}" +
+                   $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.StaticCoins)}" +
+                   $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(selectedStage.StaticFood)}" +
+                   $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(selectedStage.StaticGems)}" +
+                   $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(selectedStage.StaticRelics)}" +
                    $"\n{companionString}");
             }
 

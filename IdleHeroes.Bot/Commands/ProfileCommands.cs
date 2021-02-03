@@ -85,6 +85,13 @@ namespace IdleHeroes.Commands
                 else
                 {
                     profile = await _profileService.FindByDiscordId(ctx);
+
+                    //Check and refresh battle retries
+                    TimeSpan dateDifference = DateTime.Now - profile.LastRetriesRefresh;
+                    if (dateDifference.TotalDays >= 1)
+                    {
+                        await _profileService.RefreshBattleRetries(ctx, profile);
+                    }
                 }
 
                 if (profile == null)

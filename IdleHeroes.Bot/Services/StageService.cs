@@ -17,7 +17,12 @@ namespace IdleHeroes.Services
 
         public async Task<List<Stage>> GetAll()
         {
-            return await _context.Stage.ToListAsync().ConfigureAwait(false);
+            return await _context.Stage
+                .Include(x => x.Companion)
+                .Include(x => x.Enemies)
+                .ThenInclude(x => x.Companion)
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
 
         public async Task<Stage> GetStageFromNumber(double stageNumber)
