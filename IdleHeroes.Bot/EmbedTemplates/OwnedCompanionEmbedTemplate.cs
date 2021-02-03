@@ -165,7 +165,7 @@ namespace IdleHeroes.EmbedTemplates
             }
 
             //add remaining to last page
-            if (i > 1)
+            if (i >= 1)
             {
                 Page page = new Page()
                 {
