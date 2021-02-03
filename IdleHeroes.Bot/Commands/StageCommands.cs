@@ -391,7 +391,7 @@ namespace IdleHeroes.Commands
                 }
 
                 //Increment stage
-                if(profile.Stage.Number < stages.Count && selectedStage.Number < profile.Stage.Number)
+                if(profile.Stage.Number < stages.Count && selectedStage.Number >= profile.Stage.Number)
                 {
                     profile.Stage = await _stageService.GetStageFromNumber(selectedStage.Number + 1);
                 }

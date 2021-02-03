@@ -224,12 +224,12 @@ namespace IdleHeroes.EmbedTemplates
                 }
 
                 _embed.AddField("Rewards gained",
-                   $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP)}" +
+                   $"{companionString}" +
+                   $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP)}" +
                    $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.StaticCoins)}" +
                    $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(selectedStage.StaticFood)}" +
                    $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(selectedStage.StaticGems)}" +
-                   $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(selectedStage.StaticRelics)}" +
-                   $"\n{companionString}");
+                   $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(selectedStage.StaticRelics)}");
             }
 
             return _embed;

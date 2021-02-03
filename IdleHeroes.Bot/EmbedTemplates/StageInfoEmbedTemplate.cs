@@ -16,7 +16,7 @@ namespace IdleHeroes.EmbedTemplates
         {
             Stage selectedStage = profile.Stage;
 
-            if(stage != null)
+            if (stage != null)
             {
                 selectedStage = stage;
             }
@@ -152,24 +152,32 @@ namespace IdleHeroes.EmbedTemplates
             selectedStage.Enemies = selectedStage.Enemies.OrderBy(x => x.Position).ToList();
 
             string companionString = "";
+            string chanceToGetCompanion = "(100%)";
 
-            if(selectedStage.Companion != null)
+            if (selectedStage.Number < profile.Stage.Number)
+            {
+                chanceToGetCompanion = $"({selectedStage.ChanceToGetCompanion}%)";
+            }
+
+            if (selectedStage.Companion != null)
             {
                 companionString = $"{EmojiHandler.GetEmoji(selectedStage.Companion.IconName)} " +
-                $"{selectedStage.Companion.Id}:  {selectedStage.Companion.Name}" +
+                $"{selectedStage.Companion.Id}: {selectedStage.Companion.Name} {chanceToGetCompanion}" +
                 $"\n{EmojiHandler.GetEmoji(selectedStage.Companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(selectedStage.Companion.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(selectedStage.Companion.DamageType.ToString().ToLower())}" +
                 $"{EmojiHandler.GetEmoji(selectedStage.Companion.RarityTier.ToString().ToLower())}";
             }
 
+
+
             _embed.AddField("**Fight rewards**",
-                $"{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP)}" +
+                $"{companionString}" +
+                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP)}" +
                 $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.StaticCoins)}" +
                 $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(selectedStage.StaticFood)}" +
                 $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(selectedStage.StaticGems)}" +
-                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(selectedStage.StaticRelics)}" +
-                $"\n{companionString}", true);
+                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(selectedStage.StaticRelics)}", true);
 
             _embed.AddField($"\u200B", "**Enemy details**");
 
@@ -180,6 +188,8 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{EmojiHandler.GetEmoji(enemy.Companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(enemy.Companion.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(enemy.Companion.DamageType.ToString().ToLower())} " +
+                $"{EmojiHandler.GetEmoji(enemy.Companion.RarityTier.ToString().ToLower())}" +
+                $"\n{UtilityFunctions.GetTierStars((int)enemy.RarirtyTier)}" +
                 $"\nLv: {enemy.Level}" +
                 $"\nDPS: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.DPS)}" +
                 $"\nHP: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.HP)}" +
