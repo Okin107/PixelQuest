@@ -41,8 +41,7 @@ namespace IdleHeroes.Commands
                 Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
 
                 //Check and refresh battle retries
-                TimeSpan dateDifference = DateTime.Now - profile.LastRetriesRefresh;
-                if (dateDifference.TotalDays >= 1)
+                if (DateTime.Now.Day > profile.LastRetriesRefresh.Day)
                 {
                     await _profileService.RefreshBattleRetries(ctx, profile);
                 }
@@ -332,10 +331,10 @@ namespace IdleHeroes.Commands
                         .ConfigureAwait(false);
                         return;
                     }
-                }
-                else
-                {
-                    profile.BattleRetries--;
+                    else
+                    {
+                        profile.BattleRetries--;
+                    }
                 }
 
                 //Give companion reward if it exists

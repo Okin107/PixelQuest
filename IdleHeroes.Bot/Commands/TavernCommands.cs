@@ -42,9 +42,7 @@ namespace IdleHeroes.Commands
                 //Check and refresh tavern
                 Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
 
-                TimeSpan dateDifference = DateTime.Now - profile.Tavern.LastRefresh;
-
-                if (dateDifference.TotalDays >= 1 || profile.Tavern.LastRefresh.Day == default)
+                if (DateTime.Now.Day > profile.Tavern.LastRefresh.Day || profile.Tavern.LastRefresh.Day == default)
                 {
                     await _tavernService.Refresh(ctx, profile);
                 }
