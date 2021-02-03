@@ -373,6 +373,7 @@ namespace IdleHeroes.Commands
                         {
                             await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You do not have any more **Battle Retries** for today.").Build())
                         .ConfigureAwait(false);
+                            return;
                         }
 
                         
