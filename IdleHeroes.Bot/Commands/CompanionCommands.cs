@@ -94,6 +94,9 @@ namespace IdleHeroes.Commands
                 Profile profile = await _profileService.FindByDiscordId(ctx);
                 List<Companion> companionList = await _companionService.GetCompanions();
 
+                //Reset the last played time to now
+                profile.LastPlayed = DateTime.Now;
+
                 if (!string.IsNullOrEmpty(companionId) && !string.IsNullOrEmpty(action))
                 {
                     int compId;

@@ -72,14 +72,17 @@ namespace IdleHeroes.Commands
 
         [Command("lb")]
         [Description("Check out how you rank against other players.")]
-        public async Task Leaderboard(CommandContext ctx, [Description("The filter you want to apply to the leaderboard. By default you will see the highest stage players.")] string filter = null)
+        public async Task Leaderboard(CommandContext ctx, [Description("The filter you want to apply to the leaderboard. By default you will see the highest stage players. " +
+            "\n`<level>` " +
+            "\n`<comp>` " +
+            "\n`<idle>`")] string filter = null)
         {
             try
             {
                 Profile profile = await _profileService.FindByDiscordId(ctx);
                 List<Profile> allProfiles = await _profileService.GetAll();
 
-                await ctx.Channel.SendMessageAsync(embed: LeaderboardEmbedTemplate.Show(ctx, profile, allProfiles).Build())
+                await ctx.Channel.SendMessageAsync(embed: LeaderboardEmbedTemplate.Show(ctx, profile, allProfiles, filter).Build())
                 .ConfigureAwait(false);
             }
             catch (Exception ex)

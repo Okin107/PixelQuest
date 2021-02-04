@@ -32,6 +32,9 @@ namespace IdleHeroes.Commands
             {
                 Profile profile = await _profileService.FindByDiscordId(ctx);
 
+                //Reset the last played time to now
+                profile.LastPlayed = DateTime.Now;
+
                 if (!string.IsNullOrEmpty(teamPosition))
                 {
                     if (!Enum.TryParse(teamPosition.ToUpper(), out TeamPositionEnum tPosition) || int.TryParse(teamPosition, out int n))

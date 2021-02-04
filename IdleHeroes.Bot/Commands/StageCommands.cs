@@ -40,6 +40,9 @@ namespace IdleHeroes.Commands
 
                 Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
 
+                //Reset the last played time to now
+                profile.LastPlayed = DateTime.Now;
+
                 //Check and refresh battle retries
                 if (DateTime.Now.Day > profile.LastRetriesRefresh.Day)
                 {

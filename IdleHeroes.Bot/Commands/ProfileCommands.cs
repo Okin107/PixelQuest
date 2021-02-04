@@ -131,6 +131,9 @@ namespace IdleHeroes.Commands
 
                 Profile profile = await _profileService.FindByDiscordId(ctx);
 
+                //Reset the last played time to now
+                profile.LastPlayed = DateTime.Now;
+
                 await ctx.Channel.SendMessageAsync(embed: HeroEmbedTemplate.Get(ctx, profile).Build())
                 .ConfigureAwait(false);
             }
@@ -159,6 +162,9 @@ namespace IdleHeroes.Commands
                     return;
                 }
                 Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
+
+                //Reset the last played time to now
+                profile.LastPlayed = DateTime.Now;
 
                 //Buy skill
                 if (!string.IsNullOrEmpty(skillId))

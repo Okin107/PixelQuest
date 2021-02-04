@@ -42,6 +42,9 @@ namespace IdleHeroes.Commands
                 //Check and refresh tavern
                 Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
 
+                //Reset the last played time to now
+                profile.LastPlayed = DateTime.Now;
+
                 if (DateTime.Now.Day > profile.Tavern.LastRefresh.Day || profile.Tavern.LastRefresh.Day == default)
                 {
                     await _tavernService.Refresh(ctx, profile);
