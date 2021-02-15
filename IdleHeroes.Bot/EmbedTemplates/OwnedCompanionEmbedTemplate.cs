@@ -120,7 +120,7 @@ namespace IdleHeroes.EmbedTemplates
                     $" -> MAX" +
                      $"\nAgi: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
                     $" -> MAX" +
-                    $"\nAscend: {ownedCompanion.Copies}/{CompanionHelper.GetAscendCopiesNeeded(ownedCompanion)} Copies" +
+                    $"\n**Ascend: {ownedCompanion.Copies}/{CompanionHelper.GetAscendCopiesNeeded(ownedCompanion)} Copies**" +
                     $"\n", true);
                 }
                 else

@@ -11,6 +11,6 @@ namespace IdleHeroesDAL.Models
         public string Name { get; set; }
         public double Level { get; set; }
         public TeamPositionEnum Position { get; set; }
-        public int RarirtyTier { get; set; }
+        public RarityTierEnum RarirtyTier { get; set; }
     }
 }

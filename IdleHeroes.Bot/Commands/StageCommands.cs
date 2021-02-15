@@ -120,8 +120,8 @@ namespace IdleHeroes.Commands
                             //Attack non dead enemies
                             if (!defeatedEnemyPositions.Contains(enemy.Position))
                             {
-                                //Check if assasin so attack the back
-                                if (companion.OwnedCompanion.Companion.Class == CompanionClassesEnum.Assasin)
+                                //Check if Assassin so attack the back
+                                if (companion.OwnedCompanion.Companion.Class == CompanionClassesEnum.Assassin)
                                 {
                                     StageEnemy lastEnemy = selectedStage.Enemies.OrderBy(x => x.Position).LastOrDefault();
 
@@ -237,7 +237,7 @@ namespace IdleHeroes.Commands
                                 {
                                     companionDmgApplied = true;
 
-                                    if (enemy.Companion.Class == CompanionClassesEnum.Assasin)
+                                    if (enemy.Companion.Class == CompanionClassesEnum.Assassin)
                                     {
                                         TeamCompanion lastCompanion = profile.Team.Companions.OrderBy(x => x.TeamPosition).LastOrDefault();
 

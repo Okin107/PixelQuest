@@ -132,8 +132,6 @@ namespace IdleHeroes.Commands
 
 
                 await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, OwnedCompanionsEmbedTemplate.Show(ctx, profile), timeoutoverride: TimeSpan.FromMinutes(5)).ConfigureAwait(false);
-                //await ctx.Channel.SendMessageAsync(embed: OwnedCompanionsEmbedTemplate.Show(ctx, await _profileService.FindByDiscordId(ctx)).Build())
-                //   .ConfigureAwait(false);
             }
             catch (Exception ex)
             {

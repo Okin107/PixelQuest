@@ -44,6 +44,9 @@ namespace IdleHeroes.Services
 
             for (int i = 1; i <= 6; i++)
             {
+                //Companion rarity chances
+
+
                 var range = Enumerable.Range(1, companionsList.Count).Where(i => !currentCompanionsIds.Contains(i));
                 int index = rand.Next(0, companionsList.Count - currentCompanionsIds.Count);
                 int companionId = range.ElementAt(index);

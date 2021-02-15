@@ -44,7 +44,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n**Warrior** {EmojiHandler.GetEmoji(CompanionClassesEnum.Warrior.ToString().ToLower())}: A melee specialist that is very good at close range battle." +
                 $"\n**Tank** {EmojiHandler.GetEmoji(CompanionClassesEnum.Tank.ToString().ToLower())}: Has high HP and high Armor to survive as much as possible." +
                 $"\n**Ranger** {EmojiHandler.GetEmoji(CompanionClassesEnum.Ranger.ToString().ToLower())}: Rangers are very fragile but very strong. They deal True damage. Which means they ignore all enemy armor." +
-                $"\n**Assasin** {EmojiHandler.GetEmoji(CompanionClassesEnum.Assasin.ToString().ToLower())}: Assasins are very good at taking out the backline. Assasins always hit the enemies that are in the back line first." +
+                $"\n**Assassin** {EmojiHandler.GetEmoji(CompanionClassesEnum.Assassin.ToString().ToLower())}: Assassins are very good at taking out the backline. Assassins always hit the enemies that are in the back line first." +
                 $"\n" +
                 $"\n**Companion elements:**" +
                 $"\n**Nature** {EmojiHandler.GetEmoji(ElementTypeEnum.Nature.ToString().ToLower())}: + 50% DPS on Water / -50% DPS on Fire. " +

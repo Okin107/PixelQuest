@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210215103747_SpecificAscendMultipliers")]
+    partial class SpecificAscendMultipliers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,6 +48,21 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 
                     b.Property<int>("AscendCopiesTierIncrease")
                         .HasColumnType("int");
+
+                    b.Property<double>("AscendMultiplier1")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AscendMultiplier2")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AscendMultiplier3")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AscendMultiplier4")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AscendMultiplier5")
+                        .HasColumnType("float");
 
                     b.Property<int>("BaseAscendCopiesNeeded")
                         .HasColumnType("int");

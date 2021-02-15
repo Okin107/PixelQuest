@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace IdleHeroes.Models
 {
-    public static class HeroSkills
+    public static class HeroSettings
     {
         public static List<ProfileSkillTypeEnum> List
         {

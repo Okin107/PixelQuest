@@ -11,8 +11,6 @@ namespace IdleHeroesDAL.Models
         //Leveling
         public string Level { get; set; }
         public double MaxLevel { get; set; }
-        public double LevelToMultiplyIncreases { get; set; }
-        public double IncreaseMultiplier { get; set; }
         public ulong BaseLevelCost { get; set; }
         public double LevelCostIncrease { get; set; }
 
@@ -20,6 +18,7 @@ namespace IdleHeroesDAL.Models
         public RarityTierEnum RarityTier { get; set; }
         public int BaseAscendCopiesNeeded { get; set; }
         public int AscendCopiesTierIncrease { get; set; }
+        public double LevelToMultiplyIncreases { get; set; }
 
         //Element and classes
         public ElementTypeEnum Element { get; set; }
