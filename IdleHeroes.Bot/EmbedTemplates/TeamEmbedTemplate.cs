@@ -186,11 +186,11 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{UtilityFunctions.GetTierStars((int)companion.OwnedCompanion.RarirtyTier)}" +
                 $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.RarityTier.ToString().ToLower())}" +
                 $"\nLv: {companion.OwnedCompanion.Level}/{CompanionHelper.GetMaxLevel(companion.OwnedCompanion)}" +
-                $"\nDPS: {CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.DPS)}" +
-                $"\nHP: {CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.HP)}" +
-                $"\nArmor: {CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.Armor)}" +
-                $"\nAcc: {CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.Accuracy)}" +
-                $"\nAgi: {CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.Agility)}", true);
+                $"\nDPS: {CompanionHelper.CalculateAttributeString(companion.OwnedCompanion, CompanionAttributeEnum.DPS)}" +
+                $"\nHP: {CompanionHelper.CalculateAttributeString(companion.OwnedCompanion, CompanionAttributeEnum.HP)}" +
+                $"\nArmor: {CompanionHelper.CalculateAttributeString(companion.OwnedCompanion, CompanionAttributeEnum.Armor)}" +
+                $"\nAcc: {CompanionHelper.CalculateAttributeString(companion.OwnedCompanion, CompanionAttributeEnum.Accuracy)}" +
+                $"\nAgi: {CompanionHelper.CalculateAttributeString(companion.OwnedCompanion, CompanionAttributeEnum.Agility)}", true);
             }
 
             return _embed;

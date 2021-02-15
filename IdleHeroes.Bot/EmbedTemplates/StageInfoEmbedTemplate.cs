@@ -191,11 +191,11 @@ namespace IdleHeroes.EmbedTemplates
                 $"{EmojiHandler.GetEmoji(enemy.Companion.RarityTier.ToString().ToLower())}" +
                 $"\n{UtilityFunctions.GetTierStars((int)enemy.RarirtyTier)}" +
                 $"\nLv: {enemy.Level}" +
-                $"\nDPS: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.DPS)}" +
-                $"\nHP: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.HP)}" +
-                $"\nArmor: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.Armor)}" +
-                $"\nAcc: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.Accuracy)}" +
-                $"\nAgi: {CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.Agility)}", true);
+                $"\nDPS: {CompanionHelper.CalculateAttributeString(enemy, CompanionAttributeEnum.DPS)}" +
+                $"\nHP: {CompanionHelper.CalculateAttributeString(enemy, CompanionAttributeEnum.HP)}" +
+                $"\nArmor: {CompanionHelper.CalculateAttributeString(enemy, CompanionAttributeEnum.Armor)}" +
+                $"\nAcc: {CompanionHelper.CalculateAttributeString(enemy, CompanionAttributeEnum.Accuracy)}" +
+                $"\nAgi: {CompanionHelper.CalculateAttributeString(enemy, CompanionAttributeEnum.Agility)}", true);
             }
 
             return _embed;

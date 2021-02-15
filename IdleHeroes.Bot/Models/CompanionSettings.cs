@@ -89,10 +89,10 @@ namespace IdleHeroes.Models
                     AscendHP3 = 3,
                     AscendHP4 = 3,
                     //DPS
-                    AscendDPS1 = 4,
-                    AscendDPS2 = 5,
-                    AscendDPS3 = 6,
-                    AscendDPS4 = 7,
+                    AscendDPS1 = 3,
+                    AscendDPS2 = 4,
+                    AscendDPS3 = 4,
+                    AscendDPS4 = 5,
                     //Armor
                     AscendArmor1 = 2,
                     AscendArmor2 = 2,
