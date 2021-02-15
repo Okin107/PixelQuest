@@ -65,19 +65,19 @@ namespace IdleHeroes.Commands
                         //Manual refresh
                         if (companionId == "refresh")
                         {
-                            if (profile.Gems < 1)
+                            if (profile.Gems < 5)
                             {
                                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{profile.Gems}** {EmojiHandler.GetEmoji("gem")}," +
-                    $" but you need **1** {EmojiHandler.GetEmoji("gem")} to refresh the **Tavern**.").Build())
+                    $" but you need **5** {EmojiHandler.GetEmoji("gem")} to refresh the **Tavern**.").Build())
                 .ConfigureAwait(false);
                                 return;
                             }
 
-                            profile.Gems -= 1;
+                            profile.Gems -= 5;
 
                             await _tavernService.Refresh(ctx, profile);
 
-                            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully refreshed the **Tavern** by spending **1** {EmojiHandler.GetEmoji("gem")}.").Build())
+                            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully refreshed the **Tavern** by spending **5** {EmojiHandler.GetEmoji("gem")}.").Build())
                 .ConfigureAwait(false);
 
                             await ctx.Channel.SendMessageAsync(embed: TavernEmbedTemplate.Show(ctx, profile).Build())

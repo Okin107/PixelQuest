@@ -27,7 +27,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n" +
                 $"\nThe tavern refreshes once a day for free." +
                 $"\n" +
-                $"\nYou can manually refresh the tavern for **1** {EmojiHandler.GetEmoji("gem")} each time by using `.tavern refresh`.",
+                $"\nYou can manually refresh the tavern for **5** {EmojiHandler.GetEmoji("gem")} each time by using `.tavern refresh`.",
                 Timestamp = DateTime.UtcNow,
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {
