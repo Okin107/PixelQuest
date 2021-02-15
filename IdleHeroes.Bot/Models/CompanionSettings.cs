@@ -6,6 +6,10 @@ namespace IdleHeroes.Models
     public static class CompanionSettings
     {
         private static List<CompanionGrowth> _companionGrowths { get; set; } = new List<CompanionGrowth>();
+        public const double TavernRareChance = 20;
+        public const double TavernEpicChance = 15;
+        public const double TavernLegendaryChance = 10;
+        public const double TavernMythicChance = 5;
 
         public static List<CompanionGrowth> CompanionGrowths
         {

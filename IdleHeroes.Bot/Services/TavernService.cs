@@ -1,4 +1,5 @@
 ﻿using DSharpPlus.CommandsNext;
+using IdleHeroes.Models;
 using IdleHeroesDAL;
 using IdleHeroesDAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -44,12 +45,49 @@ namespace IdleHeroes.Services
 
             for (int i = 1; i <= 6; i++)
             {
-                //Companion rarity chances
-
-
                 var range = Enumerable.Range(1, companionsList.Count).Where(i => !currentCompanionsIds.Contains(i));
                 int index = rand.Next(0, companionsList.Count - currentCompanionsIds.Count);
                 int companionId = range.ElementAt(index);
+                int heroChance = 0;
+
+                //Calculate chance to keep this companion based on rarity tier
+                Companion rolledCompanion = companionsList.Find(x => x.Id == companionId);
+                switch(rolledCompanion.RarityTier)
+                {
+                    case IdleHeroesDAL.Enums.RarityTierEnum.Mythic:
+                        heroChance = rand.Next(0, 100);
+                        if(heroChance > CompanionSettings.TavernMythicChance)
+                        {
+                            i--;
+                            continue;
+                        }
+                        break;
+                    case IdleHeroesDAL.Enums.RarityTierEnum.Legendary:
+                        heroChance = rand.Next(0, 100);
+                        if (heroChance > CompanionSettings.TavernLegendaryChance)
+                        {
+                            i--;
+                            continue;
+                        }
+                        break;
+                    case IdleHeroesDAL.Enums.RarityTierEnum.Epic:
+                        heroChance = rand.Next(0, 100);
+                        if (heroChance > CompanionSettings.TavernEpicChance)
+                        {
+                            i--;
+                            continue;
+                        }
+                        break;
+                    case IdleHeroesDAL.Enums.RarityTierEnum.Rare:
+                        heroChance = rand.Next(0, 100);
+                        if (heroChance > CompanionSettings.TavernRareChance)
+                        {
+                            i--;
+                            continue;
+                        }
+                        break;
+                }
+
                 currentCompanionsIds.Add(companionId);
                 Companion selectedCompanion = companionsList.Find(x => x.Id == companionId);
 
