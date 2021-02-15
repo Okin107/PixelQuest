@@ -12,6 +12,8 @@ namespace IdleHeroes.EmbedTemplates
 
         public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile)
         {
+            TimeSpan timeToRefresh = DateTime.Today.AddDays(1) - DateTime.Now;
+
             _embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Gold,
@@ -32,7 +34,7 @@ namespace IdleHeroes.EmbedTemplates
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {
                     IconUrl = ctx.Message.Author.AvatarUrl,
-                    Text = ctx.Message.Author.Username
+                    Text = ctx.Message.Author.Username + $" • Tavern refresh in {timeToRefresh.Hours}:{timeToRefresh.Minutes}:{timeToRefresh.Seconds}"
                 }
             };
 
