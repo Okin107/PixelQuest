@@ -207,7 +207,7 @@ namespace IdleHeroes.Commands
         {
             if (profile.SkillPointsSpent == 0)
             {
-                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have not spent any **Skill Points**, so you have nothing to reset.").Build())
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have not spent any {EmojiHandler.GetEmoji("sp")}, so you have nothing to reset.").Build())
                   .ConfigureAwait(false);
                 return;
             }
@@ -215,7 +215,7 @@ namespace IdleHeroes.Commands
             if (profile.Gems < 50)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{profile.Gems}** {EmojiHandler.GetEmoji("gem")}," +
-                   $" but you need **50** {EmojiHandler.GetEmoji("gem")} to reset your **Skill Points**.").Build())
+                   $" but you need **50** {EmojiHandler.GetEmoji("gem")} to reset your {EmojiHandler.GetEmoji("sp")}.").Build())
                .ConfigureAwait(false);
                 return;
             }
@@ -232,7 +232,7 @@ namespace IdleHeroes.Commands
 
             await _profileService.Update(ctx, profile);
 
-            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully reset all your **Skill Points** by using **50** {EmojiHandler.GetEmoji("gem")}.").Build()).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully reset all your {EmojiHandler.GetEmoji("sp")} by using **50** {EmojiHandler.GetEmoji("gem")}.").Build()).ConfigureAwait(false);
         }
 
         private async Task UpgradeSkill(CommandContext ctx, Profile profile, ProfileSkillTypeEnum skillId)
@@ -251,12 +251,12 @@ namespace IdleHeroes.Commands
                         profile.SkillPointsSpent += skillCost;
                         profile.DPSBoostLevel++;
 
-                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.DPS}** to level **{profile.DPSBoostLevel}** by using **{skillCost}** Skill Points.").Build()).ConfigureAwait(false);
+                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.DPS}** to level **{profile.DPSBoostLevel}** by using **{skillCost}** {EmojiHandler.GetEmoji("sp")}.").Build()).ConfigureAwait(false);
                     }
                     else
                     {
-                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** Skill Points," +
-                    $" but you need **{skillCost}** Skill Points to upgrade **{ProfileSkillTypeEnum.DPS}**.").Build())
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** {EmojiHandler.GetEmoji("sp")}," +
+                    $" but you need **{skillCost}** {EmojiHandler.GetEmoji("sp")} to upgrade **{ProfileSkillTypeEnum.DPS}**.").Build())
                 .ConfigureAwait(false);
                     }
                     break;
@@ -268,12 +268,12 @@ namespace IdleHeroes.Commands
                         profile.SkillPointsSpent += skillCost;
                         profile.HPBoostLevel++;
 
-                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.HP}** to level **{profile.HPBoostLevel}** by using **{skillCost}** Skill Points.").Build()).ConfigureAwait(false);
+                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.HP}** to level **{profile.HPBoostLevel}** by using **{skillCost}** {EmojiHandler.GetEmoji("sp")}.").Build()).ConfigureAwait(false);
                     }
                     else
                     {
-                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** Skill Points," +
-                    $" but you need **{skillCost}** Skill Points to upgrade **{ProfileSkillTypeEnum.HP}**.").Build())
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** {EmojiHandler.GetEmoji("sp")}," +
+                    $" but you need **{skillCost}** {EmojiHandler.GetEmoji("sp")} to upgrade **{ProfileSkillTypeEnum.HP}**.").Build())
                 .ConfigureAwait(false);
                     }
                     break;
@@ -285,12 +285,12 @@ namespace IdleHeroes.Commands
                         profile.SkillPointsSpent += skillCost;
                         profile.ArmorBoostLevel++;
 
-                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.Armor}** to level **{profile.ArmorBoostLevel}** by using **{skillCost}** Skill Points.").Build()).ConfigureAwait(false);
+                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.Armor}** to level **{profile.ArmorBoostLevel}** by using **{skillCost}** {EmojiHandler.GetEmoji("sp")}.").Build()).ConfigureAwait(false);
                     }
                     else
                     {
-                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** Skill Points," +
-                    $" but you need **{skillCost}** Skill Points to upgrade **{ProfileSkillTypeEnum.Armor}**.").Build())
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** {EmojiHandler.GetEmoji("sp")}," +
+                    $" but you need **{skillCost}** {EmojiHandler.GetEmoji("sp")} to upgrade **{ProfileSkillTypeEnum.Armor}**.").Build())
                 .ConfigureAwait(false);
                     }
                     break;
@@ -302,12 +302,12 @@ namespace IdleHeroes.Commands
                         profile.SkillPointsSpent += skillCost;
                         profile.AccuracyBoostLevel++;
 
-                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.Accuracy}** to level **{profile.AccuracyBoostLevel}** by using **{skillCost}** Skill Points.").Build()).ConfigureAwait(false);
+                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.Accuracy}** to level **{profile.AccuracyBoostLevel}** by using **{skillCost}** {EmojiHandler.GetEmoji("sp")}.").Build()).ConfigureAwait(false);
                     }
                     else
                     {
-                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** Skill Points," +
-                    $" but you need **{skillCost}** Skill Points to upgrade **{ProfileSkillTypeEnum.Accuracy}**.").Build())
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** {EmojiHandler.GetEmoji("sp")}," +
+                    $" but you need **{skillCost}** {EmojiHandler.GetEmoji("sp")} to upgrade **{ProfileSkillTypeEnum.Accuracy}**.").Build())
                 .ConfigureAwait(false);
                     }
                     break;
@@ -319,12 +319,12 @@ namespace IdleHeroes.Commands
                         profile.SkillPointsSpent += skillCost;
                         profile.AgilityBoostLevel++;
 
-                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.Agility}** to level **{profile.AgilityBoostLevel}** by using **{skillCost}** Skill Points.").Build()).ConfigureAwait(false);
+                        await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded **{ProfileSkillTypeEnum.Agility}** to level **{profile.AgilityBoostLevel}** by using **{skillCost}** {EmojiHandler.GetEmoji("sp")}.").Build()).ConfigureAwait(false);
                     }
                     else
                     {
-                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** Skill Points," +
-                    $" but you need **{skillCost}** Skill Points to upgrade **{ProfileSkillTypeEnum.Agility}**.").Build())
+                        await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{skillPoints}** {EmojiHandler.GetEmoji("sp")}," +
+                    $" but you need **{skillCost}** {EmojiHandler.GetEmoji("sp")} to upgrade **{ProfileSkillTypeEnum.Agility}**.").Build())
                 .ConfigureAwait(false);
                     }
                     break;

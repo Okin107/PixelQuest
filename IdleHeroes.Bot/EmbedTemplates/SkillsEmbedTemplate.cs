@@ -24,10 +24,10 @@ namespace IdleHeroes.EmbedTemplates
                     Name = $"{profile.Username}'s Hero skills",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
-                Description = $"Skill Points: {profileLevelData.Level - profile.SkillPointsSpent - 1}" +
-                $"\n\nWelcome to the Skills page. Here you can upgrade your Hero's skills by spending Skill Points." +
+                Description = $"{EmojiHandler.GetEmoji("sp")} {profileLevelData.Level - profile.SkillPointsSpent - 1}" +
+                $"\n\nWelcome to the Skills page. Here you can upgrade your Hero's skills by spending {EmojiHandler.GetEmoji("sp")}." +
                 $"\n" +
-                $"\nYou can reset your Skill Points for **50** {EmojiHandler.GetEmoji("gem")} by using `.skills reset`.",
+                $"\nYou can reset your {EmojiHandler.GetEmoji("sp")} for **50** {EmojiHandler.GetEmoji("gem")} by using `.skills reset`.",
                 Timestamp = DateTime.UtcNow,
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {
@@ -40,31 +40,31 @@ namespace IdleHeroes.EmbedTemplates
             $"\nLevel: {profile.DPSBoostLevel} -> {profile.DPSBoostLevel + 1} (Max: {profile.BoostMaxLevel})" +
             $"\nBoost: x{UtilityFunctions.FormatNumber(Math.Pow(profile.DPSBoostLevelIncrease, profile.DPSBoostLevel))} " +
             $"-> {UtilityFunctions.FormatNumber(Math.Pow(profile.DPSBoostLevelIncrease, profile.DPSBoostLevel + 1))}" +
-            $"\nCost: {Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.DPSBoostLevel - 1), 0)} Skill Points", true);
+            $"\nCost: {Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.DPSBoostLevel - 1), 0)} {EmojiHandler.GetEmoji("sp")}", true);
 
             _embed.AddField($"**2**: HP -> Next Lv.",
             $"\nLevel: {profile.HPBoostLevel} -> {profile.HPBoostLevel + 1} (Max: {profile.BoostMaxLevel})" +
             $"\nBoost: x{UtilityFunctions.FormatNumber(Math.Pow(profile.HPBoostLevelIncrease, profile.HPBoostLevel))} " +
             $"-> {UtilityFunctions.FormatNumber(Math.Pow(profile.HPBoostLevelIncrease, profile.HPBoostLevel + 1))}" +
-            $"\nCost: {Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.HPBoostLevel - 1), 0)} Skill Points", true);
+            $"\nCost: {Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.HPBoostLevel - 1), 0)} {EmojiHandler.GetEmoji("sp")}", true);
 
             _embed.AddField($"**3**: Armor -> Next Lv.",
             $"\nLevel: {profile.ArmorBoostLevel} -> {profile.ArmorBoostLevel + 1} (Max: {profile.BoostMaxLevel})" +
             $"\nBoost: x{UtilityFunctions.FormatNumber(Math.Pow(profile.ArmorBoostLevelIncrease, profile.ArmorBoostLevel))} " +
             $"-> {UtilityFunctions.FormatNumber(Math.Pow(profile.ArmorBoostLevelIncrease, profile.ArmorBoostLevel + 1))}" +
-            $"\nCost: {Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.ArmorBoostLevel - 1), 0)} Skill Points", true);
+            $"\nCost: {Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.ArmorBoostLevel - 1), 0)} {EmojiHandler.GetEmoji("sp")}", true);
 
             _embed.AddField($"**4**: Accuracy -> Next Lv.",
             $"\nLevel: {profile.AccuracyBoostLevel} -> {profile.AccuracyBoostLevel + 1} (Max: {profile.BoostMaxLevel})" +
             $"\nBoost: x{UtilityFunctions.FormatNumber(Math.Pow(profile.AccuracyBoostLevelIncrease, profile.AccuracyBoostLevel))} " +
             $"-> {UtilityFunctions.FormatNumber(Math.Pow(profile.AccuracyBoostLevelIncrease, profile.AccuracyBoostLevel + 1))}" +
-            $"\nCost: {Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.AccuracyBoostLevel - 1), 0)} Skill Points", true);
+            $"\nCost: {Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.AccuracyBoostLevel - 1), 0)} {EmojiHandler.GetEmoji("sp")}", true);
 
             _embed.AddField($"**5**: Agility -> Next Lv.",
             $"\nLevel: {profile.AgilityBoostLevel} -> {profile.AgilityBoostLevel + 1} (Max: {profile.BoostMaxLevel})" +
             $"\nBoost: x{UtilityFunctions.FormatNumber(Math.Pow(profile.AgilityBoostLevelIncrease, profile.AgilityBoostLevel))} " +
             $"-> {UtilityFunctions.FormatNumber(Math.Pow(profile.AgilityBoostLevelIncrease, profile.AgilityBoostLevel + 1))}" +
-            $"\nCost: {Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.AgilityBoostLevel - 1), 0)} Skill Points", true);
+            $"\nCost: {Math.Round(1 * Math.Pow(profile.BoostCostIncrease, profile.AgilityBoostLevel - 1), 0)} {EmojiHandler.GetEmoji("sp")}", true);
 
             return _embed;
         }
