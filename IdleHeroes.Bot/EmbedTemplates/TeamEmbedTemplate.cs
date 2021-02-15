@@ -154,15 +154,15 @@ namespace IdleHeroes.EmbedTemplates
             }
             #endregion
 
-            _embed.AddField($"**Team positions**", $"🟦 \u200B \u200B \u200B \u200B \u200B 🇨 " +
-                $"\u200B \u200B \u200B \u200B \u200B 🇧 " +
-                $"\u200B \u200B \u200B \u200B \u200B 🇦 \n" +
-                $"\n1️⃣ \u200B \u200B \u200B \u200B \u200B {stringC1} \u200B \u200B \u200B \u200B \u200B {stringB1} \u200B \u200B \u200B \u200B \u200B {stringA1}" +
+            _embed.AddField($"**Team positions**", $"{EmojiHandler.GetEmoji("blank")} {EmojiHandler.GetEmoji("blank")} 🇨 " +
+                $"{EmojiHandler.GetEmoji("blank")} 🇧 " +
+                $"{EmojiHandler.GetEmoji("blank")} 🇦 \n" +
+                $"\n1️⃣ {EmojiHandler.GetEmoji("blank")} {stringC1} {EmojiHandler.GetEmoji("blank")} {stringB1} {EmojiHandler.GetEmoji("blank")} {stringA1}" +
                 $"\n" +
-                $"\n2️⃣ \u200B \u200B \u200B \u200B \u200B {stringC2} \u200B \u200B \u200B \u200B \u200B {stringB2} \u200B \u200B \u200B \u200B \u200B {stringA2}" +
-                $"\u200B \u200B \u200B \u200B \u200B ---> Enemy" +
+                $"\n2️⃣ {EmojiHandler.GetEmoji("blank")} {stringC2} {EmojiHandler.GetEmoji("blank")} {stringB2} {EmojiHandler.GetEmoji("blank")} {stringA2}" +
+                $"{EmojiHandler.GetEmoji("blank")} ---> Enemy" +
                 $"\n" +
-                $"\n3️⃣ \u200B \u200B \u200B \u200B \u200B {stringC3} \u200B \u200B \u200B \u200B \u200B {stringB3} \u200B \u200B \u200B \u200B \u200B {stringA3}");
+                $"\n3️⃣ {EmojiHandler.GetEmoji("blank")} {stringC3} {EmojiHandler.GetEmoji("blank")} {stringB3} {EmojiHandler.GetEmoji("blank")} {stringA3}");
 
             profile.Team.Companions = profile.Team.Companions.OrderBy(x => x.TeamPosition).ToList();
 
@@ -179,7 +179,7 @@ namespace IdleHeroes.EmbedTemplates
             foreach (TeamCompanion companion in profile.Team.Companions)
             {
                 _embed.AddField($"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.IconName)} " +
-                    $"**{companion.TeamPosition}: {companion.OwnedCompanion.Companion.Name}**",
+                    $"**{companion.TeamPosition}: {companion.OwnedCompanion.Companion.Id} {companion.OwnedCompanion.Companion.Name}**",
                 $"\n{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.DamageType.ToString().ToLower())} " +
