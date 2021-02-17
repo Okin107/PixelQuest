@@ -78,7 +78,10 @@ namespace IdleHeroes.Commands
 
         [Command("comp")]
         [Description("Preview and manage all your Companions.")]
-        public async Task OwnedCompanions(CommandContext ctx, [Description("The Companion ID which you wish to select.")] string companionId = null, [Description("The action you want to take on the selected Companion (<level>, <ascend>)")] string action = null)
+        public async Task OwnedCompanions(CommandContext ctx, [Description("The Companion ID which you wish to select.")] string companionId = null, [Description("The action you want to take on the selected Companion:" +
+            "\n`<level>` Levels up the companion by 1 level." +
+            "\n`<ascend>` Ascend the companion by 1 tier." +
+            "\n`<sell>` Sells the companion for 50% of the **Food** based on the copies you own.")] string action = null)
         {
             try
             {
@@ -122,6 +125,11 @@ namespace IdleHeroes.Commands
                         await AscendCompanion(ctx, profile, compId);
                         return;
                     }
+                    else if (action == "sell")
+                    {
+                        await SellCompanion(ctx, profile, compId);
+                        return;
+                    }
                     else
                     {
                         await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Please make sure you have used the correct command syntax. Use `.help comp` to find out more.").Build())
@@ -142,6 +150,27 @@ namespace IdleHeroes.Commands
                 }
                 Console.WriteLine($"COMMAND ERROR: {ex.Message}");
             }
+        }
+
+        private async Task SellCompanion(CommandContext ctx, Profile profile, int compId)
+        {
+            OwnedCompanion selectedCompanion = profile.OwnedCompanions.Find(x => x.Companion.Id == compId);
+
+            if (selectedCompanion == null)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You do not own any Companion with ID **{compId}**. Please make sure you selected the correct **Companion ID**.").Build())
+    .ConfigureAwait(false);
+                return;
+            }
+
+            double foodFromSell = 5 * selectedCompanion.Copies;
+            profile.Food += foodFromSell;
+
+            profile.OwnedCompanions.Remove(selectedCompanion);
+            await _profileService.Update(ctx, profile);
+
+            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully sold {EmojiHandler.GetEmoji(selectedCompanion.Companion.IconName)} **{selectedCompanion.Companion.Name}** for **{foodFromSell} {EmojiHandler.GetEmoji("food")}**.").Build())
+    .ConfigureAwait(false);
         }
 
         private async Task AscendCompanion(CommandContext ctx, Profile profile, int compId)

@@ -183,8 +183,8 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.Element.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.Class.ToString().ToLower())} " +
                 $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.DamageType.ToString().ToLower())} " +
-                $"\n{UtilityFunctions.GetTierStars((int)companion.OwnedCompanion.RarirtyTier)}" +
                 $"{EmojiHandler.GetEmoji(companion.OwnedCompanion.Companion.RarityTier.ToString().ToLower())}" +
+                $"\n{UtilityFunctions.GetTierStars((int)companion.OwnedCompanion.RarirtyTier)}" +
                 $"\nLv: {companion.OwnedCompanion.Level}/{CompanionHelper.GetMaxLevel(companion.OwnedCompanion)}" +
                 $"\nDPS: {CompanionHelper.CalculateAttributeString(companion.OwnedCompanion, CompanionAttributeEnum.DPS)}" +
                 $"\nHP: {CompanionHelper.CalculateAttributeString(companion.OwnedCompanion, CompanionAttributeEnum.HP)}" +
