@@ -10,6 +10,7 @@ namespace IdleHeroes.Support
         public static string CalculateAttributeString(Companion companion, CompanionAttributeEnum companionAttribute)
         {
             string heroCalculatedAttribute = "";
+            double tempAttribute;
 
             switch (companionAttribute)
             {
@@ -20,13 +21,19 @@ namespace IdleHeroes.Support
                     heroCalculatedAttribute = UtilityFunctions.FormatNumber(companion.HP * Math.Pow(companion.HPIncreasePerLevel, companion.MaxLevel - 1) * CalculateLevelMultiplierBoost(companion, CompanionAttributeEnum.HP));
                     break;
                 case CompanionAttributeEnum.Armor:
-                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(companion.Armor * Math.Pow(companion.ArmorIncreasePerLevel, companion.MaxLevel - 1) * CalculateLevelMultiplierBoost(companion, CompanionAttributeEnum.Armor));
+                    tempAttribute = companion.Armor * Math.Pow(companion.ArmorIncreasePerLevel, companion.MaxLevel - 1) * CalculateLevelMultiplierBoost(companion, CompanionAttributeEnum.Armor);
+                    tempAttribute = tempAttribute > 1000 ? 1000 : tempAttribute;
+                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
                 case CompanionAttributeEnum.Accuracy:
-                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(companion.Accuracy * Math.Pow(companion.AccuracyIncreasePerLevel, companion.MaxLevel - 1) * CalculateLevelMultiplierBoost(companion, CompanionAttributeEnum.Accuracy));
+                    tempAttribute = companion.Accuracy * Math.Pow(companion.AccuracyIncreasePerLevel, companion.MaxLevel - 1) * CalculateLevelMultiplierBoost(companion, CompanionAttributeEnum.Accuracy);
+                    tempAttribute = tempAttribute > 9000 ? 9000 : tempAttribute;
+                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
                 case CompanionAttributeEnum.Agility:
-                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(companion.Agility * Math.Pow(companion.AgilityIncreasePerLevel, companion.MaxLevel - 1) * CalculateLevelMultiplierBoost(companion, CompanionAttributeEnum.Agility));
+                    tempAttribute = companion.Agility * Math.Pow(companion.AgilityIncreasePerLevel, companion.MaxLevel - 1) * CalculateLevelMultiplierBoost(companion, CompanionAttributeEnum.Agility);
+                    tempAttribute = tempAttribute > 9000 ? 9000 : tempAttribute;
+                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
             }
 
@@ -37,7 +44,7 @@ namespace IdleHeroes.Support
         {
             string heroCalculatedAttribute = "";
             double companionLevel = ownedCompanion.Level - 1;
-
+            double tempAttribute;
             if (nextLevel)
             {
                 companionLevel = ownedCompanion.Level;
@@ -52,19 +59,24 @@ namespace IdleHeroes.Support
                     heroCalculatedAttribute = UtilityFunctions.FormatNumber(ownedCompanion.Companion.HP * Math.Pow(ownedCompanion.Companion.HPIncreasePerLevel, companionLevel) * CalculateLevelMultiplierBoost(ownedCompanion, CompanionAttributeEnum.HP));
                     break;
                 case CompanionAttributeEnum.Armor:
-                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(ownedCompanion.Companion.Armor * Math.Pow(ownedCompanion.Companion.ArmorIncreasePerLevel, companionLevel) * CalculateLevelMultiplierBoost(ownedCompanion, CompanionAttributeEnum.Armor));
+                    tempAttribute = ownedCompanion.Companion.Armor * Math.Pow(ownedCompanion.Companion.ArmorIncreasePerLevel, companionLevel) * CalculateLevelMultiplierBoost(ownedCompanion, CompanionAttributeEnum.Armor);
+                    tempAttribute = tempAttribute > 1000 ? 1000 : tempAttribute;
+                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
                 case CompanionAttributeEnum.Accuracy:
-                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(ownedCompanion.Companion.Accuracy * Math.Pow(ownedCompanion.Companion.AccuracyIncreasePerLevel, companionLevel) * CalculateLevelMultiplierBoost(ownedCompanion, CompanionAttributeEnum.Accuracy));
+                    tempAttribute =ownedCompanion.Companion.Accuracy * Math.Pow(ownedCompanion.Companion.AccuracyIncreasePerLevel, companionLevel) * CalculateLevelMultiplierBoost(ownedCompanion, CompanionAttributeEnum.Accuracy);
+                    tempAttribute = tempAttribute > 9000 ? 9000 : tempAttribute;
+                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
                 case CompanionAttributeEnum.Agility:
-                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(ownedCompanion.Companion.Agility * Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, companionLevel) * CalculateLevelMultiplierBoost(ownedCompanion, CompanionAttributeEnum.Agility));
+                    tempAttribute = ownedCompanion.Companion.Agility * Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, companionLevel) * CalculateLevelMultiplierBoost(ownedCompanion, CompanionAttributeEnum.Agility);
+                    tempAttribute = tempAttribute > 9000 ? 9000 : tempAttribute;
+                    heroCalculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
             }
 
             return heroCalculatedAttribute;
         }
-
 
         public static double CalculateAttribute(OwnedCompanion ownedCompanion, CompanionAttributeEnum companionAttribute, bool nextLevel = false)
         {
@@ -86,12 +98,15 @@ namespace IdleHeroes.Support
                     break;
                 case CompanionAttributeEnum.Armor:
                     heroCalculatedAttribute = ownedCompanion.Companion.Armor * Math.Pow(ownedCompanion.Companion.ArmorIncreasePerLevel, companionLevel) * CalculateLevelMultiplierBoost(ownedCompanion, CompanionAttributeEnum.Armor);
+                    heroCalculatedAttribute = heroCalculatedAttribute > 1000 ? 1000 : heroCalculatedAttribute;
                     break;
                 case CompanionAttributeEnum.Accuracy:
                     heroCalculatedAttribute = ownedCompanion.Companion.Accuracy * Math.Pow(ownedCompanion.Companion.AccuracyIncreasePerLevel, companionLevel) * CalculateLevelMultiplierBoost(ownedCompanion, CompanionAttributeEnum.Accuracy);
+                    heroCalculatedAttribute = heroCalculatedAttribute > 9000 ? 9000 : heroCalculatedAttribute;
                     break;
                 case CompanionAttributeEnum.Agility:
                     heroCalculatedAttribute = ownedCompanion.Companion.Agility * Math.Pow(ownedCompanion.Companion.AgilityIncreasePerLevel, companionLevel) * CalculateLevelMultiplierBoost(ownedCompanion, CompanionAttributeEnum.Agility);
+                    heroCalculatedAttribute = heroCalculatedAttribute > 9000 ? 9000 : heroCalculatedAttribute;
                     break;
             }
 
@@ -102,7 +117,7 @@ namespace IdleHeroes.Support
         {
             string calculatedAttribute = "";
             double enemyLevel = stageEnemy.Level - 1;
-
+            double tempAttribute;
             switch (attribute)
             {
                 case CompanionAttributeEnum.DPS:
@@ -112,13 +127,19 @@ namespace IdleHeroes.Support
                     calculatedAttribute = UtilityFunctions.FormatNumber(stageEnemy.Companion.HP * Math.Pow(stageEnemy.Companion.HPIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy, CompanionAttributeEnum.HP));
                     break;
                 case CompanionAttributeEnum.Armor:
-                    calculatedAttribute = UtilityFunctions.FormatNumber(stageEnemy.Companion.Armor * Math.Pow(stageEnemy.Companion.ArmorIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy, CompanionAttributeEnum.Armor));
+                    tempAttribute = stageEnemy.Companion.Armor * Math.Pow(stageEnemy.Companion.ArmorIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy, CompanionAttributeEnum.Armor);
+                    tempAttribute = tempAttribute > 1000 ? 1000 : tempAttribute;
+                    calculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
                 case CompanionAttributeEnum.Accuracy:
-                    calculatedAttribute = UtilityFunctions.FormatNumber(stageEnemy.Companion.Accuracy * Math.Pow(stageEnemy.Companion.AccuracyIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy, CompanionAttributeEnum.Accuracy));
+                    tempAttribute = stageEnemy.Companion.Accuracy * Math.Pow(stageEnemy.Companion.AccuracyIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy, CompanionAttributeEnum.Accuracy);
+                    tempAttribute = tempAttribute > 9000 ? 9000 : tempAttribute;
+                    calculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
                 case CompanionAttributeEnum.Agility:
-                    calculatedAttribute = UtilityFunctions.FormatNumber(stageEnemy.Companion.Agility * Math.Pow(stageEnemy.Companion.AgilityIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy, CompanionAttributeEnum.Agility));
+                    tempAttribute = stageEnemy.Companion.Agility * Math.Pow(stageEnemy.Companion.AgilityIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy, CompanionAttributeEnum.Agility);
+                    tempAttribute = tempAttribute > 9000 ? 9000 : tempAttribute;
+                    calculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
             }
 
@@ -140,12 +161,15 @@ namespace IdleHeroes.Support
                     break;
                 case CompanionAttributeEnum.Armor:
                     calculatedAttribute = stageEnemy.Companion.Armor * Math.Pow(stageEnemy.Companion.ArmorIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy, CompanionAttributeEnum.Armor);
+                    calculatedAttribute = calculatedAttribute > 1000 ? 1000 : calculatedAttribute;
                     break;
                 case CompanionAttributeEnum.Accuracy:
                     calculatedAttribute = stageEnemy.Companion.Accuracy * Math.Pow(stageEnemy.Companion.AccuracyIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy, CompanionAttributeEnum.Accuracy);
+                    calculatedAttribute = calculatedAttribute > 9000 ? 9000 : calculatedAttribute;
                     break;
                 case CompanionAttributeEnum.Agility:
                     calculatedAttribute = stageEnemy.Companion.Agility * Math.Pow(stageEnemy.Companion.AgilityIncreasePerLevel, enemyLevel) * CalculateLevelMultiplierBoost(stageEnemy, CompanionAttributeEnum.Agility);
+                    calculatedAttribute = calculatedAttribute > 9000 ? 9000 : calculatedAttribute;
                     break;
             }
 

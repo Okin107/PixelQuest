@@ -41,6 +41,7 @@ namespace IdleHeroes.Support
         {
             ProfileLevelData profileLevelData = CalculateProfileData(profile);
             string calculatedAttribute = "";
+            double tempAttribute;
             double profileLevel = profileLevelData.Level - 1;
 
             if (nextLevel)
@@ -59,16 +60,22 @@ namespace IdleHeroes.Support
                         * Math.Pow(profile.HPBoostLevelIncrease, profile.HPBoostLevel));
                     break;
                 case CompanionAttributeEnum.Armor:
-                    calculatedAttribute = UtilityFunctions.FormatNumber(profile.Armor * Math.Pow(profile.ArmorLevelIncrease, profileLevel)
-                        * Math.Pow(profile.ArmorBoostLevelIncrease, profile.ArmorBoostLevel));
+                    tempAttribute = profile.Armor * Math.Pow(profile.ArmorLevelIncrease, profileLevel)
+                        * Math.Pow(profile.ArmorBoostLevelIncrease, profile.ArmorBoostLevel);
+                    tempAttribute = tempAttribute > 1000 ? 1000 : tempAttribute;
+                    calculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
                 case CompanionAttributeEnum.Accuracy:
-                    calculatedAttribute = UtilityFunctions.FormatNumber(profile.Accuracy * Math.Pow(profile.AccuracyLevelIncrease, profileLevel)
-                        * Math.Pow(profile.AccuracyBoostLevelIncrease, profile.AccuracyBoostLevel));
+                    tempAttribute = profile.Accuracy * Math.Pow(profile.AccuracyLevelIncrease, profileLevel)
+                        * Math.Pow(profile.AccuracyBoostLevelIncrease, profile.AccuracyBoostLevel);
+                    tempAttribute = tempAttribute > 9000 ? 9000 : tempAttribute;
+                    calculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
                 case CompanionAttributeEnum.Agility:
-                    calculatedAttribute = UtilityFunctions.FormatNumber(profile.Agility * Math.Pow(profile.AgilityLevelIncrease, profileLevel)
-                        * Math.Pow(profile.AgilityBoostLevelIncrease, profile.AgilityBoostLevel));
+                    tempAttribute = profile.Agility * Math.Pow(profile.AgilityLevelIncrease, profileLevel)
+                        * Math.Pow(profile.AgilityBoostLevelIncrease, profile.AgilityBoostLevel);
+                    tempAttribute = tempAttribute > 9000 ? 9000 : tempAttribute;
+                    calculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
             }
 
@@ -99,14 +106,17 @@ namespace IdleHeroes.Support
                 case CompanionAttributeEnum.Armor:
                     calculatedAttribute = profile.Armor * Math.Pow(profile.ArmorLevelIncrease, profileLevel)
                         * Math.Pow(profile.ArmorBoostLevelIncrease, profile.ArmorBoostLevel);
+                    calculatedAttribute = calculatedAttribute > 1000 ? 1000 : calculatedAttribute;
                     break;
                 case CompanionAttributeEnum.Accuracy:
                     calculatedAttribute = profile.Accuracy * Math.Pow(profile.AccuracyLevelIncrease, profileLevel)
                         * Math.Pow(profile.AccuracyBoostLevelIncrease, profile.AccuracyBoostLevel);
+                    calculatedAttribute = calculatedAttribute > 9000 ? 9000 : calculatedAttribute;
                     break;
                 case CompanionAttributeEnum.Agility:
                     calculatedAttribute = profile.Agility * Math.Pow(profile.AgilityLevelIncrease, profileLevel)
                         * Math.Pow(profile.AgilityBoostLevelIncrease, profile.AgilityBoostLevel);
+                    calculatedAttribute = calculatedAttribute > 9000 ? 9000 : calculatedAttribute;
                     break;
             }
 
