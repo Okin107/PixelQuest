@@ -27,7 +27,10 @@ namespace IdleHeroes.Commands
 
         [Command("tavern")]
         [Description("Here you can meet and hire Companions to help you in your journey.")]
-        public async Task Tavern(CommandContext ctx, [Description("The ID of the Companion that you want to purchase. This is the number in front of the name of each Companion.")] string companionId = null)
+        public async Task Tavern(CommandContext ctx, [Description("The action you want to perform." +
+            "\n\nUsing `<companionId>` will purchase the specific companion." +
+            "\n\nTyping `tiers` will allow you to check the different Tavern tiers." +
+            "\n\nTyping `upgrade` will upgrade the Tavern's tier to the next.")] string action = null)
         {
             try
             {
@@ -51,11 +54,11 @@ namespace IdleHeroes.Commands
                 }
 
                 //Buy companion
-                if (!string.IsNullOrEmpty(companionId))
+                if (!string.IsNullOrEmpty(action))
                 {
                     try
                     {
-                        int compId = Convert.ToInt32(companionId);
+                        int compId = Convert.ToInt32(action);
 
                         await PurchaseCompanion(ctx, compId, profile);
                         return;
@@ -63,7 +66,7 @@ namespace IdleHeroes.Commands
                     catch (Exception ex)
                     {
                         //Manual refresh
-                        if (companionId == "refresh")
+                        if (action == "refresh")
                         {
                             if (profile.Gems < 5)
                             {
@@ -84,9 +87,20 @@ namespace IdleHeroes.Commands
                    .ConfigureAwait(false);
                             return;
                         }
+                        else if (action == "upgrade")
+                        {
+                            await _tavernService.Upgrade(ctx, profile);
+                            return;
+                        }
+                        else if (action == "tiers")
+                        {
+                            await ctx.Channel.SendMessageAsync(embed: TavernTiersEmbedTemplate.Show(ctx, profile).Build())
+                   .ConfigureAwait(false);
+                            return;
+                        }
 
                         await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"The **companion ID** is wrong. Use `.help tavern` to find out more.").Build())
-                .ConfigureAwait(false);
+            .ConfigureAwait(false);
                         return;
                     }
                 }

@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210217103500_AddedTavernTiers")]
+    partial class AddedTavernTiers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -428,9 +430,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 
                     b.Property<DateTime>("LastRetriesRefresh")
                         .HasColumnType("datetime2");
-
-                    b.Property<double>("MaxTier")
-                        .HasColumnType("float");
 
                     b.Property<double>("Tier")
                         .HasColumnType("float");

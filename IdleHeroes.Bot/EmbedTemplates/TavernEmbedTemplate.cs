@@ -13,6 +13,15 @@ namespace IdleHeroes.EmbedTemplates
         public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile)
         {
             TimeSpan timeToRefresh = DateTime.Today.AddDays(1) - DateTime.Now;
+            double upgradeCost = profile.Tavern.TierBaseCost * Math.Pow(profile.Tavern.TierCostIncrease, profile.Tavern.Tier);
+            upgradeCost = upgradeCost == 0 ? profile.Tavern.TierBaseCost : upgradeCost;
+
+            string tierString = $"\nUse `.tavern upgrade` to upgarde to the next **Tier** for **{upgradeCost}** {EmojiHandler.GetEmoji("gem")}.";
+
+            if (profile.Tavern.Tier >= profile.Tavern.MaxTier)
+            {
+                tierString = "";
+            }
 
             _embed = new DiscordEmbedBuilder()
             {
@@ -20,7 +29,7 @@ namespace IdleHeroes.EmbedTemplates
                 //Title = $"{profile.Username}'s Current Stage",
                 Author = new DiscordEmbedBuilder.EmbedAuthor()
                 {
-                    Name = $"Tavern",
+                    Name = $"Tavern - Tier {profile.Tavern.Tier + 1}",
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
                 Description = $"{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Food)}" +
@@ -29,7 +38,9 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n" +
                 $"\nThe tavern refreshes once a day for free." +
                 $"\n" +
-                $"\nYou can manually refresh the tavern for **5** {EmojiHandler.GetEmoji("gem")} each time by using `.tavern refresh`.",
+                $"\nUse `.tavern refresh`to refresh the tavern for **5** {EmojiHandler.GetEmoji("gem")}." +
+                $"{tierString}" +
+                $"\nUse `.tavern tiers` to check the different Tiers.",
                 Timestamp = DateTime.UtcNow,
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {

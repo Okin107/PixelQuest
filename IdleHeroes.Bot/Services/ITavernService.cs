@@ -8,5 +8,6 @@ namespace IdleHeroes.Services
     {
         Task<Tavern> Get(CommandContext ctx);
         Task Refresh(CommandContext ctx, Profile profile);
+        Task Upgrade(CommandContext ctx, Profile profile);
     }
 }

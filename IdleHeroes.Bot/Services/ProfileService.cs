@@ -55,7 +55,12 @@ namespace IdleHeroes.Services
                 Stage = await _stageService.GetStageFromNumber(1),
                 RegisteredOn = DateTime.Now,
                 LastPlayed = DateTime.Now,
-                Tavern = new Tavern(),
+                Tavern = new Tavern() 
+                { 
+                    TierBaseCost = 20,
+                    MaxTier = 6,
+                    TierCostIncrease = 2
+                },
                 Team = new Team(),
                 XPBaseLevel = 50,
                 XPIncreasePerLevel = 1.2,

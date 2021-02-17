@@ -10,5 +10,9 @@ namespace IdleHeroesDAL.Models
         public double DiscountPercentage { get; set; }
         public DateTime LastRefresh { get; set; }
         public DateTime LastRetriesRefresh { get; set; }
+        public double Tier { get; set; }
+        public double TierBaseCost { get; set; }
+        public double TierCostIncrease { get; set; }
+        public double MaxTier { get; set; }
     }
 }
