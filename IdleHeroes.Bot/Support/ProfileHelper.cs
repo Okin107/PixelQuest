@@ -62,7 +62,7 @@ namespace IdleHeroes.Support
                 case CompanionAttributeEnum.Armor:
                     tempAttribute = profile.Armor * Math.Pow(profile.ArmorLevelIncrease, profileLevel)
                         * Math.Pow(profile.ArmorBoostLevelIncrease, profile.ArmorBoostLevel);
-                    tempAttribute = tempAttribute > 1000 ? 1000 : tempAttribute;
+                    tempAttribute = tempAttribute > 900 ? 900 : tempAttribute;
                     calculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
                 case CompanionAttributeEnum.Accuracy:
@@ -106,7 +106,7 @@ namespace IdleHeroes.Support
                 case CompanionAttributeEnum.Armor:
                     calculatedAttribute = profile.Armor * Math.Pow(profile.ArmorLevelIncrease, profileLevel)
                         * Math.Pow(profile.ArmorBoostLevelIncrease, profile.ArmorBoostLevel);
-                    calculatedAttribute = calculatedAttribute > 1000 ? 1000 : calculatedAttribute;
+                    calculatedAttribute = calculatedAttribute > 900 ? 900 : calculatedAttribute;
                     break;
                 case CompanionAttributeEnum.Accuracy:
                     calculatedAttribute = profile.Accuracy * Math.Pow(profile.AccuracyLevelIncrease, profileLevel)
