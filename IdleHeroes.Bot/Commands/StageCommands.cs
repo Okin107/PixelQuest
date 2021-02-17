@@ -426,14 +426,16 @@ namespace IdleHeroes.Commands
             double dodgeChance = 0;
             Random random = new Random();
 
+            double profileAgility = ProfileHelper.CalculateAttribute(profile, CompanionAttributeEnum.Agility);
+
             //Check if enemy dodged attack
-            if (profile.Agility >= 10000)
+            if (profileAgility >= 9000)
             {
                 dodgeChance = 90;
             }
             else
             {
-                dodgeChance = (profile.Agility / 10000) * 100;
+                dodgeChance = (profileAgility / 10000) * 100;
             }
 
             int randomDodge = random.Next(1, 100);
@@ -448,14 +450,15 @@ namespace IdleHeroes.Commands
             if (enemy.Companion.Class != CompanionClassesEnum.Ranger)
             {
                 double dpsAfterArmorMultiplier = 1;
+                double profileArmor= ProfileHelper.CalculateAttribute(profile, CompanionAttributeEnum.Armor);
 
-                if (profile.Armor >= 1000)
+                if (profileArmor >= 900)
                 {
-                    dpsAfterArmorMultiplier = 0.9;
+                    dpsAfterArmorMultiplier = 0.1;
                 }
                 else
                 {
-                    dpsAfterArmorMultiplier = 1 - (profile.Armor / 1000);
+                    dpsAfterArmorMultiplier = 1 - (profileArmor / 1000);
                 }
 
                 dps = dps * dpsAfterArmorMultiplier;
@@ -463,14 +466,14 @@ namespace IdleHeroes.Commands
 
             //Check if crit hapened
             double critChance = 0;
-
-            if (enemy.Companion.Accuracy >= 10000)
+            double enemyAccuracy = CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.Accuracy);
+            if (enemyAccuracy >= 9000)
             {
                 critChance = 90;
             }
             else
             {
-                critChance = (enemy.Companion.Accuracy / 10000) * 100;
+                critChance = (enemyAccuracy / 10000) * 100;
             }
 
             int randomCrit = random.Next(1, 100);
@@ -491,14 +494,16 @@ namespace IdleHeroes.Commands
             double dodgeChance = 0;
             Random random = new Random();
 
+            double companionAgility = CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.Agility);
+
             //Check if enemy dodged attack
-            if (companion.OwnedCompanion.Companion.Agility >= 10000)
+            if (companionAgility >= 9000)
             {
                 dodgeChance = 90;
             }
             else
             {
-                dodgeChance = (companion.OwnedCompanion.Companion.Agility / 10000) * 100;
+                dodgeChance = (companionAgility / 10000) * 100;
             }
 
             int randomDodge = random.Next(1, 100);
@@ -548,14 +553,15 @@ namespace IdleHeroes.Commands
             if (enemy.Companion.Class != CompanionClassesEnum.Ranger)
             {
                 double dpsAfterArmorMultiplier = 1;
+                double companionArmor = CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.Armor);
 
-                if (companion.OwnedCompanion.Companion.Armor >= 1000)
+                if (companionArmor >= 900)
                 {
-                    dpsAfterArmorMultiplier = 0.9;
+                    dpsAfterArmorMultiplier = 0.1;
                 }
                 else
                 {
-                    dpsAfterArmorMultiplier = 1 - (companion.OwnedCompanion.Companion.Armor / 1000);
+                    dpsAfterArmorMultiplier = 1 - (companionArmor / 1000);
                 }
 
                 dps = dps * dpsAfterArmorMultiplier;
@@ -563,14 +569,14 @@ namespace IdleHeroes.Commands
 
             //Check if crit hapened
             double critChance = 0;
-
-            if (enemy.Companion.Accuracy >= 10000)
+            double companionAccuracy = CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.Accuracy);
+            if (companionAccuracy >= 9000)
             {
                 critChance = 90;
             }
             else
             {
-                critChance = (enemy.Companion.Accuracy / 10000) * 100;
+                critChance = (companionAccuracy / 10000) * 100;
             }
 
             int randomCrit = random.Next(1, 100);
@@ -591,15 +597,15 @@ namespace IdleHeroes.Commands
             bool attackDodged = false;
             double dodgeChance = 0;
             Random random = new Random();
-
+            double enemyAgility = CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.Agility);
             //Check if enemy dodged attack
-            if (enemy.Companion.Agility >= 10000)
+            if (enemyAgility >= 9000)
             {
                 dodgeChance = 90;
             }
             else
             {
-                dodgeChance = (enemy.Companion.Agility / 10000) * 100;
+                dodgeChance = (enemyAgility / 10000) * 100;
             }
 
             int randomDodge = random.Next(1, 100);
@@ -612,28 +618,28 @@ namespace IdleHeroes.Commands
 
             //Calcualte DPS after armor. Skip if class is ranger (True dmg)
             double dpsAfterArmorMultiplier = 1;
-
-            if (enemy.Companion.Armor >= 1000)
+            double enemyArmor = CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.Armor);
+            if (enemyArmor >= 900)
             {
-                dpsAfterArmorMultiplier = 0.9;
+                dpsAfterArmorMultiplier = 0.1;
             }
             else
             {
-                dpsAfterArmorMultiplier = 1 - (enemy.Companion.Armor / 1000);
+                dpsAfterArmorMultiplier = 1 - (enemyArmor / 1000);
             }
 
             dps = dps * dpsAfterArmorMultiplier;
 
             //Check if crit hapened
             double critChance = 0;
-
-            if (profile.Accuracy >= 10000)
+            double profileAccuracy = ProfileHelper.CalculateAttribute(profile, CompanionAttributeEnum.Accuracy);
+            if (profileAccuracy >= 9000)
             {
                 critChance = 90;
             }
             else
             {
-                critChance = (profile.Accuracy / 10000) * 100;
+                critChance = (profileAccuracy / 10000) * 100;
             }
 
             int randomCrit = random.Next(1, 100);
@@ -652,15 +658,15 @@ namespace IdleHeroes.Commands
             double dps = CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.DPS);
             double dodgeChance;
             Random random = new Random();
-
+            double enemyAgility = CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.Agility);
             //Check if enemy dodged attack
-            if (enemy.Companion.Agility >= 10000)
+            if (enemyAgility >= 9000)
             {
                 dodgeChance = 90;
             }
             else
             {
-                dodgeChance = (enemy.Companion.Agility / 10000) * 100;
+                dodgeChance = (enemyAgility / 10000) * 100;
             }
 
             int randomDodge = random.Next(1, 100);
@@ -710,14 +716,14 @@ namespace IdleHeroes.Commands
             if (companion.OwnedCompanion.Companion.Class != CompanionClassesEnum.Ranger)
             {
                 double dpsAfterArmorMultiplier = 1;
-
-                if (enemy.Companion.Armor >= 1000)
+                double enemyArmor = CompanionHelper.CalculateAttribute(enemy, CompanionAttributeEnum.Armor);
+                if (enemyArmor >= 900)
                 {
-                    dpsAfterArmorMultiplier = 0.9;
+                    dpsAfterArmorMultiplier = 0.1;
                 }
                 else
                 {
-                    dpsAfterArmorMultiplier = 1 - (enemy.Companion.Armor / 1000);
+                    dpsAfterArmorMultiplier = 1 - (enemyArmor / 1000);
                 }
 
                 dps = dps * dpsAfterArmorMultiplier;
@@ -725,14 +731,14 @@ namespace IdleHeroes.Commands
 
             //Check if crit hapened
             double critChance = 0;
-
-            if (companion.OwnedCompanion.Companion.Accuracy >= 10000)
+            double companionAccuracy = CompanionHelper.CalculateAttribute(companion.OwnedCompanion, CompanionAttributeEnum.Accuracy);
+            if (companionAccuracy >= 9000)
             {
                 critChance = 90;
             }
             else
             {
-                critChance = (companion.OwnedCompanion.Companion.Accuracy / 10000) * 100;
+                critChance = (companionAccuracy / 10000) * 100;
             }
 
             int randomCrit = random.Next(1, 100);

@@ -63,11 +63,11 @@ namespace IdleHeroes.Support
                         * Math.Pow(profile.ArmorBoostLevelIncrease, profile.ArmorBoostLevel));
                     break;
                 case CompanionAttributeEnum.Accuracy:
-                    calculatedAttribute = UtilityFunctions.FormatNumber(profile.Accuracy * Math.Pow(profile.AccuracyBoostLevelIncrease, profileLevel)
+                    calculatedAttribute = UtilityFunctions.FormatNumber(profile.Accuracy * Math.Pow(profile.AccuracyLevelIncrease, profileLevel)
                         * Math.Pow(profile.AccuracyBoostLevelIncrease, profile.AccuracyBoostLevel));
                     break;
                 case CompanionAttributeEnum.Agility:
-                    calculatedAttribute = UtilityFunctions.FormatNumber(profile.Agility * Math.Pow(profile.AgilityBoostLevelIncrease, profileLevel)
+                    calculatedAttribute = UtilityFunctions.FormatNumber(profile.Agility * Math.Pow(profile.AgilityLevelIncrease, profileLevel)
                         * Math.Pow(profile.AgilityBoostLevelIncrease, profile.AgilityBoostLevel));
                     break;
             }
@@ -101,11 +101,11 @@ namespace IdleHeroes.Support
                         * Math.Pow(profile.ArmorBoostLevelIncrease, profile.ArmorBoostLevel);
                     break;
                 case CompanionAttributeEnum.Accuracy:
-                    calculatedAttribute = profile.Accuracy * Math.Pow(profile.AccuracyBoostLevelIncrease, profileLevel)
+                    calculatedAttribute = profile.Accuracy * Math.Pow(profile.AccuracyLevelIncrease, profileLevel)
                         * Math.Pow(profile.AccuracyBoostLevelIncrease, profile.AccuracyBoostLevel);
                     break;
                 case CompanionAttributeEnum.Agility:
-                    calculatedAttribute = profile.Agility * Math.Pow(profile.AgilityBoostLevelIncrease, profileLevel)
+                    calculatedAttribute = profile.Agility * Math.Pow(profile.AgilityLevelIncrease, profileLevel)
                         * Math.Pow(profile.AgilityBoostLevelIncrease, profile.AgilityBoostLevel);
                     break;
             }
