@@ -4,14 +4,16 @@ using IdleHeroesDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdleHeroes.DAL.Migrations.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210217115501_AddedGemStore")]
+    partial class AddedGemStore
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,7 +133,7 @@ namespace IdleHeroes.DAL.Migrations.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("OwnedCompanion");
+                    b.ToTable("OwnedCompanions");
                 });
 
             modelBuilder.Entity("IdleHeroesDAL.Models.Profile", b =>
@@ -413,53 +415,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.ToTable("StageEnemy");
                 });
 
-            modelBuilder.Entity("IdleHeroesDAL.Models.Store", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<double>("DiscountPercentage")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Store");
-                });
-
-            modelBuilder.Entity("IdleHeroesDAL.Models.StoreItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Cost")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ItemEffect")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("StoreId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StoreId");
-
-                    b.ToTable("StoreItem");
-                });
-
             modelBuilder.Entity("IdleHeroesDAL.Models.Tavern", b =>
                 {
                     b.Property<int>("Id")
@@ -642,13 +597,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
                     b.Navigation("Companion");
                 });
 
-            modelBuilder.Entity("IdleHeroesDAL.Models.StoreItem", b =>
-                {
-                    b.HasOne("IdleHeroesDAL.Models.Store", null)
-                        .WithMany("Items")
-                        .HasForeignKey("StoreId");
-                });
-
             modelBuilder.Entity("IdleHeroesDAL.Models.TavernCompanion", b =>
                 {
                     b.HasOne("IdleHeroesDAL.Models.Companion", "Companion")
@@ -696,11 +644,6 @@ namespace IdleHeroes.DAL.Migrations.Migrations
             modelBuilder.Entity("IdleHeroesDAL.Models.Stage", b =>
                 {
                     b.Navigation("Enemies");
-                });
-
-            modelBuilder.Entity("IdleHeroesDAL.Models.Store", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("IdleHeroesDAL.Models.Tavern", b =>

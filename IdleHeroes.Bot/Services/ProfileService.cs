@@ -170,7 +170,8 @@ namespace IdleHeroes.Services
                 .Include(x => x.Team)
                 .ThenInclude(x => x.Companions)
                 .ThenInclude(x => x.OwnedCompanion)
-                .ThenInclude(x => x.Companion).ToListAsync().ConfigureAwait(false);
+                .ThenInclude(x => x.Companion)
+                .ToListAsync().ConfigureAwait(false);
         }
 
         public async Task RefreshBattleRetries(CommandContext ctx, Profile profile)
