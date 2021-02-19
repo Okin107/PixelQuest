@@ -163,7 +163,16 @@ namespace IdleHeroes.Commands
                 return;
             }
 
-            double foodFromSell = 5 * selectedCompanion.Copies;
+            TeamCompanion teamCompanion = profile.Team.Companions.Find(x => x.OwnedCompanion.Companion.Id == compId);
+
+            if (selectedCompanion != null)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $" You cannot sell **{EmojiHandler.GetEmoji(teamCompanion.OwnedCompanion.Companion.IconName)} {teamCompanion.OwnedCompanion.Companion.Name}** because they are part of your team.").Build())
+    .ConfigureAwait(false);
+                return;
+            }
+
+            double foodFromSell = 5 * Math.Pow(2.5, ((double)selectedCompanion.Companion.RarityTier - 1)) * selectedCompanion.Copies;
             profile.Food += foodFromSell;
 
             profile.OwnedCompanions.Remove(selectedCompanion);
