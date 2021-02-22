@@ -113,10 +113,12 @@ namespace IdleHeroes.Commands
                         {
                             case IdleHeroesDAL.Enums.RarityTierEnum.Mythic:
                                 i--;
-                                break;
+                                removedCompanionsIds.Add(companionId);
+                                continue;
                             case IdleHeroesDAL.Enums.RarityTierEnum.Legendary:
                                 i--;
-                                break;
+                                removedCompanionsIds.Add(companionId);
+                                continue;
                             case IdleHeroesDAL.Enums.RarityTierEnum.Epic:
                                 heroChance = rand.Next(0, 100);
                                 if (heroChance > CompanionSettings.KeystoreEpicChance1)
@@ -175,6 +177,7 @@ namespace IdleHeroes.Commands
                                 break;
                             case IdleHeroesDAL.Enums.RarityTierEnum.Common:
                                 i--;
+                                removedCompanionsIds.Add(companionId);
                                 continue;
                         }
                         pulledCompanionsList.Add(rolledCompanion);
@@ -210,9 +213,11 @@ namespace IdleHeroes.Commands
                                 break;
                             case IdleHeroesDAL.Enums.RarityTierEnum.Rare:
                                 i--;
+                                removedCompanionsIds.Add(companionId);
                                 continue;
                             case IdleHeroesDAL.Enums.RarityTierEnum.Common:
                                 i--;
+                                removedCompanionsIds.Add(companionId);
                                 continue;
                         }
                         pulledCompanionsList.Add(rolledCompanion);
