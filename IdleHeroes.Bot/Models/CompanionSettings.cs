@@ -11,6 +11,18 @@ namespace IdleHeroes.Models
         public const double TavernLegendaryChance = 10;
         public const double TavernMythicChance = 5;
 
+        public const double KeystoreRareChance1 = 5;
+        public const double KeystoreEpicChance1 = 1;
+        public const double KeystoreLegendaryChance1 = 0.2;
+        public const double KeystoreMythicChance1 = 0.1;
+
+        public const double KeystoreEpicChance2 = 5;
+        public const double KeystoreLegendaryChance2 = 1;
+        public const double KeystoreMythicChance2 = 0.2;
+
+        public const double KeystoreLegendaryChance3 = 5;
+        public const double KeystoreMythicChance3 = 1;
+
         public static List<CompanionGrowth> CompanionGrowths
         {
             get

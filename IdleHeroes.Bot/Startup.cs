@@ -18,6 +18,7 @@ namespace IdleHeroes
             services.AddScoped<ICompanionService, CompanionService>();
             services.AddScoped<ITavernService, TavernService>();
             services.AddScoped<IStoreService, StoreService>();
+            services.AddScoped<IKeyStoreService, KeyStoreService>();
 
             //Add dbcontext
             services.AddDbContext<DatabaseContext>(options => 
