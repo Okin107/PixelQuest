@@ -89,6 +89,9 @@ namespace IdleHeroes.Commands
                 case IdleHeroesDAL.Enums.StoreItemEffectsEnum.Food:
                     profile.Food += storeItem.Amount;
                     break;
+                case IdleHeroesDAL.Enums.StoreItemEffectsEnum.Keys:
+                    profile.Keys += storeItem.Amount;
+                    break;
             }
 
             profile.Gems -= storeItem.Cost;
