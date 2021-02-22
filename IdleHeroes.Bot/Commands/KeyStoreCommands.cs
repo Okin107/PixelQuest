@@ -30,7 +30,9 @@ namespace IdleHeroes.Commands
 
         [Command("keystore")]
         [Description("Use your Keys to open chests with companions.")]
-        public async Task Store(CommandContext ctx, [Description("The ID of the item you would like to purchase.")] string itemId = null)
+        public async Task Store(CommandContext ctx, [Description("The action you want to perform." +
+            "\n\nUsing `<itemId>` will purchase the specific item." +
+            "\n\nTyping `tiers` will allow you to check the different Chest tiers.")] string action = null)
         {
             try
             {
@@ -45,7 +47,7 @@ namespace IdleHeroes.Commands
                 Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
                 KeyStore keyStore = await _keyStoreService.Get(ctx);
 
-                if (itemId != null && Int32.TryParse(itemId, out int itemIdNr))
+                if (action != null && Int32.TryParse(action, out int itemIdNr))
                 {
                     KeyStoreItem storeItem = keyStore.Items.Find(x => x.Id == itemIdNr);
 
@@ -57,6 +59,12 @@ namespace IdleHeroes.Commands
                     }
 
                     await PurchaseItem(ctx, profile, storeItem);
+                }
+                else if (action == "tiers")
+                {
+                    await ctx.Channel.SendMessageAsync(embed: KeyStoreTiersEmbedTemplate.Show(ctx, profile).Build())
+           .ConfigureAwait(false);
+                    return;
                 }
                 else
                 {
