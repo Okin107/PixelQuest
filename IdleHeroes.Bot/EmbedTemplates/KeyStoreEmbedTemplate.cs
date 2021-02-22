@@ -22,7 +22,9 @@ namespace IdleHeroes.EmbedTemplates
                     IconUrl = ctx.Message.Author.AvatarUrl
                 },
                 Description = $"{EmojiHandler.GetEmoji("key")} {UtilityFunctions.FormatNumber(profile.Keys)}" +
-                $"\n\nWelcome to the Key Store. Here you can use your {EmojiHandler.GetEmoji("key")} to open chests that contain different companions.",
+                $"\n\nWelcome to the Key Store. Here you can use your {EmojiHandler.GetEmoji("key")} to open chests that contain different companions." +
+                $"\n" +
+                $"\nUse `.keystore tiers` to check the drop chances for each chest tier.",
                 Timestamp = DateTime.UtcNow,
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {
