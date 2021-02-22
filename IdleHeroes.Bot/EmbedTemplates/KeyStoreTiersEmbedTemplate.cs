@@ -38,11 +38,9 @@ namespace IdleHeroes.EmbedTemplates
             };
 
             _embed.AddField("**Tier 1**",
-                $"{EmojiHandler.GetEmoji(RarityTierEnum.Common.ToString().ToLower())} 93.7% Chance" +
+                $"{EmojiHandler.GetEmoji(RarityTierEnum.Common.ToString().ToLower())} 94% Chance" +
                 $"\n{EmojiHandler.GetEmoji(RarityTierEnum.Rare.ToString().ToLower())} {CompanionSettings.KeystoreRareChance1}% Chance" +
-                $"\n{EmojiHandler.GetEmoji(RarityTierEnum.Epic.ToString().ToLower())} {CompanionSettings.KeystoreEpicChance1}% Chance" +
-                $"\n{EmojiHandler.GetEmoji(RarityTierEnum.Legendary.ToString().ToLower())} {CompanionSettings.KeystoreLegendaryChance1}% Chance" +
-                $"\n{EmojiHandler.GetEmoji(RarityTierEnum.Mythic.ToString().ToLower())} {CompanionSettings.KeystoreMythicChance1}% Chance", true);
+                $"\n{EmojiHandler.GetEmoji(RarityTierEnum.Epic.ToString().ToLower())} {CompanionSettings.KeystoreEpicChance1}% Chance", true);
 
             _embed.AddField("**Tier 2**",
                 $"{EmojiHandler.GetEmoji(RarityTierEnum.Rare.ToString().ToLower())} 93.8% Chance" +

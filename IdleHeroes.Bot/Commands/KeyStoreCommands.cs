@@ -112,20 +112,10 @@ namespace IdleHeroes.Commands
                         switch (rolledCompanion.RarityTier)
                         {
                             case IdleHeroesDAL.Enums.RarityTierEnum.Mythic:
-                                heroChance = rand.Next(0, 100);
-                                if (heroChance > CompanionSettings.KeystoreMythicChance1)
-                                {
-                                    i--;
-                                    continue;
-                                }
+                                i--;
                                 break;
                             case IdleHeroesDAL.Enums.RarityTierEnum.Legendary:
-                                heroChance = rand.Next(0, 100);
-                                if (heroChance > CompanionSettings.KeystoreLegendaryChance1)
-                                {
-                                    i--;
-                                    continue;
-                                }
+                                i--;
                                 break;
                             case IdleHeroesDAL.Enums.RarityTierEnum.Epic:
                                 heroChance = rand.Next(0, 100);

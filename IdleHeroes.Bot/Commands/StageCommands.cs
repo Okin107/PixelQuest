@@ -414,13 +414,13 @@ namespace IdleHeroes.Commands
                         if (randomChance <= percentChanceToGet)
                         {
                             hasWonKey = true;
-                            profile.Keys += profile.Stage.StaticKeys;
+                            profile.Keys += selectedStage.StaticKeys;
                         }
                     }
                     else
                     {
                         hasWonKey = true;
-                        profile.Keys += profile.Stage.StaticKeys;
+                        profile.Keys += selectedStage.StaticKeys;
                     }
                 }
 

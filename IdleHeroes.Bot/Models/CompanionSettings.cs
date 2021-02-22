@@ -13,8 +13,6 @@ namespace IdleHeroes.Models
 
         public const double KeystoreRareChance1 = 5;
         public const double KeystoreEpicChance1 = 1;
-        public const double KeystoreLegendaryChance1 = 0.2;
-        public const double KeystoreMythicChance1 = 0.1;
 
         public const double KeystoreEpicChance2 = 5;
         public const double KeystoreLegendaryChance2 = 1;
