@@ -47,7 +47,7 @@ namespace IdleHeroes.EmbedTemplates
             }
 
             //Order list by ID
-            List<OwnedCompanion> orderedCompanions = profile.OwnedCompanions.OrderBy(x => x.Companion.Id).ToList();
+            List<OwnedCompanion> orderedCompanions = profile.OwnedCompanions.OrderByDescending(x => x.Companion.RarityTier).ToList();
 
             int i = 1;
             foreach (OwnedCompanion ownedCompanion in orderedCompanions)
