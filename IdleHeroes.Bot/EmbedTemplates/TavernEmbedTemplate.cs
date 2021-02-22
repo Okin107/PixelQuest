@@ -38,7 +38,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\n" +
                 $"\nThe tavern refreshes once a day for free." +
                 $"\n" +
-                $"\nUse `.tavern refresh`to refresh the tavern for **5** {EmojiHandler.GetEmoji("gem")}." +
+                $"\nUse `.tavern refresh`to refresh the tavern for **1** {EmojiHandler.GetEmoji("gem")}." +
                 $"{tierString}" +
                 $"\nUse `.tavern tiers` to check the different Tiers.",
                 Timestamp = DateTime.UtcNow,

@@ -27,7 +27,7 @@ namespace IdleHeroes.EmbedTemplates
                 Description = $"{EmojiHandler.GetEmoji("sp")} {profileLevelData.Level - profile.SkillPointsSpent - 1}" +
                 $"\n\nWelcome to the Skills page. Here you can upgrade your Hero's skills by spending {EmojiHandler.GetEmoji("sp")}." +
                 $"\n" +
-                $"\nYou can reset your {EmojiHandler.GetEmoji("sp")} for **50** {EmojiHandler.GetEmoji("gem")} by using `.skills reset`.",
+                $"\nYou can reset your {EmojiHandler.GetEmoji("sp")} for **25** {EmojiHandler.GetEmoji("gem")} by using `.skills reset`.",
                 Timestamp = DateTime.UtcNow,
                 Footer = new DiscordEmbedBuilder.EmbedFooter()
                 {

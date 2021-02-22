@@ -165,7 +165,7 @@ namespace IdleHeroes.Commands
 
             TeamCompanion teamCompanion = profile.Team.Companions.Find(x => x.OwnedCompanion.Companion.Id == compId);
 
-            if (selectedCompanion != null)
+            if (teamCompanion != null)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $" You cannot sell **{EmojiHandler.GetEmoji(teamCompanion.OwnedCompanion.Companion.IconName)} {teamCompanion.OwnedCompanion.Companion.Name}** because they are part of your team.").Build())
     .ConfigureAwait(false);

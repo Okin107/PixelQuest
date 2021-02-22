@@ -212,10 +212,10 @@ namespace IdleHeroes.Commands
                 return;
             }
 
-            if (profile.Gems < 50)
+            if (profile.Gems < 25)
             {
                 await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You have **{profile.Gems}** {EmojiHandler.GetEmoji("gem")}," +
-                   $" but you need **50** {EmojiHandler.GetEmoji("gem")} to reset your {EmojiHandler.GetEmoji("sp")}.").Build())
+                   $" but you need **25** {EmojiHandler.GetEmoji("gem")} to reset your {EmojiHandler.GetEmoji("sp")}.").Build())
                .ConfigureAwait(false);
                 return;
             }
@@ -228,11 +228,11 @@ namespace IdleHeroes.Commands
             profile.ArmorBoostLevel = 0;
             profile.AccuracyBoostLevel = 0;
             profile.AgilityBoostLevel = 0;
-            profile.Gems -= 50;
+            profile.Gems -= 25;
 
             await _profileService.Update(ctx, profile);
 
-            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully reset all your {EmojiHandler.GetEmoji("sp")} by using **50** {EmojiHandler.GetEmoji("gem")}.").Build()).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully reset all your {EmojiHandler.GetEmoji("sp")} by using **25** {EmojiHandler.GetEmoji("gem")}.").Build()).ConfigureAwait(false);
         }
 
         private async Task UpgradeSkill(CommandContext ctx, Profile profile, ProfileSkillTypeEnum skillId)
