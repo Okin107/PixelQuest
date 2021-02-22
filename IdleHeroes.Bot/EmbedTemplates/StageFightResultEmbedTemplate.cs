@@ -13,7 +13,7 @@ namespace IdleHeroes.EmbedTemplates
     {
         private static DiscordEmbedBuilder _embed;
 
-        public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile, bool battleWon, List<TeamPositionEnum> defeatedTeamPositions, List<TeamPositionEnum> defeatedEnemyPositions, Dictionary<TeamPositionEnum, double> teamDpsSpread, Dictionary<TeamPositionEnum, double> enemyDpsSpread, int battleSeconds, Stage stage = null, bool hasWonCompanion = true)
+        public static DiscordEmbedBuilder Show(CommandContext ctx, Profile profile, bool battleWon, List<TeamPositionEnum> defeatedTeamPositions, List<TeamPositionEnum> defeatedEnemyPositions, Dictionary<TeamPositionEnum, double> teamDpsSpread, Dictionary<TeamPositionEnum, double> enemyDpsSpread, int battleSeconds, Stage stage = null, bool hasWonCompanion = true, bool hasWonKey = false)
         {
             Stage selectedStage = profile.Stage;
 
@@ -223,8 +223,16 @@ namespace IdleHeroes.EmbedTemplates
                     $"{EmojiHandler.GetEmoji(selectedStage.Companion.DamageType.ToString().ToLower())}";
                 }
 
+                string keyString = "";
+
+                if (selectedStage.StaticKeys > 0 && hasWonKey)
+                {
+                    keyString = $"{EmojiHandler.GetEmoji("key")} {selectedStage.StaticKeys}";
+                }
+
                 _embed.AddField("Rewards gained",
                    $"{companionString}" +
+                   $"\n{keyString}" +
                    $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP)}" +
                    $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.StaticCoins)}" +
                    $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(selectedStage.StaticFood)}" +

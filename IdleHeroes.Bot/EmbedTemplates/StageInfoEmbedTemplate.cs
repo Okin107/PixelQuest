@@ -154,9 +154,13 @@ namespace IdleHeroes.EmbedTemplates
             string companionString = "";
             string chanceToGetCompanion = "(100%)";
 
+            string keyString = "";
+            string chanceToGetKey = "(100%)";
+
             if (selectedStage.Number < profile.Stage.Number)
             {
                 chanceToGetCompanion = $"({selectedStage.ChanceToGetCompanion}%)";
+                chanceToGetKey = $"({selectedStage.ChanceToGetKey}%)";
             }
 
             if (selectedStage.Companion != null)
@@ -169,10 +173,14 @@ namespace IdleHeroes.EmbedTemplates
                 $"{EmojiHandler.GetEmoji(selectedStage.Companion.RarityTier.ToString().ToLower())}";
             }
 
-
+            if (selectedStage.StaticKeys > 0)
+            {
+                keyString = $"{EmojiHandler.GetEmoji("key")} {selectedStage.StaticKeys} {chanceToGetKey}";
+            }
 
             _embed.AddField("**Fight rewards**",
                 $"{companionString}" +
+                $"\n{keyString}" +
                 $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP)}" +
                 $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.StaticCoins)}" +
                 $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(selectedStage.StaticFood)}" +

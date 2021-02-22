@@ -42,7 +42,8 @@ namespace IdleHeroes.EmbedTemplates
                 $"{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(profile.Coins)}" +
                 $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(profile.Food)}" +
                 $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(profile.Gems)}" +
-                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Relics)}", true);
+                $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(profile.Relics)}" +
+                $"\n{EmojiHandler.GetEmoji("key")} {UtilityFunctions.FormatNumber(profile.Keys)}", true);
 
             _embed.AddField("**Hero**", 
                 $"{EmojiHandler.GetEmoji("lvl")} {ProfileHelper.CalculateProfileData(profile).Level}" +

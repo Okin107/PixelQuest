@@ -93,6 +93,7 @@ namespace IdleHeroes.Commands
 
             bool battleWon = false;
             bool hasWonCompanion = false;
+            bool hasWonKey = false;
             int battleSeconds = 1;
 
             List<TeamPositionEnum> defeatedTeamPositions = new List<TeamPositionEnum>();
@@ -399,6 +400,30 @@ namespace IdleHeroes.Commands
                     }
                 }
 
+                //Give key reward if it exists
+                if (selectedStage.StaticKeys > 0)
+                {
+                    //If it's a retry, calculate the chance
+                    if (selectedStage.Number < profile.Stage.Number || profile.Stage.Number == stages.Count)
+                    {
+                        double percentChanceToGet = selectedStage.ChanceToGetKey;
+                        Random random = new Random();
+                        int randomChance = random.Next(1, 100);
+
+                        //Got the companion
+                        if (randomChance <= percentChanceToGet)
+                        {
+                            hasWonKey = true;
+                            profile.Keys += profile.Stage.StaticKeys;
+                        }
+                    }
+                    else
+                    {
+                        hasWonKey = true;
+                        profile.Keys += profile.Stage.StaticKeys;
+                    }
+                }
+
                 //Give rest of rewards
                 profile.XP += selectedStage.StaticXP;
                 profile.Coins += selectedStage.StaticCoins;
@@ -415,7 +440,7 @@ namespace IdleHeroes.Commands
                 await _profileService.Update(ctx, profile);
             }
 
-            await ctx.Channel.SendMessageAsync(embed: StageFightResultEmbedTemplate.Show(ctx, profile, battleWon, defeatedTeamPositions, defeatedEnemyPositions, teamDpsSpread, enemyDpsSpread, battleSeconds - 1, selectedStage, hasWonCompanion).Build())
+            await ctx.Channel.SendMessageAsync(embed: StageFightResultEmbedTemplate.Show(ctx, profile, battleWon, defeatedTeamPositions, defeatedEnemyPositions, teamDpsSpread, enemyDpsSpread, battleSeconds - 1, selectedStage, hasWonCompanion, hasWonKey).Build())
                    .ConfigureAwait(false);
         }
 
@@ -450,7 +475,7 @@ namespace IdleHeroes.Commands
             if (enemy.Companion.Class != CompanionClassesEnum.Ranger)
             {
                 double dpsAfterArmorMultiplier = 1;
-                double profileArmor= ProfileHelper.CalculateAttribute(profile, CompanionAttributeEnum.Armor);
+                double profileArmor = ProfileHelper.CalculateAttribute(profile, CompanionAttributeEnum.Armor);
 
                 if (profileArmor >= 900)
                 {
