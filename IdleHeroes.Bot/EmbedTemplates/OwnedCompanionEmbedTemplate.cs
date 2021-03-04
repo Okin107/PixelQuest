@@ -96,8 +96,8 @@ namespace IdleHeroes.EmbedTemplates
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Accuracy, true)}" +
                     $"\nAgi: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
                     $" -> {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility, true)}" +
-                    $"\nLevel up: {CompanionHelper.NextLevelCost(ownedCompanion)} {EmojiHandler.GetEmoji("coin")}" +
-                    $"\nAscend: MAX" +
+                    $"\n**Level up: {CompanionHelper.NextLevelCost(ownedCompanion)} {EmojiHandler.GetEmoji("coin")}**" +
+                    $"\n**Ascend: MAX**" +
                     $"\n", true);
                 }
                 else if (ownedCompanion.Level == CompanionHelper.GetMaxLevel(ownedCompanion) && ownedCompanion.RarirtyTier != RarityTierEnum.Mythic)
@@ -143,7 +143,7 @@ namespace IdleHeroes.EmbedTemplates
                     $" -> MAX" +
                      $"\nAgi: {CompanionHelper.CalculateAttributeString(ownedCompanion, CompanionAttributeEnum.Agility)}" +
                     $" -> MAX" +
-                    $"\nAscend: MAX" +
+                    $"\n**Ascend: MAX**" +
                     $"\n", true);
                 }
 

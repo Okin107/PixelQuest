@@ -16,7 +16,7 @@ namespace IdleHeroes.EmbedTemplates
             double upgradeCost = profile.Tavern.TierBaseCost * Math.Pow(profile.Tavern.TierCostIncrease, profile.Tavern.Tier);
             upgradeCost = upgradeCost == 0 ? profile.Tavern.TierBaseCost : upgradeCost;
 
-            string tierString = $"\nUse `.tavern upgrade` to upgarde to the next **Tier** for **{upgradeCost}** {EmojiHandler.GetEmoji("gem")}.";
+            string tierString = $"\nUse `.tavern upgrade` to upgrade to the next **Tier** for **{upgradeCost}** {EmojiHandler.GetEmoji("gem")}.";
 
             if (profile.Tavern.Tier >= profile.Tavern.MaxTier)
             {
