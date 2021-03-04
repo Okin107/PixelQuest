@@ -44,7 +44,7 @@ namespace IdleHeroes.Commands
                 profile.LastPlayed = DateTime.Now;
 
                 //Check and refresh battle retries
-                if (DateTime.Now.Day > profile.LastRetriesRefresh.Day)
+                if (DateTime.Now.Date > profile.LastRetriesRefresh.Date)
                 {
                     await _profileService.RefreshBattleRetries(ctx, profile);
                 }

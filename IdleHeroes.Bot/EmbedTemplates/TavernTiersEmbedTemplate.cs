@@ -55,7 +55,7 @@ namespace IdleHeroes.EmbedTemplates
                 $"\nLegendary: {CompanionSettings.TavernLegendaryChance}% Chance", true);
 
             _embed.AddField("**Tier 5**",
-                $"Common: 60% Chance" +
+                $"Common: 50% Chance" +
                 $"\nRare: {CompanionSettings.TavernRareChance}% Chance" +
                 $"\nEpic: {CompanionSettings.TavernEpicChance}% Chance" +
                 $"\nLegendary: {CompanionSettings.TavernLegendaryChance}% Chance" +

@@ -48,7 +48,7 @@ namespace IdleHeroes.Commands
                 //Reset the last played time to now
                 profile.LastPlayed = DateTime.Now;
 
-                if (DateTime.Now.Day > profile.Tavern.LastRefresh.Day || profile.Tavern.LastRefresh.Day == default)
+                if (DateTime.Now.Date > profile.Tavern.LastRefresh.Date)
                 {
                     await _tavernService.Refresh(ctx, profile);
                 }

@@ -87,7 +87,7 @@ namespace IdleHeroes.Commands
                     profile = await _profileService.FindByDiscordId(ctx);
 
                     //Check and refresh battle retries=
-                    if (DateTime.Now.Day > profile.LastRetriesRefresh.Day)
+                    if (DateTime.Now.Date > profile.LastRetriesRefresh.Date)
                     {
                         await _profileService.RefreshBattleRetries(ctx, profile);
                     }
