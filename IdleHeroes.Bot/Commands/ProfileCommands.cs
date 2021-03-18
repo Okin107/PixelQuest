@@ -7,6 +7,7 @@ using IdleHeroes.Support;
 using IdleHeroesDAL.Enums;
 using IdleHeroesDAL.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static IdleHeroes.Support.ProfileHelper;
 
@@ -15,10 +16,11 @@ namespace IdleHeroes.Commands
     public class ProfileCommands : BaseCommandModule
     {
         IProfileService _profileService = null;
-
-        public ProfileCommands(IProfileService profileService)
+        IGearService _gearService = null;
+        public ProfileCommands(IProfileService profileService, IGearService gearService)
         {
             _profileService = profileService;
+            _gearService = gearService;
         }
 
         [Command("create")]
@@ -331,6 +333,136 @@ namespace IdleHeroes.Commands
             }
 
             await _profileService.Update(ctx, profile);
+        }
+
+        [Command("gear")]
+        [Description("View and manage your Hero's gear.")]
+        public async Task Gears(CommandContext ctx, [Description("The ID of the Gear that you want to purchase/upgrade. This is the number in front of the each Gear.")] string gearId = null)
+        {
+            try
+            {
+                //Check if user is registered
+                if (!await _profileService.IsUserRegistered(ctx.Message.Author.Id))
+                {
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Use `.create` to first create a Profile in order to play the game.").Build())
+                        .ConfigureAwait(false);
+                    return;
+                }
+                Profile profile = await _profileService.FindByDiscordId(ctx).ConfigureAwait(false);
+
+                //Check if gears are unlocked
+                if(profile.Stage.Number < 30)
+                {
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"Hero's Gear unlock at stage 30.").Build())
+                        .ConfigureAwait(false);
+                    return;
+                }
+
+                List<Gear> gears = await _gearService.GetAll(ctx);
+                //Reset the last played time to now
+                profile.LastPlayed = DateTime.Now;
+
+                //Buy gear
+                if (!string.IsNullOrEmpty(gearId))
+                {
+                    if (Int32.TryParse(gearId, out int gearIdint))
+                    {
+                        await UpgradeGear(ctx, profile, gearIdint);
+                    }
+                    else
+                    {
+                        if (gearId == "reset")
+                        {
+                           //Placeholder for other options
+                            return;
+                        }
+                        else
+                        {
+                            await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"The **Gear ID** is wrong. Use `.help gear` to find out more.").Build())
+                .ConfigureAwait(false);
+                            return;
+                        }
+                    }
+                }
+
+                await ctx.Channel.SendMessageAsync(embed: GearEmbedTemplate.Show(ctx, profile, gears).Build())
+                   .ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                if (BotSettings.IsDebugMode)
+                {
+                    await ctx.Channel.SendMessageAsync(embed: ErrorEmbedTemplate.Get(ctx, $"COMMAND ERROR: {ex.Message}").Build())
+                    .ConfigureAwait(false);
+                }
+                Console.WriteLine($"COMMAND ERROR: {ex.Message}");
+            }
+        }
+
+        private async Task UpgradeGear(CommandContext ctx, Profile profile, int gearId)
+        {
+            OwnedGear selectedGear = profile.OwnedGears.Find(x => x.Gear.Id == gearId);
+
+            if (selectedGear == null)
+            {
+                Gear gear = await _gearService.GetById(ctx, gearId);
+
+                //Unlock the gear
+                if (gear.BaseLevelCost > profile.Relics)
+                {
+                    await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have **{UtilityFunctions.FormatNumber(profile.Relics)}** {EmojiHandler.GetEmoji("relic")}," +
+                        $" but you need **{UtilityFunctions.FormatNumber(gear.BaseLevelCost)}** {EmojiHandler.GetEmoji("relic")} to unlock {EmojiHandler.GetEmoji(gear.IconName)} **{gear.Type}**.").Build())
+        .ConfigureAwait(false);
+                    return;
+                }
+
+                profile.Relics -= gear.BaseLevelCost;
+                profile.OwnedGears.Add(new OwnedGear()
+                {
+                    Level = 1,
+                    Gear = gear
+                });
+
+                await _profileService.Update(ctx, profile);
+
+                await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully unlocked {EmojiHandler.GetEmoji(gear.IconName)} **{gear.Type}** for **{UtilityFunctions.FormatNumber(gear.BaseLevelCost)}** {EmojiHandler.GetEmoji("relic")}.").Build())
+        .ConfigureAwait(false);
+                return;
+            }
+
+            //Max level reached
+            if (selectedGear.Level == selectedGear.Gear.MaxLevel)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"{EmojiHandler.GetEmoji(selectedGear.Gear.IconName)} **{selectedGear.Gear.Type}** has reached the maximum level.").Build())
+    .ConfigureAwait(false);
+                return;
+            }
+
+            //Check if it can be purchased
+            double levelCost = selectedGear.Gear.BaseLevelCost;
+
+            if (selectedGear.Level > 1)
+            {
+                levelCost = GearHelper.NextLevelCost(selectedGear.Gear, selectedGear.Level + 1);
+            }
+
+            if (levelCost > profile.Relics)
+            {
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, $"You only have **{UtilityFunctions.FormatNumber(profile.Relics)}** {EmojiHandler.GetEmoji("relic")}," +
+                    $" but you need **{UtilityFunctions.FormatNumber(levelCost)}** {EmojiHandler.GetEmoji("relic")} to upgrade {EmojiHandler.GetEmoji(selectedGear.Gear.IconName)} **{selectedGear.Gear.Type}**.").Build())
+    .ConfigureAwait(false);
+                return;
+            }
+
+
+            profile.Relics -= levelCost;
+            selectedGear.Level += 1;
+
+            await _profileService.Update(ctx, profile);
+
+            await ctx.Channel.SendMessageAsync(embed: SuccessEmbedTemplate.Get(ctx, $"You have successfully upgraded {EmojiHandler.GetEmoji(selectedGear.Gear.IconName)} **{selectedGear.Gear.Type}** to level **{selectedGear.Level}** for **{UtilityFunctions.FormatNumber((ulong)levelCost)}** {EmojiHandler.GetEmoji("relic")}.").Build())
+    .ConfigureAwait(false);
+            return;
         }
     }
 }

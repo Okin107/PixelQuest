@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdleHeroes.Bot", "IdleHeroe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdleHeroes.DAL", "IdleHeroes.DAL\IdleHeroes.DAL.csproj", "{F0522B6C-5835-4958-B3AA-A73334232434}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleHeroes.DAL.Migrations", "IdleHeroes.DAL.Migrations\IdleHeroes.DAL.Migrations.csproj", "{417A8E73-DEF2-4A32-A1AA-017AA8F8E29A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdleHeroes.DAL.Migrations", "IdleHeroes.DAL.Migrations\IdleHeroes.DAL.Migrations.csproj", "{417A8E73-DEF2-4A32-A1AA-017AA8F8E29A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleHeroesTests", "IdleHeroesTests\IdleHeroesTests.csproj", "{C68D647A-02B5-4E98-ADC8-41CBC10DD9EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{417A8E73-DEF2-4A32-A1AA-017AA8F8E29A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{417A8E73-DEF2-4A32-A1AA-017AA8F8E29A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{417A8E73-DEF2-4A32-A1AA-017AA8F8E29A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C68D647A-02B5-4E98-ADC8-41CBC10DD9EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C68D647A-02B5-4E98-ADC8-41CBC10DD9EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C68D647A-02B5-4E98-ADC8-41CBC10DD9EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C68D647A-02B5-4E98-ADC8-41CBC10DD9EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

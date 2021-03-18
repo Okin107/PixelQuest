@@ -13,5 +13,6 @@ namespace IdleHeroesDAL
         public DbSet<Tavern> Tavern { get; set; }
         public DbSet<Store> Store { get; set; }
         public DbSet<KeyStore> KeyStore { get; set; }
+        public DbSet<Gear> Gear { get; set; }
     }
 }

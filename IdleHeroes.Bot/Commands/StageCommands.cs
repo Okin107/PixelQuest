@@ -102,7 +102,16 @@ namespace IdleHeroes.Commands
             Dictionary<TeamPositionEnum, double> teamDpsSpread = new Dictionary<TeamPositionEnum, double>();
             Dictionary<TeamPositionEnum, double> enemyDpsSpread = new Dictionary<TeamPositionEnum, double>();
 
-            for (battleSeconds = 1; battleSeconds <= selectedStage.TimeToBeat.TotalSeconds; battleSeconds++)
+            //Time gear
+            OwnedGear timeGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.Time);
+            double totalSeconds = selectedStage.TimeToBeat.TotalSeconds;
+
+            if (timeGear != null)
+            {
+                totalSeconds = selectedStage.TimeToBeat.Multiply(GearHelper.CalculateAttribute(timeGear.Gear, timeGear.Level)).TotalSeconds;
+            }
+
+            for (battleSeconds = 1; battleSeconds <= totalSeconds; battleSeconds++)
             {
                 if (defeatedTeamPositions.Count == profile.Team.Companions.Count + 1)
                 {
@@ -424,9 +433,22 @@ namespace IdleHeroes.Commands
                     }
                 }
 
+                OwnedGear goldGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.Gold);
+                double goldMultiplier = 1;
+                if (goldGear != null)
+                {
+                    goldMultiplier = GearHelper.CalculateAttribute(goldGear.Gear, goldGear.Level);
+                }
+                OwnedGear xpGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.XP);
+                double xpMultiplier = 1;
+                if (xpGear != null)
+                {
+                    xpMultiplier = GearHelper.CalculateAttribute(xpGear.Gear, xpGear.Level);
+                }
+
                 //Give rest of rewards
-                profile.XP += selectedStage.StaticXP;
-                profile.Coins += selectedStage.StaticCoins;
+                profile.XP += selectedStage.StaticXP * xpMultiplier;
+                profile.Coins += selectedStage.StaticCoins * goldMultiplier;
                 profile.Food += selectedStage.StaticFood;
                 profile.Gems += selectedStage.StaticGems;
                 profile.Relics += selectedStage.StaticRelics;
@@ -836,11 +858,23 @@ namespace IdleHeroes.Commands
 
             //Calculate idle resources gained
             TimeSpan idleTime = UtilityFunctions.GetIdleTime(profile);
+            OwnedGear goldGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.Gold);
+            double goldMultiplier = 1;
+            if (goldGear != null)
+            {
+                goldMultiplier = GearHelper.CalculateAttribute(goldGear.Gear, goldGear.Level);
+            }
+            OwnedGear xpGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.XP);
+            double xpMultiplier = 1;
+            if (xpGear != null)
+            {
+                xpMultiplier = GearHelper.CalculateAttribute(xpGear.Gear, xpGear.Level);
+            }
 
             if (idleTime.TotalMinutes >= 1)
             {
-                profile.IdleXP += (ulong)idleTime.TotalMinutes * profile.Stage.XPPerMinute;
-                profile.IdleCoins += (ulong)idleTime.TotalMinutes * profile.Stage.CoinsPerMinute;
+                profile.IdleXP += idleTime.TotalMinutes * xpMultiplier;
+                profile.IdleCoins += idleTime.TotalMinutes * goldMultiplier;
 
                 Random radnomFoodNum = new Random();
                 List<int> foodChances = Enumerable

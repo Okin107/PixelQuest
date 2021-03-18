@@ -21,6 +21,26 @@ namespace IdleHeroes.EmbedTemplates
                 selectedStage = stage;
             }
 
+            //Time gear
+            OwnedGear timeGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.Time);
+            double timeMultiplier = 1;
+            if (timeGear != null)
+            {
+                timeMultiplier = GearHelper.CalculateAttribute(timeGear.Gear, timeGear.Level);
+            }
+            OwnedGear goldGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.Gold);
+            double goldMultiplier = 1;
+            if (goldGear != null)
+            {
+                goldMultiplier = GearHelper.CalculateAttribute(goldGear.Gear, goldGear.Level);
+            }
+            OwnedGear xpGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.XP);
+            double xpMultiplier = 1;
+            if (xpGear != null)
+            {
+                xpMultiplier = GearHelper.CalculateAttribute(xpGear.Gear, xpGear.Level);
+            }
+
             _embed = new DiscordEmbedBuilder()
             {
                 Color = DiscordColor.Aquamarine,
@@ -35,13 +55,12 @@ namespace IdleHeroes.EmbedTemplates
                 $"\nUse `.stage fight` to initate a battle on this stage." +
                 $"\nUse `.stage <stageNunmber` to preview a previous stage or `.stage <stageNumber> fight` to fight a previous stage again." +
                 $"\n" +
-                $"\nDifficulty: {selectedStage.Difficulty}" +
-                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.XPPerMinute)} per min" +
-                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.CoinsPerMinute)} per min" +
+                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.XPPerMinute * xpMultiplier)} per min" +
+                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.CoinsPerMinute * goldMultiplier)} per min" +
                 $"\n{EmojiHandler.GetEmoji("food")} {selectedStage.FoodChancePerMinute}% for {UtilityFunctions.FormatNumber(selectedStage.FoodAmount)} per min" +
                 $"\n{EmojiHandler.GetEmoji("gem")} {selectedStage.GemsDropChancePerMinute}% for {UtilityFunctions.FormatNumber(selectedStage.GemsAmount)} per min" +
                 $"\n{EmojiHandler.GetEmoji("relic")} {selectedStage.RelicsDropChancePerMinute}% for {UtilityFunctions.FormatNumber(selectedStage.RelicsAmount)} per min" +
-                $"\nBattle time: {selectedStage.TimeToBeat}"
+                $"\nBattle time: {selectedStage.TimeToBeat.Multiply(timeMultiplier)}"
                 ,
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail()
                 {
@@ -181,8 +200,8 @@ namespace IdleHeroes.EmbedTemplates
             _embed.AddField("**Fight rewards**",
                 $"{companionString}" +
                 $"\n{keyString}" +
-                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP)}" +
-                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.StaticCoins)}" +
+                $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP * xpMultiplier)}" +
+                $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.StaticCoins * goldMultiplier)}" +
                 $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(selectedStage.StaticFood)}" +
                 $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(selectedStage.StaticGems)}" +
                 $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(selectedStage.StaticRelics)}", true);

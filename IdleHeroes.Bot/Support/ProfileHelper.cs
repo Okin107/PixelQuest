@@ -52,12 +52,44 @@ namespace IdleHeroes.Support
             switch (attribute)
             {
                 case CompanionAttributeEnum.DPS:
-                    calculatedAttribute = UtilityFunctions.FormatNumber(profile.DPS * Math.Pow(profile.DPSLevelIncrease, profileLevel)
-                        * Math.Pow(profile.DPSBoostLevelIncrease, profile.DPSBoostLevel));
+                    tempAttribute = profile.DPS * Math.Pow(profile.DPSLevelIncrease, profileLevel)
+                        * Math.Pow(profile.DPSBoostLevelIncrease, profile.DPSBoostLevel);
+
+                    //Add gear bonus
+                    OwnedGear dpsGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.DPS);
+
+                    if (dpsGear != null)
+                    {
+                        tempAttribute = tempAttribute * GearHelper.CalculateAttribute(dpsGear.Gear, dpsGear.Level);
+                    }
+
+                    //Add bonus per gear
+                    if (profile.OwnedGears.Count > 0)
+                    {
+                        tempAttribute = tempAttribute * Math.Pow(2, profile.OwnedGears.Count);
+                    }
+
+                    calculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
                 case CompanionAttributeEnum.HP:
-                    calculatedAttribute = UtilityFunctions.FormatNumber(profile.HP * Math.Pow(profile.HPLevelIncrease, profileLevel)
-                        * Math.Pow(profile.HPBoostLevelIncrease, profile.HPBoostLevel));
+                    tempAttribute = profile.HP * Math.Pow(profile.HPLevelIncrease, profileLevel)
+                        * Math.Pow(profile.HPBoostLevelIncrease, profile.HPBoostLevel);
+
+                    //Add gear bonus
+                    OwnedGear hpGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.HP);
+
+                    if(hpGear != null)
+                    {
+                        tempAttribute = tempAttribute * GearHelper.CalculateAttribute(hpGear.Gear, hpGear.Level);
+                    }
+
+                    //Add bonus per gear
+                    if(profile.OwnedGears.Count > 0)
+                    {
+                        tempAttribute = tempAttribute * Math.Pow(2, profile.OwnedGears.Count);
+                    }
+
+                    calculatedAttribute = UtilityFunctions.FormatNumber(tempAttribute);
                     break;
                 case CompanionAttributeEnum.Armor:
                     tempAttribute = profile.Armor * Math.Pow(profile.ArmorLevelIncrease, profileLevel)
@@ -98,10 +130,38 @@ namespace IdleHeroes.Support
                 case CompanionAttributeEnum.DPS:
                     calculatedAttribute = profile.DPS * Math.Pow(profile.DPSLevelIncrease, profileLevel)
                         * Math.Pow(profile.DPSBoostLevelIncrease, profile.DPSBoostLevel);
+
+                    //Add gear bonus
+                    OwnedGear dpsGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.DPS);
+
+                    if (dpsGear != null)
+                    {
+                        calculatedAttribute = calculatedAttribute * GearHelper.CalculateAttribute(dpsGear.Gear, dpsGear.Level);
+                    }
+
+                    //Add bonus per gear
+                    if (profile.OwnedGears.Count > 0)
+                    {
+                        calculatedAttribute = calculatedAttribute * Math.Pow(2, profile.OwnedGears.Count);
+                    }
                     break;
                 case CompanionAttributeEnum.HP:
                     calculatedAttribute = profile.HP * Math.Pow(profile.HPLevelIncrease, profileLevel)
                         * Math.Pow(profile.HPBoostLevelIncrease, profile.HPBoostLevel);
+
+                    //Add gear bonus
+                    OwnedGear hpGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.HP);
+
+                    if (hpGear != null)
+                    {
+                        calculatedAttribute = calculatedAttribute * GearHelper.CalculateAttribute(hpGear.Gear, hpGear.Level);
+                    }
+
+                    //Add bonus per gear
+                    if (profile.OwnedGears.Count > 0)
+                    {
+                        calculatedAttribute = calculatedAttribute * Math.Pow(2, profile.OwnedGears.Count);
+                    }
                     break;
                 case CompanionAttributeEnum.Armor:
                     calculatedAttribute = profile.Armor * Math.Pow(profile.ArmorLevelIncrease, profileLevel)

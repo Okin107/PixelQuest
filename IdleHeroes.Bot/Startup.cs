@@ -19,6 +19,7 @@ namespace IdleHeroes
             services.AddScoped<ITavernService, TavernService>();
             services.AddScoped<IStoreService, StoreService>();
             services.AddScoped<IKeyStoreService, KeyStoreService>();
+            services.AddScoped<IGearService, GearService>();
 
             //Add dbcontext
             services.AddDbContext<DatabaseContext>(options => 

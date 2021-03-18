@@ -74,13 +74,9 @@ namespace IdleHeroes.Services
                 AccuracyBoostLevelIncrease = 1.5,
                 AgilityBoostLevel = 0,
                 AgilityBoostLevelIncrease = 1.5,
-                BoostCostIncrease = 1.5,
-                BoostMaxLevel = 10,
-                BattleRetries = 10,
-                //Only for testing
-                //Food = 10,
-                //Coins = 1000000,
-                //Gems = 10
+                BoostCostIncrease = 1.2,
+                BoostMaxLevel = 20,
+                BattleRetries = 10
             }).ConfigureAwait(false);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -106,6 +102,8 @@ namespace IdleHeroes.Services
                 .ThenInclude(x => x.Companions)
                 .ThenInclude(x => x.OwnedCompanion)
                 .ThenInclude(x => x.Companion)
+                .Include(x => x.OwnedGears)
+                .ThenInclude(x => x.Gear)
                 .FirstOrDefaultAsync(x => x.Username.Equals(username));
         }
 
@@ -129,6 +127,8 @@ namespace IdleHeroes.Services
                 .ThenInclude(x => x.Companions)
                 .ThenInclude(x => x.OwnedCompanion)
                 .ThenInclude(x => x.Companion)
+                .Include(x => x.OwnedGears)
+                .ThenInclude(x => x.Gear)
                 .FirstOrDefaultAsync(x => x.DiscordId.Equals(ctx.Message.Author.Id));
         }
 
@@ -171,6 +171,8 @@ namespace IdleHeroes.Services
                 .ThenInclude(x => x.Companions)
                 .ThenInclude(x => x.OwnedCompanion)
                 .ThenInclude(x => x.Companion)
+                .Include(x => x.OwnedGears)
+                .ThenInclude(x => x.Gear)
                 .ToListAsync().ConfigureAwait(false);
         }
 
