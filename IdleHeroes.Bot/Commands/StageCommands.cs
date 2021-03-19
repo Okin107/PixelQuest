@@ -873,8 +873,8 @@ namespace IdleHeroes.Commands
 
             if (idleTime.TotalMinutes >= 1)
             {
-                profile.IdleXP += idleTime.TotalMinutes * xpMultiplier;
-                profile.IdleCoins += idleTime.TotalMinutes * goldMultiplier;
+                profile.IdleXP += idleTime.TotalMinutes * profile.Stage.XPPerMinute * xpMultiplier;
+                profile.IdleCoins += idleTime.TotalMinutes * profile.Stage.CoinsPerMinute * goldMultiplier;
 
                 Random radnomFoodNum = new Random();
                 List<int> foodChances = Enumerable
