@@ -21,6 +21,19 @@ namespace IdleHeroes.EmbedTemplates
             {
                 selectedStage = stage;
             }
+            OwnedGear goldGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.Gold);
+            double goldMultiplier = 1;
+            if (goldGear != null)
+            {
+                goldMultiplier = GearHelper.CalculateAttribute(goldGear.Gear, goldGear.Level);
+            }
+            OwnedGear xpGear = profile.OwnedGears.Find(x => x.Gear.Effect == GearEffectEnum.XP);
+            double xpMultiplier = 1;
+            if (xpGear != null)
+            {
+                xpMultiplier = GearHelper.CalculateAttribute(xpGear.Gear, xpGear.Level);
+            }
+
 
             _embed = new DiscordEmbedBuilder()
             {
@@ -233,8 +246,8 @@ namespace IdleHeroes.EmbedTemplates
                 _embed.AddField("Rewards gained",
                    $"{companionString}" +
                    $"\n{keyString}" +
-                   $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP)}" +
-                   $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.StaticCoins)}" +
+                   $"\n{EmojiHandler.GetEmoji("xp")} {UtilityFunctions.FormatNumber(selectedStage.StaticXP * xpMultiplier)}" +
+                   $"\n{EmojiHandler.GetEmoji("coin")} {UtilityFunctions.FormatNumber(selectedStage.StaticCoins * goldMultiplier)}" +
                    $"\n{EmojiHandler.GetEmoji("food")} {UtilityFunctions.FormatNumber(selectedStage.StaticFood)}" +
                    $"\n{EmojiHandler.GetEmoji("gem")} {UtilityFunctions.FormatNumber(selectedStage.StaticGems)}" +
                    $"\n{EmojiHandler.GetEmoji("relic")} {UtilityFunctions.FormatNumber(selectedStage.StaticRelics)}");
