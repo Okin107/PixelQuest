@@ -66,8 +66,6 @@ namespace IdleHeroes.Commands
                 }
                 Console.WriteLine($"COMMAND ERROR: {ex.Message}");
             }
-
-            
         }
 
         [Command("lb")]
@@ -83,6 +81,37 @@ namespace IdleHeroes.Commands
                 List<Profile> allProfiles = await _profileService.GetAll();
 
                 await ctx.Channel.SendMessageAsync(embed: LeaderboardEmbedTemplate.Show(ctx, profile, allProfiles, filter).Build())
+                .ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                if (BotSettings.IsDebugMode)
+                {
+                    await ctx.Channel.SendMessageAsync(embed: ErrorEmbedTemplate.Get(ctx, $"COMMAND ERROR: {ex.Message}").Build())
+                    .ConfigureAwait(false);
+                }
+                Console.WriteLine($"COMMAND ERROR: {ex.Message}");
+            }
+
+
+        }
+
+        [Command("stats")]
+        [Description("Check out some bot statistics.")]
+        public async Task Stats(CommandContext ctx)
+        {
+            try
+            {
+                if (UtilityFunctions.IsBotOwner(ctx.Message.Author.Id))
+                {
+                    List<Profile> allProfiles = await _profileService.GetAll();
+
+                    await ctx.Channel.SendMessageAsync(embed: StatsEmbedTemplate.Show(ctx, allProfiles).Build())
+                    .ConfigureAwait(false);
+                    return;
+                }
+
+                await ctx.Channel.SendMessageAsync(embed: WarningEmbedTemplate.Get(ctx, "This command is restricted to the **Owners** of the bot only!").Build())
                 .ConfigureAwait(false);
             }
             catch (Exception ex)
